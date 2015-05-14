@@ -1,0 +1,138 @@
+;---Jogo da Forca---;
+
+; Ctrl+K -> Comenta
+; Ctrl+Shift+K -> Descomenta
+
+; Estrutura do Jogo:
+;	<Jogo da Forca>
+;main:
+;   Seta parametros...
+;   Call InputPalavra
+;   Call DesenhaForca
+;
+;	Loop:
+;		Call InputLetra
+;		Call Compara
+;		Call TestaFim
+;		jmp Loop
+;
+;   Halt
+;
+;InputPalavra:
+;   -- Pede para um jogador digitar uma palava para o outro adivinhar
+;   Call DigitaLetra
+;
+;DigitaLetra:
+;   -- Le o teclado ate' que uma tecla seja pressionada
+;
+;DesenhaForca:
+;   Seta parametros...
+;   Call LimpaTela
+;   Call DesenhaTela
+;   RTS
+;DesenhaTela:
+;   -- Desenha uma tela inteira 40 x 30
+;   Seta parametros...
+;
+;	Loop:
+;		call ImprimeStr ; Call ImprimeStr  30 vezes    (Tem essa funcao no Hello4.asm)
+;		add r0, r0, 40  ; incrementaposicao para a segunda linha na tela!
+;		add r1, r1, 41  ; incrementa o ponteiro para o comeco da proxima linha na memoria (40 + 1 por causa do /0 !!)
+;		cmp r0, 1200
+;		jne Loop
+;	RTS
+;
+;LimpaTela:
+;   -- Limpa toda a tela
+;
+;ImprimeSTR:
+;   -- Imprime uma String na tela(Tem essa funcao no Hello4.asm)
+;
+;InputLetra:
+;	-- O jogador digita uma Letra e testa se ja' foi digitada
+;	Seta Parametros...
+;	Printf (Digite uma Letra)
+;	Loop:		-- Compara Letra com todas as letras da lista Trylist
+;		Call DigitaLetra
+;		If(TryListSize == 0) goto Fim
+;		For i = 0 to TryListSize-1  {
+;			If(Letra == TryList[i]) {
+;				Printf(Letra Repetida)
+;				Printf(TryList)
+;				Goto Loop
+;				}
+;			}
+; Fim:
+;	TryList[TryListSize] = Letra	    -- Se nao esta' na Lista, acrescente na Lista
+;	TryListSize++
+;	TryList[TryListSize] = /0	     	-- Poe /0 no Final!!
+;	RTS
+;
+;Compara
+;	-- Compara a Letra digitada para ver se pertence a Palavra
+;	Seta Parametros...
+;	FlagAcerto == 0
+;	For i = 0 to PalavraSize-1 {
+;		If(Letra == palavra[i]) {
+;			Printf(Letra  --> PosicaoFixa+i)
+;			Acerto++
+;			FlagAcerto = 1
+;			}
+;		}
+;
+;		If(FlagAcerto == 0) {
+;			Erro++
+;			Switch(Erro) {
+;				Case 1 -> Desenha Cabeca
+;					. . .
+;				Case 7 -> Desenha Perna Direita
+;			}
+;		}
+;	RTS
+;
+;
+;TestaFim:
+;		-- Rotina que testa se o Jogo terminou
+;		-- Se acertou todas as letras da palavra
+;		-- ou Se ja' desenhou todo o carinha
+;	Seta Parametros...
+;	If(Erro == 8) {
+;		Printf(TelaEnforcado)
+;		Printf(Palavra)
+;
+;		Printf(Quer Jogar Novamente??)
+;		Call DigLetra
+;		If(Letra == S) {
+;			Call ApagaTela
+;			Pop R0		-- Como da' um Goto direto pro Main tem que esvasiar a pilha do Call TestaFim
+;			Goto Main
+;			}
+;		else Halt
+;		}
+;	If(Acerto == PalavraSize){
+;		Printf(Voce Venceu)
+;
+;		Printf(Quer Jogar Novamente??)
+;		Call DigLetra
+;		If(Letra == S) {
+;			Call ApagaTela
+;			Pop R0		-- Como da' um Goto direto pro Main tem que esvasiar a pilha do Call TestaFim
+;			Goto Main
+;			}
+;		else Halt
+;       }
+;	RTS
+
+jmp main
+
+;---- Declaracao de Variaveis Globais -----
+; Sao todas aquelas que precisam ser vistas por mais de uma funcao: Evita a passagem de parametros!!!
+; As variaveis locais de cada funcao serao alocadas nos Registradores internos = r0 - r7
+
+Palavra: var #41	; Vetor para Armazenar as letras da Palavra
+PalavraSize: var #1	; Tamanho da Palavra
+Letra: var #1		; Contem a letra que foi digitada
+TryList: var #60	; Lista com as letras ja' digitadas
+TryListSize: var #1	; Tamanho da Lista com as letras ja' digitadas
+Acerto: var#1		; Contador de Acertos
+Erro: var#1			; Contador de Erros

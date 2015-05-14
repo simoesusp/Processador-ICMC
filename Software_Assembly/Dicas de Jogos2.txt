@@ -1,0 +1,534 @@
+Dicas de como fazer varias coisas em linguagem Assembly para Jogos
+
+
+1) Como mover um objeto na tela:
+Loop:
+ApagaNave: Print " ", posAnt
+
+RecalculaNave: 	LeTecla							
+		Switch Tecla						
+			Case 'W'  ->  posNova = posAnt - 40		
+			Case 'A'  ->  posNova = posAnt - 1		
+			. . . 						
+					
+DesenhaNave: Print 'A', posNova
+	 posAnt = posNova
+
+Delay:	j = 64K
+ loopj:	i = 64K
+ loopi: dec i
+	jnz loopi
+	dec j
+	jnz loopj
+
+Goto Loop
+	
+2) Como mover a Nave a partir do teclado:  ver acima!!
+
+3) Como mover um Alien na tela: Rand e Case (switch):
+	Rand: 
+	1) gerar numeros randomicos:	rand : var #50
+					static rand + #0, #10
+					static rand + #1, #20
+					static rand + #2, #30
+					static rand + #3, #105
+					. . . 
+					
+	2) ler numeros randomicos: 	loadn R0, #rand ; declara ponteiro para tabela rand na memoria!
+					loadi R1, R0 ; busca primeiro nr. randomico da memoria
+					inc R0
+					. . . 
+					loadi R1, R0 ; busca segundo nr. randomico da memoria ... e assim por diante ...
+					
+					if R0 = Tamanho da Lista  then R0 = 0    ; Controle de Final da lista rotativa
+					
+	3) Movimentar Alien:	3.1) Jeito Feio:
+					sorteia nr. randomico entre 0 - 7
+					switch rand
+						case 0 : posNova = posAnt -41
+						case 1 : posNova = posAnt -40
+						case 2 : posNova = posAnt -39
+						case 3 : posNova = posAnt -1
+						case 4 : posNova = posAnt +1
+						case 5 : posNova = posAnt +39
+						case 6 : posNova = posAnt +40
+						case 7 : posNova = posAnt +41
+						
+				3.2) Jeito Bonitinho:
+					sorteia nr. randomico entre 0 - 2
+					if rand == 0   ; vira para esquerda!
+						{
+						switch incAtual  ; incremento atual
+							case -41 : incNovo = -1
+							case -40 : incNovo = -41
+							case -39 : incNovo = -40
+							case -1 : incNovo = +39
+							case +1 : incNovo = -39
+							case +39 : incNovo = +40
+							case +40 : incNovo = +41
+							case +41 : incNovo = +1
+						}
+						
+					if rand == 1    ; mantem incremento
+						{ incNovo = incAtual}
+						
+					if rand == 2   ; vira para direita!
+						{
+						switch incAtual  ; incremento atual
+							case -41 : incNovo = -40
+							case -40 : incNovo = -39
+							case -39 : incNovo = +1
+							case -1 : incNovo = -41
+							case +1 : incNovo = +41
+							case +39 : incNovo = -1
+							case +40 : incNovo = +39
+							case +41 : incNovo = +40
+						}
+					 
+					posNova = posAnt + incNovo   	; altera a posicao;
+					incAtual = incNovo		; ajusta o incremento
+	
+	
+4) Movimenta Tiro:
+			incTiro = 2x inc Nave		; para andar mais rapido que nave o incTiro = 2 ou 3 vezes o incNave
+			posNova = posAnt + incTiro
+
+5) Delay: ver acima!!
+
+6) Rand: ver acima
+
+7) Nave com mais de 1 char:
+		Movimente o primeiro caracter da nave como explicado anteriormente e depois printe os outros caracteres relativamente a posicao do primeiro
+
+8) Movimentar mais de um objeto com velocidades diferentes:
+		Loop:
+		if (mod(c/10)==0
+			{	ApagaNave
+				RecalculaNave
+				DesenhaNave
+			}
+		if (mod(c/5)==0
+			{	ApagaAlien
+				RecalculaAlien
+				DesenhaAlien
+			}
+		if (mod(c/2)==0
+			{	ApagaTiro
+				RecalculaTiro
+				DesenhaTiro
+			}
+		Delay
+		c++
+		goto Loop
+		
+9) Cenario:	7,1) Declara e preenche tela linha por linha (40 caracteres):
+			tela1Linha0 : string "  Navezinha ...  "
+			tela1Linha1 : string "  Navezinha ...  "
+			tela1Linha2 : string "  Navezinha ...  "
+			. . . 
+			tela1Linha29 : string "  Navezinha ...  "
+
+Obs.: O caractere "\" e' reservado!  Para imprimir "\" e nao dar erro, usar "\\" na string e cuidar para dar um espaco a mais, pois uma das barras nao e' desenhada!!
+			
+		7.2) funcao que imprime tela:   ;nao esquecer de somar +1 no ponteiro a cada linha por causa do /0 no final da string!!
+			loadn R0, #0  ; posicao inicial tem que ser o comeco da tela!
+			loadn R1, tela1Linha0
+			loadn R2, #0  ; cor branca!
+			
+			Loop:
+				call ImprimeStr
+				add r0, r0, 40  ; incrementaposicao para a segunda linha na tela!
+				add r1, r1, 41  ; incrementa o ponteiro para o comeco da proxima linha na memoria (40 + 1 por causa do /0 !!)
+				cmp r0, 1200
+				jne Loop
+		
+		
+10) Navegar em um cenario sem apaga-lo
+	10.1) Geito Burro:  Redesenhe todo o cenario a cada iteracao!!!! VAi ficar muito lento!!!!
+	
+	Loop:
+		if (mod(c/10)==0
+			{	ImprimeTela
+				RecalculaNave
+				DesenhaNave / DesenhaAlien  /  DesenhaTiro  ; Tem que desenhar os 3, pois ApagaTela apaga os outros dois quando redesenha a tela
+			}
+		if (mod(c/5)==0
+			{	ImprimeTela
+				RecalculaAlien
+				DesenhaNave / DesenhaAlien  /  DesenhaTiro
+			}
+		if (mod(c/2)==0
+			{	ImprimeTela
+				RecalculaTiro
+				DesenhaNave / DesenhaAlien  /  DesenhaTiro
+			}
+		Delay
+		c++
+		goto Loop
+	
+	10.2) inteligente:  ApagaNave: Print Tela(posAnt + posAnt/40) , posAnt  ; Apaga a Nave nao com um espaco, mas com o caracter correspondente aquela posicao da tela
+				--> R1 = Tela1Linha0 + posAnt + posAnt/40  ; tem que somar posAnt/40 no ponteiro pois as linas da string terminam com /0 !!
+				    Loadi R0, R1  ; busca o codigo do caracter correspondente a posicao da tela que se quer apagar!!
+	Loop:
+		if (mod(c/10)==0
+			{	ApagaNave: Print Tela(posAnt + posAnt/40) , posAnt
+				RecalculaNave
+				DesenhaNave
+			}
+		if (mod(c/5)==0
+			{	ApagaAlien: Print Tela(posAnt + posAnt/40) , posAnt
+				RecalculaAlien
+				DesenhaAlien
+			}
+		if (mod(c/2)==0
+			{	ApagaTiro: Print Tela(posAnt + posAnt/40) , posAnt
+				RecalculaTiro
+				DesenhaTiro
+			}
+		Delay
+		c++
+		goto Loop
+	
+	
+11) Le tecla para controlar a nave: 	
+	
+
+	11.1) Desse geito a nave fica "meio piscando":
+	
+	RecalculaNave:	
+		inchar R0	; Le tecla que esta sendo precionada no momento
+		cmp 255 R0	; se nao for pressionada nenhuma tecla, retorna 255
+		jeq Fim		; se nao pressionou nenhuma tecla, vai pro fim!
+	;case1:
+		cmp 'W', R0	; case tecla for 'W'
+		jne case2
+		posNova = posAnt - 40 ; nave sobe!
+	case2:	cmp 'A', R0	; case tecla for 'A'
+		jne case3
+		posNova = posAnt - 1 ; nave vai pra esquerda!
+	case3:
+		. . .
+	Fim:	rts		; se nao precionou nenhuma tecla, nao movimenta a nave!!
+
+
+	11.2) Desse geito, a nave nao pisca, pois somente e' desenhada quando sua posicao muda:
+
+	Loop:
+		if (mod(c/10)==0
+			{	
+				RecalculaNave (posNave = Teclado...)
+				If (posNave != posAntNave)
+				{ 	ApagaNave: Print Tela(posAntNave + posAntNave/40) , posAntNave
+				 	DesenhaNave  (posAntNave = posNave)
+				}
+			}
+		if (mod(c/5)==0
+			{	
+				RecalculaAlien (posAlien = Rand...)
+				If (posAlien != posAntAlien)
+				{ 	ApagaAlien: Print Tela(posAntAlien + posAntAlien/40) , posAntAlien
+				 	DesenhaAlien  (posAntAlien = posAlien)
+				}
+			}
+		if (mod(c/2)==0
+			{	
+				RecalculaTiro (posTiro = posTiro + IncTiro...)
+				If (posTiro != posAntTiro)
+				{ 	ApagaTiro: Print Tela(posAntTiro + posAntTiro/40) , posAntTiro
+				 	DesenhaTiro  (posAntTiro = posTiro)
+				}
+			}
+		Delay
+		c++
+		goto Loop
+
+		; Exemplo de como fazer isso em Assembly:		
+		;--------------------------------		
+		MoveNave:
+			push r0
+			push r1
+			
+			call MoveNave_RecalculaPos		; Recalcula Posicao da Nave
+
+		; So' Apaga e Redezenha se (pos != posAnt)
+		;	If (posNave != posAntNave)	{	
+			load r0, posNave
+			load r1, posAntNave
+			cmp r0, r1
+			jeq MoveNave_Skip
+				call MoveNave_Apaga
+				call MoveNave_Desenha		;}
+		  MoveNave_Skip:
+			
+			pop r1
+			pop r0
+			rts
+
+		;--------------------------------
+
+
+12) Reflexao da bolinha nos cantos da tela:
+	if pos < 40
+		if inc == -41 -> inc = +39
+		if inc == -40 -> inc = +40
+		if inc == -39 -> inc = +41
+	if pos > 1159
+		if inc == +39 -> inc = -41
+		if inc == +40 -> inc = -40
+		if inc == +41 -> inc = -39
+	if (mod(pos/40) == 0)
+		if inc == -41 -> inc = -39
+		if inc == -1 -> inc = +1
+		if inc == +39 -> inc = +41
+	if (mod(pos/40) == 39)
+		if inc == -39 -> inc = -41
+		if inc == +1 -> inc = -1
+		if inc == +41 -> inc = +39
+
+13) E' possivel tratar a bolinha ou Nave como tendo coordenadas X e Y em toda a mecanica do jogo e so' transforma-las em posicao absoluta (de 0 a 1199) na hora de imprimir na tela:
+	- PosicaoAbsoluta = x + 40*Y
+
+	- Assim fica mais facil mover uma bolinha de Pong, pois:
+		- o incremento de X e' constante, dependente da velocidade do jogo;
+		- o incremento de Y pode variar:
+			- Se bateu no meio da raquete = 0
+			- Se bateu mais pra baixo do meio = -1
+			- Se bateu mais pra baixo ainda (no cantinho) = -2
+			. . . 
+
+
+14) Como fazer um "Radar" para um objeto como uma Torre ou uma Nave:
+
+	- Imagine que existe uma Torre "T" na posicao "P"
+	- Para fazer um Radar em sua volta, basta definir uma regiao:
+
+	
+					  xxx
+					 xxxxx
+					xxxTxxx
+					 xxxxx
+					  xxx
+	- FAzer um Vetor de posicoes relativas de todos os "x" em relacao a posicao da Torre "P":
+		Vetor = {-81,-80,-79,-42,-41,-40,-39,-38,-3,-2,-1,+1,+2,+3 . . .}
+
+	- Para checar se a Nave entrou no raio de tiro da Torre, basta verificar se a posicao da Nave PNave = PTorre + Vetor(i) 
+	- Se entrar no raio de tiro da torre, manda bala!!
+
+	- Se for um Carinha "C" andando num labirinto com Fog-of-the-War e tu quer ir iluminando o labirinto a medida que o carainha vai andando:
+		E' so' consultar o cenario na memoria em cada uma das posicoes do Radar:
+		   R0 = Tela0Linha0   		; ponteiro para onde comeca o cenario na memoria
+		   Loop:
+			R1 = posTorre + Vetor(i)  	; pega cada uma das posicoes "x" do Radar
+			R2 = R0 + R1 + R1/40		; Soma 1 a cada 40 para pular os "/0" que tem depois de cada linha do cenario (ver 7.2 e 10.2)
+			Loadi R3, R2			; le o caracter correspondente a cada uma das posicoes "x" do Radar na memoria do cenario
+			outchar R3, R1			; imprime o caracter em cada uma das posicoes "x" do Radar
+			i++
+			If (i < Tamanho do Vetor) 
+				goto Loop
+
+
+15) Como criar um cenario maior que a tela para aqueles jogos tipo Sonic onde o carinha fica correndo pros lados e o cenario vai passando:
+
+	- Mudar a funcao Imprime para ImprimeColuna, para imprimir strings de cima para baixo ao inves de da esquerda para a direita (incrementar a posicao de +40 ao inves de +1)
+
+	- Usar o comando string para declarar as 40 COLUNAS do cenarioao inves das 30 LINHAS:
+		Tela0Coluna0 : string "30 caracteres"
+		Tela0Coluna1 : string "30 caracteres"
+		Tela0Coluna2 : string "30 caracteres"
+		. . . 
+		Tela0Coluna39: string "30 caracteres"
+
+	- Assim, pode-se declarar mais do que 40 colunas, para que o cenario fique maior que a tela e se possa "shifita-lo" para a esquerda quando o carinha comecar a correr para a direita e vice-versa
+
+	- Manter o carinha sempre na ultima linha e no meio da tela: 1160 + 19
+
+	- Quando o carinha correr, o que e' incrementado e' o DeslocamentoLateral do cenario
+
+	- Usar um ponteiro para apontar para a priemira coluna do cenario que esta aperecendo na tela:
+		loadn R0, #0  ; posicao inicial tem que ser o comeco da tela!
+		R1 = Tela0Coluna0 + DeslocamentoLateral*31	; para pular os /0 do final dos 30 caracteres de cada coluna !!!!!
+		loadn R2, #0  ; cor branca!
+		
+	- Chamar uma nova funcao que imprime Tela que use a funcao ImprimeColuna:
+	
+		ImprimeTelaColunas:   	;nao esquecer de somar +1 no ponteiro a cada COLUNA por causa do /0 no final dos 30 caracteres da string!!
+						
+			Loop:
+				call ImprimeColuna
+				add r0, r0, 1  		; incrementaposicao para a segunda COLUNA na tela!
+				add r1, r1, 31 		; incrementa o ponteiro para o comeco da proxima COLUNA na memoria (30 + 1 porcausa do /0 !!)
+				cmp r0, 40
+				jne Loop
+
+	- Imprimir o carinha SOBRE o cenario, sempre na ultima linha e no meio da tela: 1160 + 19: 
+
+
+
+FUNCOES NOVAS que movem o cenario lateralmente:
+;********************************************************
+;                       IMPRIME TELA 3
+;********************************************************	
+
+ImprimeTela3: 	;  Rotina de Impresao de Cenario na Tela Inteira
+		;  r1 = endereco onde comeca a primeira linha do Cenario
+		;  r2 = cor do Cenario para ser impresso
+
+	push r0	; protege o r3 na pilha para ser usado na subrotina
+	push r1	; protege o r1 na pilha para preservar seu valor
+	push r2	; protege o r1 na pilha para preservar seu valor
+	push r3	; protege o r3 na pilha para ser usado na subrotina
+	push r4	; protege o r4 na pilha para ser usado na subrotina
+	push r5	; protege o r4 na pilha para ser usado na subrotina
+
+	loadn R0, #0  	; posicao inicial tem que ser o comeco da tela!
+	loadn R3, #40  	; Incremento da posicao da tela!
+	loadn R4, #51  	; incremento do ponteiro das linhas da tela
+	loadn R5, #1200 ; Limite da tela!
+	
+   ImprimeTela3_Loop:
+		call ImprimeStr3
+		add r0, r0, r3  	; incrementaposicao para a segunda linha na tela -->  r0 = R0 + 40
+		add r1, r1, r4  	; incrementa o ponteiro para o comeco da proxima linha na memoria (40 + 1 porcausa do /0 !!) --> r1 = r1 + 41
+		cmp r0, r5			; Compara r0 com 1200
+		jne ImprimeTela3_Loop	; Enquanto r0 < 1200
+
+	pop r5	; Resgata os valores dos registradores utilizados na Subrotina da Pilha
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+				
+;---------------------
+
+;---------------------------	
+;********************************************************
+;                   IMPRIME STRING 3
+;********************************************************
+	
+ImprimeStr3:	;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que o primeiro caractere da mensagem sera' impresso;  r1 = endereco onde comeca a mensagem; r2 = cor da mensagem.   Obs: a mensagem sera' impressa ate' encontrar "/0"
+	push r0	; protege o r0 na pilha para preservar seu valor
+	push r1	; protege o r1 na pilha para preservar seu valor
+	push r2	; protege o r1 na pilha para preservar seu valor
+	push r3	; protege o r3 na pilha para ser usado na subrotina
+	push r4	; protege o r4 na pilha para ser usado na subrotina
+	push r5
+	
+	loadn r3, #40	; Criterio de parada
+	loadn r5, #0	; Criterio de parada
+
+   ImprimeStr3_Loop:	
+		cmp r5, r3		; If (Char == \0)  vai Embora
+		jeg ImprimeStr3_Sai
+		loadi r4, r1
+		add r4, r2, r4	; Soma a Cor
+		outchar r4, r0	; Imprime o caractere na tela
+		inc r0			; Incrementa a posicao na tela
+		inc r1			; Incrementa o ponteiro da String
+		inc r5
+		jmp ImprimeStr3_Loop
+	
+   ImprimeStr3_Sai:	
+	pop r5
+	pop r4	; Resgata os valores dos registradores utilizados na Subrotina da Pilha
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+	
+;------------------------
+
+
+
+	
+16) Como construir um labirinto decente!
+		Aqui tá o link de como fazer um labirinto:
+recursivo http://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_division_method
+
+17) Cenario Colorido!!!
+
+;********************************************************
+;                       IMPRIME TELA2
+;********************************************************	
+
+ImprimeTela2: 	;  Rotina de Impresao de Cenario na Tela Inteira
+		;  r1 = endereco onde comeca a primeira linha do Cenario
+		;  r2 = cor do Cenario para ser impresso
+
+	push r0	; protege o r3 na pilha para ser usado na subrotina
+	push r1	; protege o r1 na pilha para preservar seu valor
+	push r2	; protege o r1 na pilha para preservar seu valor
+	push r3	; protege o r3 na pilha para ser usado na subrotina
+	push r4	; protege o r4 na pilha para ser usado na subrotina
+	push r5	; protege o r5 na pilha para ser usado na subrotina
+	push r6	; protege o r6 na pilha para ser usado na subrotina
+
+	loadn R0, #0  	; posicao inicial tem que ser o comeco da tela!
+	loadn R3, #40  	; Incremento da posicao da tela!
+	loadn R4, #41  	; incremento do ponteiro das linhas da tela
+	loadn R5, #1200 ; Limite da tela!
+	loadn R6, #tela1Linha0	; Endereco onde comeca a primeira linha do cenario!!
+	
+   ImprimeTela2_Loop:
+		call ImprimeStr2
+		add r0, r0, r3  	; incrementaposicao para a segunda linha na tela -->  r0 = R0 + 40
+		add r1, r1, r4  	; incrementa o ponteiro para o comeco da proxima linha na memoria (40 + 1 porcausa do /0 !!) --> r1 = r1 + 41
+		add r6, r6, r4  	; incrementa o ponteiro para o comeco da proxima linha na memoria (40 + 1 porcausa do /0 !!) --> r1 = r1 + 41
+		cmp r0, r5			; Compara r0 com 1200
+		jne ImprimeTela2_Loop	; Enquanto r0 < 1200
+
+	pop r6	; Resgata os valores dos registradores utilizados na Subrotina da Pilha
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+				
+;---------------------
+
+;---------------------------	
+;********************************************************
+;                   IMPRIME STRING2
+;********************************************************
+	
+ImprimeStr2:	;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que o primeiro caractere da mensagem sera' impresso;  r1 = endereco onde comeca a mensagem; r2 = cor da mensagem.   Obs: a mensagem sera' impressa ate' encontrar "/0"
+	push r0	; protege o r0 na pilha para preservar seu valor
+	push r1	; protege o r1 na pilha para preservar seu valor
+	push r2	; protege o r1 na pilha para preservar seu valor
+	push r3	; protege o r3 na pilha para ser usado na subrotina
+	push r4	; protege o r4 na pilha para ser usado na subrotina
+	push r5	; protege o r5 na pilha para ser usado na subrotina
+	push r6	; protege o r6 na pilha para ser usado na subrotina
+	
+	
+	loadn r3, #'\0'	; Criterio de parada
+	loadn r5, #' '	; Espaco em Branco
+
+   ImprimeStr2_Loop:	
+		loadi r4, r1
+		cmp r4, r3		; If (Char == \0)  vai Embora
+		jeq ImprimeStr2_Sai
+		cmp r4, r5		; If (Char == ' ')  vai Pula outchar do espaco para na apagar outros caracteres
+		jeq ImprimeStr2_Skip
+		add r4, r2, r4	; Soma a Cor
+		outchar r4, r0	; Imprime o caractere na tela
+		storei r6, r4
+   ImprimeStr2_Skip:
+		inc r0			; Incrementa a posicao na tela
+		inc r1			; Incrementa o ponteiro da String
+		inc r6			; Incrementa o ponteiro da String da Tela 0
+		jmp ImprimeStr2_Loop
+	
+   ImprimeStr2_Sai:	
+	pop r6	; Resgata os valores dos registradores utilizados na Subrotina da Pilha
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
