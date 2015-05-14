@@ -1,0 +1,241 @@
+ :: Como utilizar? ::
+ 
+
+	.:. Montador .:.
+	
+		Escreva seu programa na linguagem montadora e o salve
+		como um arquivo de texto (padrao ANSI). Entao execute:
+		
+		montador <arquivo de programa (asm)> <arquivo mif de saida>
+		
+ :: Como funciona a linguagem montadora? ::
+ 
+	.:. Utilizando comentarios .:.
+	
+		Comentarios sao demarcados pelo caractere ';' (sem aspas).
+		Todo o texto que vier apos este caractere (e ate o fim da linha),
+		sera ignorado no processo de montagem.
+	
+		Exemplo:
+		mov r0, r1 ; Registrador 0 recebe conteudo do registrador 1
+	
+	.:. Formato das instrucoes .:.
+	
+		As instrucoes sao declaradas atraves do seu nome (em
+		letras maiusculas ou minusculas) seguida de seus "argumentos"
+		separados por virgulas.
+		
+		Exemplo:
+		add r0, r1, r2 ; r0 recebe a soma de r1 com r2
+		
+		Instrucoes sem "argumentos" sao da seguinte forma:
+		
+		Exemplo:
+		nop ; faz nada
+		rts ; retorna
+ 
+		"Argumentos" de instrucoes que necessitam de registradores podem
+		receber os seguintes valores:
+		
+		r0 r1 r2 r3 r4 r5 r6 r7
+		(e tambem fr para push e pop [ainda nao implementado])
+ 
+		"Argumentos" de instrucoes que necessitam de numeros podem receber
+		um numero decimal POSITIVO precedido por #, um caractere
+		entre aspas simples tambem precedido por # ou um label (veja adiante)
+		tambem precedido por #.
+		
+		Exemplo:
+		loadd r1, #50 ; r1 recebe 50 (load imediato)
+		loadd r2, #'a' ; r2 recebe caractere a (load imediato)
+		
+		Observacao: Voce pode utilizar (alem dos caracteres alfanumericos),
+		os seguintes "caracteres especiais":
+		'\\', '\n' e '\0' 
+
+		Observacao: Os caracteres estarao no padrao ASCII!
+		
+		"Argumentos" de instrucoes que necessitam de enderecos podem receber
+		um numero decimal POSITIVO ou um label (veja adiante).
+		
+		Exemplo:
+		store 100, r0 ; armazena conteudo de r0 na posicao 100 de memoria
+ 
+		Atencao: E possivel escrever no maximo 1 instrucao (ou comando) por linha!
+		E possivel escrever no maximo 1 label por linha!
+		
+		Atencao: Lembre-se que este sera um processador de 16 bits, portanto
+		nao escreva numeros > 65535.
+ 
+	.:. Declarando labels .:.
+	
+		Serao interpretados como labels todas as palavras (que nao
+		sejam nomes de instrucoes ou registradores) seguidas pelo
+		caractere ':' (sem aspas).
+		
+		Atencao: Um label so aceita caracteres alfanumericos, '.' e '_'.
+		
+		Exemplo:
+		main : ; Label para a funcao main
+		vet: var #10 ; Label para o vetor de 10 posicoes
+		codigo : ; Label para uma regiao de codigo
+		
+	.:. Utilizando labels .:.
+	
+		Todas as instrucoes que possam receber um endereco tambem
+		poderao receber (ao inves de um numero como endereco)
+		labels.
+		
+		Exemplo:
+		store variavel, r0 ; Armazena conteudo de r0 na variavel
+		
+		Instrucoes que podem receber numeros tambem podem receber
+		labels.
+		
+		Exemplo:
+		load r0, #aux ; r0 recebe numero correspondente ao endereco
+		; da variavel aux.
+		
+		O montador ja fornece alguns labels especiais (de uso opcional)
+		para algumas posicoes de memoria, alguns deles sao:
+		
+		label | Descricao
+		---------------------------------------------------------------
+		Arg0  | Argumento 0 de funcao.
+		---------------------------------------------------------------
+		Arg1  | Argumento 1 de funcao.
+		---------------------------------------------------------------
+		Arg2  | Argumento 2 de funcao.
+		---------------------------------------------------------------
+		Arg3  | Argumento 3 de funcao.
+		---------------------------------------------------------------
+		Arg4  | Argumento 4 de funcao.
+		---------------------------------------------------------------
+		Arg5  | Argumento 5 de funcao.
+		---------------------------------------------------------------
+		Arg6  | Argumento 6 de funcao.
+		---------------------------------------------------------------
+		Arg7  | Argumento 7 de funcao.
+		---------------------------------------------------------------
+		Arg8  | Argumento 8 de funcao.
+		---------------------------------------------------------------
+		Arg9  | Argumento 9		de funcao.
+		---------------------------------------------------------------
+		Ret   | Retorno de funcao.
+		
+	.:. Comandos especiais (opcionais) .:.
+	
+		. Comando var
+		
+			Este comando recebe um numero positivo (precedido por #) e
+			aloca (na posicao onde foi escrito) um numero de posicoes
+			de memoria (de acordo com o numero recebido). Este pode ser
+			utilizado para declaracao de variaveis ou vetores.
+			
+			Exemplo:
+			aux : var #1 ; Variavel aux
+			vet : var #10 ; Vetor de 10 posicoes
+			
+			Atencao: Cuidado para que seu programa nao "execute" as variaveis,
+			para evitar isso sempre faca com que seu programa "pule" a 
+			parte do codigo com declaracao de variaveis.
+			
+			Exemplo:
+			jmp pula
+			aux : var #1
+			vet : var #10
+			pula :
+			; codigo continua aqui...
+			
+			Observacao: E possivel escrever valores nas variaveis (de acordo
+			com o codigo das instrucoes) e executar o conteudo das variaveis
+			(se fizer um Jump ou Call para a posicao da variavel). Portanto
+			seu codigo pode (em tempo de execucao) gerar mais codigo
+			executavel e executar este codigo.
+	
+		. Comando string
+		
+			Este comando funciona de forma semelhante ao comando var,
+			porem ele recebe um texto (entre aspas duplas) e aloca (na
+			posicao onde foi escrito) espaco suficiente para escrever
+			o texto e armazena (em tempo de montagem) o texto naquela
+			posicao.
+			
+			Observacao: No final do texto (string) sera adicionado o
+			caractere '\0' (sem aspas).
+			
+			Exemplo:
+			jmp pula
+			aux : var #1
+			vet : var #10
+			str : string "Ola Mundo!"
+			pula :
+			; continua codigo
+			
+			Observacao: Este comando aceita alguns "caracteres especiais"
+			tais como:
+			'\\', '\n', '\0' e '\"' (este ultimo para escrever as aspas duplas)
+			
+			Observacao: Os caracteres estarao no padrao ASCII!
+			
+		. Comando static
+		
+			Este comando recebe um endereco (ou label) e um numero (precedido 
+			por #) ou caractere e (em tempo de montagem) escreve o numero 
+			(ou caractere) recebido na posicao de memoria dada pelo endereco
+			(ou label).
+			
+			Exemplo:
+			jmp pula
+			aux : var #1 ; variavel aux
+			static aux, #50 ; variavel aux tera valor 50
+			pula :
+			; continua codigo
+			
+			Atencao: Este comando nao e uma instrucao! NAO E UM STORE!
+			Ele armazena o valor em tempo de montagem (nao em execucao).
+			
+			Tambem e possivel armazenar o valor em uma posicao de memoria
+			dado por um "offset" em relacao a posicao de um label, isso
+			pode ser feito desta forma:
+			
+			Exemplo:
+			jmp pula
+			vet : var #10 ; vetor de 10 posicoes
+			static vet + #5, #30 ; posicao 5 do vetor tera valor 30
+			pula :
+			; continua codigo
+			
+		. Comando alloc
+		
+			Este comando recebe um label (a ser criado) e um numero
+			(precedido por #) e entao funcionara de forma semelhante
+			ao comando var, porem o label passado no "argumento" sera
+			alocado (em tempo de montagem) em uma regiao especial
+			da memoria. O numero recebido indica quantas posicoes de
+			memoria serao alocadas.
+			
+			Exemplo:
+			alloc aux, #1 ; aloca variavel aux na regiao especial da memoria
+			static aux, #20 ; aux tera valor 20
+			alloc vet, #10 ; aloca vetor vet na regiao especial da memoria
+			static vet + #5, #30 ; posicao 5 do vetor tera valor 30
+			
+			Observacoes: Note que neste exemplo nao foi necessario "pular"
+			o trecho de variaveis. Isso ocorre pois nenhum destes comandos
+			gera codigo ou declara variaveis nesta posicao de memoria.
+			
+ :: Como modificar a linguagem montadora?
+ 
+	Edite o arquivo defs.h (em src_montador) para alterar o nome das instrucoes
+	(e dos comandos), os "opcodes" das instrucoes ou a organizacao da memoria.
+
+ :: Duvidas ou Bugs ::
+ 
+ Favor enviar um e-mail para fabio914@gmail.com ou fabioada@grad.icmc.usp.br.
+ 
+ EOF
+	
+
+
+			

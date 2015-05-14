@@ -1,0 +1,51 @@
+Tudo isso foi testado em um Ubuntu 11.10  que acabei de instalar...
+
+A) Instalando o Simulador:
+	1) Instale o GTK: sudo apt-get install libgtk2.0-dev
+
+	2) Instale a biblioteca ncurses: sudo apt-get install libncurses5-dev
+
+	3) Va' na pasta que contem os arquivos do simulador: "simulador_fonte"
+
+	4) Para compilar: sh compila.sh
+
+	5) Copie o executavel (simulador) para a pasta que deseja trabalhar
+
+B) Instalando o Montador:
+	1) Va' na pasta que contem os arquivos do montador: "montador_fonte"
+
+	2) Para compilar: gcc *.c -o montador
+
+	3) Copie o executavel (montador) para a pasta que deseja trabalhar
+
+
+
+C) Montando um Programa em linguagem Assemby (*.ASM):
+	1) Para montar o codigo: ./montador printaASCII.asm printaASCII.mif
+
+D) Simulando um Programa em linguagem Assemby (*.MIF)
+	1) ./sim printaASCII.mif charmap.mif
+
+E) ALTERNATIVA via GEDIT: E' possivel usar o GEDIT como IDE ...
+	1) Caso voce nao possua o gedit faca o seu download e instale-o. http://projects.gnome.org/gedit/
+
+	2) Em Editar -> preferencias -> Plugins, habilite o seguinte plugin: External Tools (vem por padrao)
+	
+	3) Em Ferramentas -> Gerenciar Ferramentas Externas, adicione um novo comando clicando no botao de ’+’, no canto inferior da janela
+	
+	4) Para montar e executar: Com o novo comando selecionado, nomeie-o como desejar e copie e cole o seguinte script:
+
+#!/bin/bash
+arquivo=$(echo $GEDIT_CURENT_DOCUMENT_NAME | sed 's/\(.*\)\..*/\1/')
+$GEDIT_CURRENT_DOCUMENT_DIR/montador $GEDIT_CURRENT_DOCUMENT_PATH ${arquivo}.mif
+$GEDIT_CURRENT_DOCUMENT_DIR/sim ${arquivo}.mif charmap.mif
+
+	5) Defina uma hotkey: Ctrl + F6   por exemplo
+
+	7) Nao esqueca de selecionar SAVE CURRENT DOCUMENT, pois a gente sempre esquece de salvar e sai montando o arquivo anterior . . . 
+
+	6) Para somente montar (Ctrl + F5): 
+#!/bin/bash
+arquivo=$(echo $GEDIT_CURENT_DOCUMENT_NAME | sed 's/\(.*\)\..*/\1/')
+$GEDIT_CURRENT_DOCUMENT_DIR/montador $GEDIT_CURRENT_DOCUMENT_PATH ${arquivo}.mif
+
