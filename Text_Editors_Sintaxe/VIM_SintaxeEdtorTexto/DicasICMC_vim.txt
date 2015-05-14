@@ -1,0 +1,2 @@
+Colocar em ~ /.vim/syntax/
+e quando abrir o arquivo digitar ":set syntax=icmc"

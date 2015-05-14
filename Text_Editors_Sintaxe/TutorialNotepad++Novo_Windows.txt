@@ -1,0 +1,76 @@
+Como fazer o Montador/Simulador do Assembly ICMC funcionar no Notepad++ atual (Windows):
+
+Versão do Notepad++ usada: 6.5.5
+
+Pré requisitos:
+
+ O montador/simulador no dropbox do Simões Poderoso:
+ https://www.dropbox.com/sh/7cv04vi043cbl6o/_Wo6hec2e0/simulador_montador_Windows_Versao_05_2013.zip
+
+ As bibliotecas do GTK:
+ http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.24/gtk+-bundle_2.24.10-20120208_win32.zip
+
+ Notepad++ atual;
+ http://download.tuxfamily.org/notepadplus/6.5.5/npp.6.5.5.Installer.exe
+
+ O plugin NppExec:
+ http://sourceforge.net/projects/npp-plugins/files/NppExec/NppExec%20Plugin%20v0.5.2/NppExec_052_dll_Unicode.zip/download
+
+ A definição da linguagem Assembly ICMC pro Notepad++:
+ https://www.dropbox.com/sh/7cv04vi043cbl6o/0ghT2DLPmt/AssemblyICMC.xml
+
+Instalando o Montador/Simulador:
+
+ 1. Crie um diretório para colocar o montador e o simulador. Esse diretório
+    deve estar na mesma unidade na qual está instalado o Windows
+    (por padrão, C:\). Vou me referir a esse diretório como ORG.
+
+ 2. Extraia as bibliotecas do GTK em ORG.
+
+ 3. Nesse diretório agora, deve existir um subdiretório chamado BIN.
+    Vá em Painel de Controle. Procure por "Sistema".
+
+ 4. Clique em "Configurações avançadas do sistema", depois em "Variáveis de Ambiente...".
+
+ 5. Você verá duas tabelas: "Variáveis de usuário para nome_do_usuario_logado"
+    e "Variáveis do sistema".
+
+ 6. Logo abaixo "Variáves de usuário para nome_do_usuario_logado", clique em
+    "Novo..."
+
+ 7. Na janela que abrir, no "Nome da variável", coloque ASSEMBLY_DIR e no
+    "Valor da viarável", o endereço absoluto (completo) de ORG.
+
+ 8. Nas variáveis de sistema procure por "Path". Selecione "Path", e edite o
+    valor dela, de forma a incluir no valor: ORG\bin
+
+ 9. Abra o prompt de comando e cole o seguinte comando:
+    pkg-config --cflags gtk+-2.0
+
+ 10. Extraia o conteúdo do diretório "32_bits" do "simulador_montador_Windows_Versao_05_2013.zip"
+     para ORG.
+
+Configurando o Notepad++ como IDE:
+
+ 1. Instale o Notepad++. Vou me referir ao diretório que você instalou como NPP.
+
+ 2. Extraia de "NppExec_052_dll_Unicode.zip" o arquivo "NppExec.dll" para o
+    diretório NPP\plugins.
+
+ 3. Crie um diretório em NPP\plugins\doc chamado "NppExec". Extraia o conteúdo
+    do diretório "doc" do "NppExec_052_dll_Unicode.zip" para o diretório que você criou.
+
+ 4. Abra o Notepad++. Aperte F6. Na caixa que aparecer, cole o seguinte script:
+    cmd /c %ASSEMBLY_DIR%\Montador $(CURRENT_DIRECTORY)\$(NAME_PART).asm $(CURRENT_DIRECTORY)\$(NAME_PART).mif && %ASSEMBLY_DIR%\simulador $(CURRENT_DIRECTORY)\$(NAME_PART).mif %ASSEMBLY_DIR%\charmap.mif
+    Salve esse script com algum nome que gostar.
+
+ 5. Para montar e simular, basta carregar o script que você salvou e executá-lo (F6).
+
+Definindo Assembly ICMC como uma linguagem:
+
+ 1. Cole o "AssemblyICMC.xml" na pasta NPP.
+
+ 2. No Notepad++, procure o menu "Language" e selecione "Define your language...".
+    Na janela que abrir, importe o "AssemblyICMC.xml".
+
+ 3. Para usar a linguagem, vá em "Language" e clique em "Assembly (ICMC)".
