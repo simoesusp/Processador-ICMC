@@ -1,0 +1,41 @@
+library ieee;
+use ieee.std_LOGIC_1164.all;
+use ieee.std_LOGIC_ARITH.all;
+use ieee.std_LOGIC_unsigned.all;
+
+entity testeBreak is
+	port( clk			: in	std_logic;
+			reset			: in	std_logic;
+			breakIn		: in  std_logic;
+			mudouClock	: in  std_logic;
+			breakOut 	: out std_logic
+		);
+end testeBreak;
+
+ARCHITECTURE ab of testeBreak is
+
+begin
+
+process(clk, reset)
+
+	variable estadoAnterior : std_logic;
+
+begin
+
+	if(reset = '1') then
+		estadoAnterior := '0';
+	elsif(clk'event and clk = '1') then
+		if(breakIn'event and breakIn = estadoAnterior) then
+			breakOut <= '0';
+		else
+			breakOut <= '1';
+		end if;
+
+		if(mudouClock'event and mudouClock = '1') then
+			estadoAnterior := breakIn;
+		end if;	
+	end if;
+	
+end process;
+
+end ab;

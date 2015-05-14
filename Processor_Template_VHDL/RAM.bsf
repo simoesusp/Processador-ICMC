@@ -1,0 +1,74 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2010 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.2"))
+(symbol
+	(rect 64 64 232 192)
+	(text "RAM" (rect 5 0 30 11)(font "Arial" ))
+	(text "inst" (rect 8 112 26 123)(font "Arial" ))
+	(port
+		(pt 0 56)
+		(input)
+		(text "clock" (rect 0 0 27 11)(font "Arial" ))
+		(text "clock" (rect 21 51 48 62)(font "Arial" )(invisible))
+		(line (pt 0 56)(pt 16 56))
+	)
+	(port
+		(pt 0 72)
+		(input)
+		(text "data[15..0]" (rect 0 0 53 11)(font "Arial" ))
+		(text "data[15..0]" (rect 21 67 74 78)(font "Arial" )(invisible))
+		(line (pt 0 72)(pt 16 72)(line_width 3))
+	)
+	(port
+		(pt 0 88)
+		(input)
+		(text "wren" (rect 0 0 24 11)(font "Arial" ))
+		(text "wren" (rect 21 83 45 94)(font "Arial" )(invisible))
+		(line (pt 0 88)(pt 16 88))
+	)
+	(port
+		(pt 0 40)
+		(input)
+		(text "address[14..0]" (rect 0 0 70 11)(font "Arial" ))
+		(text "address[14..0]" (rect 21 35 91 46)(font "Arial" )(invisible))
+		(line (pt 0 40)(pt 16 40)(line_width 3))
+	)
+	(port
+		(pt 168 64)
+		(output)
+		(text "q[15..0]" (rect -40 0 -3 11)(font "Arial" ))
+		(text "q[15..0]" (rect 107 59 144 70)(font "Arial" )(invisible))
+		(line (pt 168 64)(pt 152 64)(line_width 3))
+	)
+	(drawing
+		(text "SDRAM" (rect 96 32 143 45)(font " Arial" (font_size 8)))
+		(text "16b-w" (rect 96 64 132 77)(font " Arial" (font_size 8)))
+		(text "SDRAM" (rect 32 32 79 45)(font " Arial" (font_size 8)))
+		(text "16b-w" (rect 32 64 68 77)(font " Arial" (font_size 8)))
+		(text "32KB" (rect 96 48 127 61)(font " Arial" (font_size 8)))
+		(text "32KB" (rect 32 48 63 61)(font " Arial" (font_size 8)))
+		(text "16k-d" (rect 32 80 65 93)(font " Arial" (font_size 8)))
+		(text "16k-d" (rect 96 80 129 93)(font " Arial" (font_size 8)))
+		(rectangle (rect 16 16 152 112))
+		(rectangle (rect 88 24 144 104))
+		(rectangle (rect 24 24 80 104))
+	)
+)

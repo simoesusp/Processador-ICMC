@@ -1,0 +1,80 @@
+LIBRARY IEEE;
+USE  IEEE.STD_LOGIC_1164.all;
+USE  IEEE.STD_LOGIC_ARITH.all;
+USE  IEEE.STD_LOGIC_UNSIGNED.all;
+
+ENTITY CU IS
+	PORT(
+			RST : IN STD_LOGIC;
+			CLK : IN STD_LOGIC;
+			HALT_REQ : IN STD_LOGIC;
+			INMEM : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+			FRIN : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+			sM1 : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+			sM2 : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+			sM3 : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+			sM4 : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+			sM5 : OUT STD_LOGIC;
+			sM6 : OUT STD_LOGIC;
+			ULAOP : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
+			LoadFR : OUT STD_LOGIC;
+			LoadMAR : OUT STD_LOGIC;
+			LIDPC : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+			LIDSP : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+			LoadMBR : OUT STD_LOGIC;
+			LoadREG : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+			HALT_ACK : OUT STD_LOGIC;
+			DRAW : OUT STD_LOGIC;
+			RW : OUT STD_LOGIC
+		);
+END CU;
+
+ARCHITECTURE main OF CU IS
+
+CONSTANT HALT : STD_LOGIC_VECTOR(5 DOWNTO 0) := "001111";
+
+TYPE STATES IS (fetch, decode, exec, halted);
+SIGNAL IR : STD_LOGIC_VECTOR(15 DOWNTO 0);
+SIGNAL STATE : STATES;
+BEGIN
+	PROCESS(CLK, RST)
+	BEGIN
+		IF(RST = '1') THEN
+			STATE <= fetch;
+			DRAW <= '0';
+			RW <= '0';
+			IR <= x"0000";
+			LoadFR <= '0';
+			LoadMAR <= '0';
+			LIDPC <= "000";
+			LIDSP <= "100";
+			LoadMBR <= '0';
+			LoadREG <= x"00";
+			HALT_ACK <= '0';
+		ELSIF(CLK'EVENT AND CLK = '1') THEN
+			CASE STATE IS
+				WHEN fetch =>
+					DRAW <= '0';
+					RW <= '0';
+					LoadFR <= '0';
+					LIDSP <= "000";
+					LoadREG <= x"00";
+					HALT_ACK <= '0';
+					sM1 <= "10";
+					LoadMBR <= '1';
+					IR <= INMEM;
+					LIDPC <= "010";
+					STATE <= decode;
+				WHEN decode =>
+					CASE IR(15 DOWNTO 10) IS
+						WHEN HALT =>
+							STATE <= halted;
+						WHEN OTHERS =>
+					END CASE;
+				WHEN exec =>
+				WHEN halted =>
+					HALT_ACK <= '1';
+			END CASE;
+		END IF;
+	END PROCESS;
+END main;

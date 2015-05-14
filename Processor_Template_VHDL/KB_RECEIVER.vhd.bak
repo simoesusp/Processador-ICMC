@@ -1,0 +1,97 @@
+LIBRARY IEEE;
+USE  IEEE.STD_LOGIC_1164.all;
+USE  IEEE.STD_LOGIC_ARITH.all;
+USE  IEEE.STD_LOGIC_UNSIGNED.all;
+
+ENTITY KB_TRANSCEIVER IS
+	PORT(
+			CLK : IN STD_LOGIC;
+			RST : IN STD_LOGIC;
+			HALT_REQ : IN STD_LOGIC;
+			KBCLK : INOUT STD_LOGIC;
+			KBDATA : INOUT STD_LOGIC;
+			KBREC : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+		);
+END KB_TRANSCEIVER;
+
+ARCHITECTURE main OF KB_TRANSCEIVER IS
+CONSTANT LED_REQ : STD_LOGIC_VECTOR(7 DOWNTO 0) := x"ED";
+BEGIN
+	PROCESS(CLK, RST)
+	VARIABLE STATE : STD_LOGIC_VECTOR(3 DOWNTO 0);
+	BEGIN
+		IF(RST = '1') THEN
+			STATE := x"0";
+		ELSIF(CLK'EVENT AND CLK = '1') THEN
+			CASE STATE IS
+				WHEN x"0" =>
+					IF(HALT_REQ = '1') THEN
+						KBCLK <= '0';
+						STATE := x"1";
+					END IF;
+				WHEN x"1" =>
+					KBCLK <= '1';
+					STATE := x"2";
+				WHEN x"2" =>
+					-- Stay halted
+				WHEN OTHERS =>
+					STATE := x"0";
+			END CASE;
+		END IF;
+	END PROCESS;
+
+	PROCESS(KBCLK, RST)
+	VARIABLE STATE : STD_LOGIC_VECTOR(3 DOWNTO 0);
+	VARIABLE ITERATOR : INTEGER RANGE 0 TO 12;
+	VARIABLE LEDSTATE : STD_LOGIC_VECTOR(7 DOWNTO 0);
+	BEGIN
+		IF(RST = '1') THEN
+			STATE := x"0";
+			LEDSTATE := "00000111";
+			ITERATOR := 0;
+		ELSIF(KBCLK'EVENT AND KBCLK = '1' AND HALT_REQ = '1') THEN
+			CASE STATE IS
+				WHEN x"0" =>
+					KBDATA <= '0';
+					STATE := x"1";
+				WHEN x"1" =>
+					STATE := x"2";
+				WHEN x"2" =>
+					IF(ITERATOR = 8) THEN
+						KBDATA <= '1';
+						ITERATOR := 0;
+						STATE := x"3";
+					ELSE
+						KBDATA <= LED_REQ(ITERATOR);
+						ITERATOR := ITERATOR + 1;
+					END IF;
+				WHEN x"3" =>
+					STATE := x"4";
+				WHEN x"4" =>
+					IF(ITERATOR = 11) THEN
+						ITERATOR := 0;
+						STATE := x"5";
+					END IF;
+					IF(ITERATOR >= 1 AND ITERATOR <= 8) THEN
+						KBREC(ITERATOR - 1) <= KBDATA;
+					END IF;
+					ITERATOR := ITERATOR + 1; 
+				WHEN x"5" =>
+					IF(ITERATOR = 8) THEN
+						KBDATA <= '1';
+						ITERATOR := 0;
+						STATE := x"6";
+					ELSE
+						KBDATA <= LEDSTATE(ITERATOR);
+						ITERATOR := ITERATOR + 1;
+					END IF;
+				WHEN x"6" =>
+					STATE := x"7";
+				WHEN x"7" =>
+					-- Do nothing.
+				WHEN OTHERS =>
+					STATE := x"0";
+			END CASE;
+		END IF;
+	END PROCESS;
+END main;

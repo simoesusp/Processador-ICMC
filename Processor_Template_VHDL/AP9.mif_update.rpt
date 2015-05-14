@@ -1,0 +1,79 @@
+MIF/HEX Update report for AP9
+Fri Jun 07 11:19:44 2013
+Quartus II 32-bit Version 11.1 Build 173 11/01/2011 SJ Web Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. MIF/HEX Update Summary
+  3. MIF/HEX Update Processed Files
+  4. MIF/HEX Update Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2011 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+
+
+
++---------------------------------------------------------------+
+; MIF/HEX Update Summary                                        ;
++-----------------------+---------------------------------------+
+; MIF/HEX Update Status ; Successful - Fri Jun 07 11:19:44 2013 ;
+; Revision Name         ; AP9                                   ;
+; Top-level Entity Name ; AP9                                   ;
+; Family                ; Cyclone II                            ;
+; Device                ; EP2C70F896C6                          ;
++-----------------------+---------------------------------------+
+
+
++-----------------------------------------------------------------------------+
+; MIF/HEX Update Processed Files                                              ;
++-----------------------------------------------------------------------------+
+; File Name                                                                   ;
++-----------------------------------------------------------------------------+
+; C:/Simoes/USP/Aulas/LabORG/ProcessadorQuartus/AP9 - Template/charmap.mif    ;
+; C:/Simoes/USP/Aulas/LabORG/ProcessadorQuartus/AP9 - Template/cpuram.mif     ;
+; C:/Simoes/USP/Aulas/LabORG/ProcessadorQuartus/AP9 - Template/video_mem1.mif ;
+; C:/Simoes/USP/Aulas/LabORG/ProcessadorQuartus/AP9 - Template/video_mem2.mif ;
++-----------------------------------------------------------------------------+
+
+
++-------------------------+
+; MIF/HEX Update Messages ;
++-------------------------+
+Info: *******************************************************************
+Info: Running Quartus II 32-bit MIF/HEX Update
+    Info: Version 11.1 Build 173 11/01/2011 SJ Web Edition
+    Info: Processing started: Fri Jun 07 11:19:39 2013
+Info: Command: quartus_cdb AP9 -c AP9 --update_mif
+Warning (125092): Tcl Script File ../../ProcUktimaVersao/ProcessadorRegsVariables_SemInstrucoesUltima1/lpm_mux1.qip not found
+    Info (125063): set_global_assignment -name QIP_FILE ../../ProcUktimaVersao/ProcessadorRegsVariables_SemInstrucoesUltima1/lpm_mux1.qip
+Info (39024): Processed the following Memory Initialization File(s)
+    Info (39025): Processed Memory Initialization File C:/Simoes/USP/Aulas/LabORG/ProcessadorQuartus/AP9 - Template/charmap.mif
+    Info (39025): Processed Memory Initialization File C:/Simoes/USP/Aulas/LabORG/ProcessadorQuartus/AP9 - Template/cpuram.mif
+    Info (39025): Processed Memory Initialization File C:/Simoes/USP/Aulas/LabORG/ProcessadorQuartus/AP9 - Template/video_mem1.mif
+    Info (39025): Processed Memory Initialization File C:/Simoes/USP/Aulas/LabORG/ProcessadorQuartus/AP9 - Template/video_mem2.mif
+Info: Quartus II 32-bit MIF/HEX Update was successful. 0 errors, 1 warning
+    Info: Peak virtual memory: 291 megabytes
+    Info: Processing ended: Fri Jun 07 11:19:44 2013
+    Info: Elapsed time: 00:00:05
+    Info: Total CPU time (on all processors): 00:00:05
+
+

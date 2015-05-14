@@ -1,0 +1,16 @@
+Fitter Status : Successful - Thu Jun 06 17:25:22 2013
+Quartus II 32-bit Version : 11.1 Build 173 11/01/2011 SJ Web Edition
+Revision Name : AP9
+Top-level Entity Name : AP9
+Family : Cyclone II
+Device : EP2C70F896C6
+Timing Models : Final
+Total logic elements : 2,197 / 68,416 ( 3 % )
+    Total combinational functions : 2,097 / 68,416 ( 3 % )
+    Dedicated logic registers : 632 / 68,416 ( < 1 % )
+Total registers : 632
+Total pins : 69 / 622 ( 11 % )
+Total virtual pins : 0
+Total memory bits : 946,176 / 1,152,000 ( 82 % )
+Embedded Multiplier 9-bit elements : 0 / 300 ( 0 % )
+Total PLLs : 0 / 4 ( 0 % )

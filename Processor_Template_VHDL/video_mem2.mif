@@ -1,0 +1,132 @@
+-- Copyright (C) 1991-2010 Altera Corporation
+-- Your use of Altera Corporation's design tools, logic functions 
+-- and other software and tools, and its AMPP partner logic 
+-- functions, and any output files from any of the foregoing 
+-- (including device programming or simulation files), and any 
+-- associated documentation or information are expressly subject 
+-- to the terms and conditions of the Altera Program License 
+-- Subscription Agreement, Altera MegaCore Function License 
+-- Agreement, or other applicable license agreement, including, 
+-- without limitation, that your use is for the sole purpose of 
+-- programming logic devices manufactured by Altera and sold by 
+-- Altera or its authorized distributors.  Please refer to the 
+-- applicable agreement for further details.
+
+
+
+WIDTH=4;
+DEPTH=16384;
+
+ADDRESS_RADIX=UNS;
+DATA_RADIX=UNS;
+
+CONTENT BEGIN
+	[0..62]  :   0;
+	63     :   7;
+	64     :   9;
+	[65..382]  :   0;
+	383    :   7;
+	384    :   9;
+	[385..702]  :   0;
+	703    :   7;
+	704    :   9;
+	[705..1022]  :   0;
+	1023   :   7;
+	1024   :   9;
+	[1025..1342]  :   0;
+	1343   :   7;
+	1344   :   9;
+	[1345..1662]  :   0;
+	1663   :   7;
+	1664   :   9;
+	[1665..1982]  :   0;
+	1983   :   7;
+	1984   :   9;
+	[1985..2302]  :   0;
+	2303   :   7;
+	2304   :   9;
+	[2305..2622]  :   0;
+	2623   :   7;
+	2624   :   9;
+	[2625..2942]  :   0;
+	2943   :   7;
+	2944   :   9;
+	[2945..3262]  :   0;
+	3263   :   7;
+	3264   :   9;
+	[3265..3582]  :   0;
+	3583   :   7;
+	3584   :   9;
+	[3585..3902]  :   0;
+	3903   :   7;
+	3904   :   9;
+	[3905..4222]  :   0;
+	4223   :   7;
+	4224   :   9;
+	[4225..4542]  :   0;
+	4543   :   7;
+	4544   :   9;
+	[4545..4862]  :   0;
+	4863   :   7;
+	4864   :   9;
+	[4865..5182]  :   0;
+	5183   :   7;
+	5184   :   9;
+	[5185..5502]  :   0;
+	5503   :   7;
+	5504   :   9;
+	[5505..5822]  :   0;
+	5823   :   7;
+	5824   :   9;
+	[5825..6142]  :   0;
+	6143   :   7;
+	6144   :   9;
+	[6145..6462]  :   0;
+	6463   :   7;
+	6464   :   9;
+	[6465..6782]  :   0;
+	6783   :   7;
+	6784   :   9;
+	[6785..7102]  :   0;
+	7103   :   7;
+	7104   :   9;
+	[7105..7422]  :   0;
+	7423   :   7;
+	7424   :   9;
+	[7425..7742]  :   0;
+	7743   :   7;
+	7744   :   9;
+	[7745..8062]  :   0;
+	8063   :   7;
+	8064   :   9;
+	[8065..8382]  :   0;
+	8383   :   7;
+	8384   :   9;
+	[8385..8702]  :   0;
+	8703   :   7;
+	8704   :   9;
+	[8705..9022]  :   0;
+	9023   :   7;
+	9024   :   9;
+	[9025..9342]  :   0;
+	9343   :   7;
+	9344   :   9;
+	[9345..9662]  :   0;
+	9663   :   7;
+	9664   :   9;
+	[9665..9982]  :   0;
+	9983   :   7;
+	9984   :   9;
+	[9985..10302]  :   0;
+	10303  :   7;
+	10304  :   9;
+	[10305..10622]  :   0;
+	10623  :   7;
+	10624  :   9;
+	[10625..10942]  :   0;
+	10943  :   7;
+	10944  :   14;
+	10945  :   12;
+	[10946..11263]  :   13;
+	[11264..16383]  :   0;
+END;

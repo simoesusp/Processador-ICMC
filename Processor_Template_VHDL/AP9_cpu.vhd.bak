@@ -1,0 +1,20 @@
+-------------------------------------------------
+--APx-ARCH AP9 Micro-processor-------------------
+--16-bits width bus------------------------------
+--External clock---------------------------------
+--Builded by MicroENIX, copyright (r) 2011-------
+-------------------------------------------------
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_ARITH.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+ENTITY AP9_cpu IS
+	PORT(
+			CLK : IN STD_LOGIC;
+			RST : IN STD_LOGIC;
+			HALT_REQ : IN STD_LOGIC;
+			KEY : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+			MEM_DATA : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+END AP9_cpu;

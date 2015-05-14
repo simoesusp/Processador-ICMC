@@ -1,0 +1,120 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2010 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.2"))
+(symbol
+	(rect 64 64 288 272)
+	(text "AP9_cpu" (rect 5 0 56 13)(font " Arial" (font_size 8)))
+	(text "inst" (rect 8 193 26 204)(font " Arial" ))
+	(port
+		(pt 88 0)
+		(input)
+		(text "RST" (rect 0 0 27 13)(font " Arial" (font_size 8)))
+		(text "RST" (rect 80 25 93 52)(font " Arial" (font_size 8))(vertical))
+		(line (pt 88 0)(pt 88 16))
+	)
+	(port
+		(pt 68 0)
+		(output)
+		(text "VGA_DRAW" (rect 0 0 27 13)(font " Arial" (font_size 8)))
+		(text "VGA_DRAW" (rect 80 25 93 52)(font " Arial" (font_size 8))(vertical))
+		(line (pt 68 0)(pt 68 16))
+	)
+	(port
+		(pt 48 0)
+		(output)
+		(text "MEM_RW" (rect 0 0 27 13)(font " Arial" (font_size 8)))
+		(text "MEM_RW" (rect 80 25 93 52)(font " Arial" (font_size 8))(vertical))
+		(line (pt 48 0)(pt 48 16))
+	)
+	(port
+		(pt 104 0)
+		(input)
+		(text "CLK" (rect 0 0 27 13)(font " Arial" (font_size 8)))
+		(text "CLK" (rect 96 25 109 52)(font " Arial" (font_size 8))(vertical))
+		(line (pt 104 0)(pt 104 17))
+	)
+	(port
+		(pt 120 0)
+		(input)
+		(text "HALT_REQ" (rect 0 0 68 13)(font " Arial" (font_size 8)))
+		(text "HALT_REQ" (rect 112 25 125 93)(font " Arial" (font_size 8))(vertical))
+		(line (pt 120 0)(pt 120 17))
+	)
+	(port
+		(pt 224 80)
+		(input)
+		(text "MEM_DATA[15..0]" (rect 0 0 107 13)(font " Arial" (font_size 8)))
+		(text "MEM_DATA[15..0]" (rect 92 72 199 85)(font " Arial" (font_size 8)))
+		(line (pt 208 80)(pt 224 80)(line_width 3))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "KEY[7..0]" (rect 0 0 54 13)(font " Arial" (font_size 8)))
+		(text "KEY[7..0]" (rect 21 75 75 88)(font " Arial" (font_size 8)))
+		(line (pt 0 80)(pt 16 80)(line_width 3))
+	)
+	(port
+		(pt 136 0)
+		(output)
+		(text "HALT_ACK" (rect -56 0 12 13)(font " Arial" (font_size 8)))
+		(text "HALT_ACK" (rect 128 23 141 91)(font " Arial" (font_size 8))(vertical))
+		(line (pt 136 0)(pt 136 15))
+	)
+	(port
+		(pt 224 96)
+		(output)
+		(text "MEM_WDATA[15..0]" (rect -56 0 63 13)(font " Arial" (font_size 8)))
+		(text "MEM_WDATA[15..0]" (rect 84 91 203 104)(font " Arial" (font_size 8)))
+		(line (pt 224 96)(pt 208 96)(line_width 3))
+	)
+	(port
+		(pt 0 104)
+		(output)
+		(text "VGA_CC[15..0]" (rect -56 0 32 13)(font " Arial" (font_size 8)))
+		(text "VGA_CC[15..0]" (rect 24 96 112 109)(font " Arial" (font_size 8)))
+		(line (pt 16 104)(pt 0 104)(line_width 3))
+	)
+	(port
+		(pt 0 128)
+		(output)
+		(text "VGA_POS[15..0]" (rect -56 0 39 13)(font " Arial" (font_size 8)))
+		(text "VGA_POS[15..0]" (rect 24 120 119 133)(font " Arial" (font_size 8)))
+		(line (pt 16 128)(pt 0 128)(line_width 3))
+	)
+	(port
+		(pt 224 112)
+		(output)
+		(text "MEM_ADDR[15..0]" (rect -56 0 53 13)(font " Arial" (font_size 8)))
+		(text "MEM_ADDR[15..0]" (rect 94 107 203 120)(font " Arial" (font_size 8)))
+		(line (pt 224 112)(pt 208 112)(line_width 3))
+	)
+	(port
+		(pt 224 128)
+		(output)
+		(text "PC_DATA[15..0]" (rect -56 0 39 13)(font " Arial" (font_size 8)))
+		(text "PC_DATA[15..0]" (rect 118 123 213 136)(font " Arial" (font_size 8)))
+		(line (pt 224 128)(pt 208 128)(line_width 3))
+	)
+	(drawing
+		(rectangle (rect 16 16 208 192))
+	)
+)

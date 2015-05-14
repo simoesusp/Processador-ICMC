@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Thu Jun 06 17:24:23 2013
+Quartus II 32-bit Version : 11.1 Build 173 11/01/2011 SJ Web Edition
+Revision Name : AP9
+Top-level Entity Name : AP9
+Family : Cyclone II
+Total logic elements : 2,247
+    Total combinational functions : 2,095
+    Dedicated logic registers : 632
+Total registers : 632
+Total pins : 69
+Total virtual pins : 0
+Total memory bits : 946,176
+Embedded Multiplier 9-bit elements : 0
+Total PLLs : 0

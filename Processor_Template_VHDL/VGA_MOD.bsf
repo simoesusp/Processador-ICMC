@@ -1,0 +1,121 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2010 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.2"))
+(symbol
+	(rect 64 64 272 224)
+	(text "VGA_MOD" (rect 5 0 68 13)(font " Arial" (font_size 8)))
+	(text "inst" (rect 184 145 202 156)(font " Arial" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "RST" (rect 0 0 27 13)(font " Arial" (font_size 8)))
+		(text "RST" (rect 21 27 48 40)(font " Arial" (font_size 8)))
+		(line (pt 0 32)(pt 16 32))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "VGA_CLK" (rect 0 0 60 13)(font " Arial" (font_size 8)))
+		(text "VGA_CLK" (rect 21 43 81 56)(font " Arial" (font_size 8)))
+		(line (pt 0 48)(pt 16 48))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "DATA[20..0]" (rect 0 0 70 13)(font " Arial" (font_size 8)))
+		(text "DATA[20..0]" (rect 21 59 91 72)(font " Arial" (font_size 8)))
+		(line (pt 0 64)(pt 16 64)(line_width 3))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "VGA_QUEUE" (rect 0 0 79 13)(font " Arial" (font_size 8)))
+		(text "VGA_QUEUE" (rect 21 75 100 88)(font " Arial" (font_size 8)))
+		(line (pt 0 80)(pt 16 80))
+	)
+	(port
+		(pt 0 96)
+		(input)
+		(text "MEM_CLK" (rect 0 0 63 13)(font " Arial" (font_size 8)))
+		(text "MEM_CLK" (rect 21 91 84 104)(font " Arial" (font_size 8)))
+		(line (pt 0 96)(pt 16 96))
+	)
+	(port
+		(pt 208 32)
+		(output)
+		(text "BLANK" (rect 0 0 43 13)(font " Arial" (font_size 8)))
+		(text "BLANK" (rect 144 27 187 40)(font " Arial" (font_size 8)))
+		(line (pt 208 32)(pt 192 32))
+	)
+	(port
+		(pt 208 48)
+		(output)
+		(text "CLOCK" (rect 0 0 46 13)(font " Arial" (font_size 8)))
+		(text "CLOCK" (rect 141 43 187 56)(font " Arial" (font_size 8)))
+		(line (pt 208 48)(pt 192 48))
+	)
+	(port
+		(pt 208 64)
+		(output)
+		(text "HSYNC" (rect 0 0 46 13)(font " Arial" (font_size 8)))
+		(text "HSYNC" (rect 141 59 187 72)(font " Arial" (font_size 8)))
+		(line (pt 208 64)(pt 192 64))
+	)
+	(port
+		(pt 208 80)
+		(output)
+		(text "VSYNC" (rect 0 0 44 13)(font " Arial" (font_size 8)))
+		(text "VSYNC" (rect 143 75 187 88)(font " Arial" (font_size 8)))
+		(line (pt 208 80)(pt 192 80))
+	)
+	(port
+		(pt 208 96)
+		(output)
+		(text "RED[9..0]" (rect 0 0 56 13)(font " Arial" (font_size 8)))
+		(text "RED[9..0]" (rect 131 91 187 104)(font " Arial" (font_size 8)))
+		(line (pt 208 96)(pt 192 96)(line_width 3))
+	)
+	(port
+		(pt 208 112)
+		(output)
+		(text "GREEN[9..0]" (rect 0 0 74 13)(font " Arial" (font_size 8)))
+		(text "GREEN[9..0]" (rect 113 107 187 120)(font " Arial" (font_size 8)))
+		(line (pt 208 112)(pt 192 112)(line_width 3))
+	)
+	(port
+		(pt 208 128)
+		(output)
+		(text "BLUE[9..0]" (rect 0 0 62 13)(font " Arial" (font_size 8)))
+		(text "BLUE[9..0]" (rect 125 123 187 136)(font " Arial" (font_size 8)))
+		(line (pt 208 128)(pt 192 128)(line_width 3))
+	)
+	(drawing
+		(text "QVGA MASYAF" (rect 16 120 108 133)(font " Arial" (font_size 8)))
+		(text "40KByte Controller" (rect 16 136 123 149)(font " Arial" (font_size 8)))
+		(line (pt 16 104)(pt 16 16))
+		(line (pt 16 16)(pt 192 16))
+		(line (pt 192 16)(pt 192 144))
+		(line (pt 192 144)(pt 120 144))
+		(line (pt 16 112)(pt 104 112))
+		(line (pt 120 144)(pt 104 112))
+		(line (pt 16 112)(pt 16 104))
+	)
+)

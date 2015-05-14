@@ -1,0 +1,176 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2010 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.2"))
+(symbol
+	(rect 64 64 168 176)
+	(text "CU" (rect 0 1 16 12)(font "Arial" ))
+	(text "inst" (rect 0 96 18 107)(font "Arial" ))
+	(port
+		(pt 32 0)
+		(input)
+		(text "HALT_REQ" (rect 0 0 59 11)(font "Arial" ))
+		(text "HALT_REQ" (rect 24 25 35 84)(font "Arial" )(vertical)(invisible))
+		(line (pt 32 0)(pt 32 16))
+	)
+	(port
+		(pt 0 24)
+		(input)
+		(text "CLK" (rect 0 0 23 11)(font "Arial" ))
+		(text "CLK" (rect 25 16 48 27)(font "Arial" )(invisible))
+		(line (pt 0 24)(pt 17 24))
+	)
+	(port
+		(pt 48 0)
+		(input)
+		(text "RST" (rect 0 0 23 11)(font "Arial" ))
+		(text "RST" (rect 40 25 51 48)(font "Arial" )(vertical)(invisible))
+		(line (pt 48 0)(pt 48 16))
+	)
+	(port
+		(pt 24 112)
+		(input)
+		(text "FRIN[15..0]" (rect 0 -112 59 -101)(font "Arial" ))
+		(text "FRIN[15..0]" (rect 24 27 35 86)(font "Arial" )(vertical)(invisible))
+		(line (pt 24 112)(pt 24 96)(line_width 3))
+	)
+	(port
+		(pt 104 64)
+		(input)
+		(text "INMEM[15..0]" (rect 0 0 69 11)(font "Arial" ))
+		(text "INMEM[15..0]" (rect 10 56 79 67)(font "Arial" )(invisible))
+		(line (pt 88 64)(pt 104 64)(line_width 3))
+	)
+	(port
+		(pt 16 0)
+		(output)
+		(text "DRAW" (rect 0 0 35 11)(font "Arial" ))
+		(text "DRAW" (rect 0 10 11 45)(font "Arial" )(vertical)(invisible))
+		(line (pt 16 0)(pt 16 16))
+	)
+	(port
+		(pt 64 0)
+		(output)
+		(text "HALT_ACK" (rect -128 0 -69 11)(font "Arial" ))
+		(text "HALT_ACK" (rect 56 23 67 82)(font "Arial" )(vertical)(invisible))
+		(line (pt 64 0)(pt 64 16))
+	)
+	(port
+		(pt 0 88)
+		(output)
+		(text "ULAOP[6..0]" (rect -128 0 -66 11)(font "Arial" ))
+		(text "OP" (rect 24 80 40 91)(font "Arial" )(invisible))
+		(line (pt 16 88)(pt 0 88)(line_width 3))
+	)
+	(port
+		(pt 0 72)
+		(output)
+		(text "sM3[3..0]" (rect -128 0 -81 11)(font "Arial" ))
+		(text "sM3" (rect 24 64 46 75)(font "Arial" )(invisible))
+		(line (pt 16 72)(pt 0 72)(line_width 3))
+	)
+	(port
+		(pt 0 56)
+		(output)
+		(text "sM4[3..0]" (rect -128 0 -81 11)(font "Arial" ))
+		(text "sM4" (rect 24 48 46 59)(font "Arial" )(invisible))
+		(line (pt 16 56)(pt 0 56)(line_width 3))
+	)
+	(port
+		(pt 0 40)
+		(output)
+		(text "sM2[1..0]" (rect -128 0 -81 11)(font "Arial" ))
+		(text "sM2" (rect 24 32 46 43)(font "Arial" )(invisible))
+		(line (pt 16 40)(pt 0 40)(line_width 3))
+	)
+	(port
+		(pt 56 112)
+		(output)
+		(text "sM6" (rect -128 -288 -106 -277)(font "Arial" ))
+		(text "sM6" (rect 48 66 59 88)(font "Arial" )(vertical)(invisible))
+		(line (pt 56 112)(pt 56 97))
+	)
+	(port
+		(pt 40 112)
+		(output)
+		(text "RW" (rect -128 -288 -108 -277)(font "Arial" ))
+		(text "RW" (rect 48 66 59 86)(font "Arial" )(vertical)(invisible))
+		(line (pt 40 112)(pt 40 97))
+	)
+	(port
+		(pt 72 112)
+		(output)
+		(text "LoadFR" (rect -128 -288 -88 -277)(font "Arial" ))
+		(text "LoadFR" (rect 64 48 75 88)(font "Arial" )(vertical)(invisible))
+		(line (pt 72 112)(pt 72 97))
+	)
+	(port
+		(pt 88 112)
+		(output)
+		(text "LoadMAR" (rect -128 -288 -79 -277)(font "Arial" ))
+		(text "LoadMAR" (rect 80 40 91 89)(font "Arial" )(vertical)(invisible))
+		(line (pt 88 112)(pt 88 97))
+	)
+	(port
+		(pt 104 16)
+		(output)
+		(text "sM1[1..0]" (rect -128 0 -81 11)(font "Arial" ))
+		(text "sM1" (rect 68 11 89 22)(font "Arial" )(invisible))
+		(line (pt 104 16)(pt 88 16)(line_width 3))
+	)
+	(port
+		(pt 104 32)
+		(output)
+		(text "sM5" (rect -128 0 -106 11)(font "Arial" ))
+		(text "sM5" (rect 70 27 92 38)(font "Arial" )(invisible))
+		(line (pt 104 32)(pt 88 32))
+	)
+	(port
+		(pt 104 48)
+		(output)
+		(text "LoadMBR" (rect -128 0 -79 11)(font "Arial" ))
+		(text "LoadMBR" (rect 42 43 91 54)(font "Arial" )(invisible))
+		(line (pt 104 48)(pt 88 48))
+	)
+	(port
+		(pt 104 80)
+		(output)
+		(text "LIDSP[2..0]" (rect -128 0 -71 11)(font "Arial" ))
+		(text "LIDSP" (rect 54 75 87 86)(font "Arial" )(invisible))
+		(line (pt 104 80)(pt 88 80)(line_width 3))
+	)
+	(port
+		(pt 104 96)
+		(output)
+		(text "LIDPC[2..0]" (rect -128 0 -69 11)(font "Arial" ))
+		(text "LIDPC" (rect 54 91 88 102)(font "Arial" )(invisible))
+		(line (pt 104 96)(pt 88 96)(line_width 3))
+	)
+	(port
+		(pt 80 0)
+		(output)
+		(text "LoadREG[7..0]" (rect -128 0 -55 11)(font "Arial" ))
+		(text "LoadREG" (rect 72 24 83 72)(font "Arial" )(vertical)(invisible))
+		(line (pt 80 0)(pt 80 16)(line_width 3))
+	)
+	(drawing
+		(rectangle (rect 16 16 88 96))
+	)
+)
