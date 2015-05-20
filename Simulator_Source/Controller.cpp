@@ -103,6 +103,23 @@ bool Controller::userInput(const char *tecla)
 		{	reset(); 
 			return TRUE;
 		}
+		else if( !strcmp(tecla, "Left") )
+		{	key = 14;
+			return FALSE;
+		}
+		else if( !strcmp(tecla, "Right") )
+		{	key = 15;
+			return FALSE;
+		}
+		else if( !strcmp(tecla, "Up") )
+		{	key = 16;
+			return FALSE;
+		}
+		else if( !strcmp(tecla, "Down") )
+		{	key = 17;
+			return FALSE;
+		}
+		
 		return FALSE;
 	}
 
