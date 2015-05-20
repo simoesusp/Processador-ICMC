@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pin_planner>
+	<pin_info>
+		<pin name="HSMC_CLKIN_P1" source="Assignments" diff_pair_node="HSMC_CLKIN_N1" >
+		</pin>
+		<pin name="HSMC_CLKIN_P2" source="Assignments" diff_pair_node="HSMC_CLKIN_N2" >
+		</pin>
+		<pin name="HSMC_CLKOUT_P1" source="Assignments" diff_pair_node="HSMC_CLKOUT_N1" >
+		</pin>
+		<pin name="HSMC_CLKOUT_P2" source="Assignments" diff_pair_node="HSMC_CLKOUT_N2" >
+		</pin>
+		<pin name="HSMC_RX_D_P[16]" source="Assignments" diff_pair_node="HSMC_RX_D_N[16]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[15]" source="Assignments" diff_pair_node="HSMC_RX_D_N[15]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[14]" source="Assignments" diff_pair_node="HSMC_RX_D_N[14]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[13]" source="Assignments" diff_pair_node="HSMC_RX_D_N[13]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[12]" source="Assignments" diff_pair_node="HSMC_RX_D_N[12]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[11]" source="Assignments" diff_pair_node="HSMC_RX_D_N[11]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[10]" source="Assignments" diff_pair_node="HSMC_RX_D_N[10]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[9]" source="Assignments" diff_pair_node="HSMC_RX_D_N[9]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[8]" source="Assignments" diff_pair_node="HSMC_RX_D_N[8]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[7]" source="Assignments" diff_pair_node="HSMC_RX_D_N[7]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[6]" source="Assignments" diff_pair_node="HSMC_RX_D_N[6]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[5]" source="Assignments" diff_pair_node="HSMC_RX_D_N[5]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[4]" source="Assignments" diff_pair_node="HSMC_RX_D_N[4]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[3]" source="Assignments" diff_pair_node="HSMC_RX_D_N[3]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[2]" source="Assignments" diff_pair_node="HSMC_RX_D_N[2]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[1]" source="Assignments" diff_pair_node="HSMC_RX_D_N[1]" >
+		</pin>
+		<pin name="HSMC_RX_D_P[0]" source="Assignments" diff_pair_node="HSMC_RX_D_N[0]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[16]" source="Assignments" diff_pair_node="HSMC_TX_D_N[16]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[15]" source="Assignments" diff_pair_node="HSMC_TX_D_N[15]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[14]" source="Assignments" diff_pair_node="HSMC_TX_D_N[14]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[13]" source="Assignments" diff_pair_node="HSMC_TX_D_N[13]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[12]" source="Assignments" diff_pair_node="HSMC_TX_D_N[12]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[11]" source="Assignments" diff_pair_node="HSMC_TX_D_N[11]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[10]" source="Assignments" diff_pair_node="HSMC_TX_D_N[10]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[9]" source="Assignments" diff_pair_node="HSMC_TX_D_N[9]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[8]" source="Assignments" diff_pair_node="HSMC_TX_D_N[8]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[7]" source="Assignments" diff_pair_node="HSMC_TX_D_N[7]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[6]" source="Assignments" diff_pair_node="HSMC_TX_D_N[6]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[5]" source="Assignments" diff_pair_node="HSMC_TX_D_N[5]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[4]" source="Assignments" diff_pair_node="HSMC_TX_D_N[4]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[3]" source="Assignments" diff_pair_node="HSMC_TX_D_N[3]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[2]" source="Assignments" diff_pair_node="HSMC_TX_D_N[2]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[1]" source="Assignments" diff_pair_node="HSMC_TX_D_N[1]" >
+		</pin>
+		<pin name="HSMC_TX_D_P[0]" source="Assignments" diff_pair_node="HSMC_TX_D_N[0]" >
+		</pin>
+		<pin name="HSMC_CLKIN_N1" source="Assignments" diff_pair_node="HSMC_CLKIN_P1" >
+		</pin>
+		<pin name="HSMC_CLKIN_N2" source="Assignments" diff_pair_node="HSMC_CLKIN_P2" >
+		</pin>
+		<pin name="HSMC_TX_D_N[0]" source="Assignments" diff_pair_node="HSMC_TX_D_P[0]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[0]" source="Assignments" diff_pair_node="HSMC_RX_D_P[0]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[1]" source="Assignments" diff_pair_node="HSMC_RX_D_P[1]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[1]" source="Assignments" diff_pair_node="HSMC_TX_D_P[1]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[2]" source="Assignments" diff_pair_node="HSMC_TX_D_P[2]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[2]" source="Assignments" diff_pair_node="HSMC_RX_D_P[2]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[3]" source="Assignments" diff_pair_node="HSMC_TX_D_P[3]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[3]" source="Assignments" diff_pair_node="HSMC_RX_D_P[3]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[4]" source="Assignments" diff_pair_node="HSMC_TX_D_P[4]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[4]" source="Assignments" diff_pair_node="HSMC_RX_D_P[4]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[5]" source="Assignments" diff_pair_node="HSMC_TX_D_P[5]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[5]" source="Assignments" diff_pair_node="HSMC_RX_D_P[5]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[6]" source="Assignments" diff_pair_node="HSMC_TX_D_P[6]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[6]" source="Assignments" diff_pair_node="HSMC_RX_D_P[6]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[7]" source="Assignments" diff_pair_node="HSMC_TX_D_P[7]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[7]" source="Assignments" diff_pair_node="HSMC_RX_D_P[7]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[8]" source="Assignments" diff_pair_node="HSMC_TX_D_P[8]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[8]" source="Assignments" diff_pair_node="HSMC_RX_D_P[8]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[9]" source="Assignments" diff_pair_node="HSMC_TX_D_P[9]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[9]" source="Assignments" diff_pair_node="HSMC_RX_D_P[9]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[10]" source="Assignments" diff_pair_node="HSMC_TX_D_P[10]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[10]" source="Assignments" diff_pair_node="HSMC_RX_D_P[10]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[11]" source="Assignments" diff_pair_node="HSMC_TX_D_P[11]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[11]" source="Assignments" diff_pair_node="HSMC_RX_D_P[11]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[12]" source="Assignments" diff_pair_node="HSMC_TX_D_P[12]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[12]" source="Assignments" diff_pair_node="HSMC_RX_D_P[12]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[13]" source="Assignments" diff_pair_node="HSMC_TX_D_P[13]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[13]" source="Assignments" diff_pair_node="HSMC_RX_D_P[13]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[14]" source="Assignments" diff_pair_node="HSMC_TX_D_P[14]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[14]" source="Assignments" diff_pair_node="HSMC_RX_D_P[14]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[15]" source="Assignments" diff_pair_node="HSMC_TX_D_P[15]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[15]" source="Assignments" diff_pair_node="HSMC_RX_D_P[15]" >
+		</pin>
+		<pin name="HSMC_TX_D_N[16]" source="Assignments" diff_pair_node="HSMC_TX_D_P[16]" >
+		</pin>
+		<pin name="HSMC_RX_D_N[16]" source="Assignments" diff_pair_node="HSMC_RX_D_P[16]" >
+		</pin>
+		<pin name="HSMC_CLKOUT_N2" source="Assignments" diff_pair_node="HSMC_CLKOUT_P2" >
+		</pin>
+		<pin name="HSMC_CLKOUT_N1" source="Assignments" diff_pair_node="HSMC_CLKOUT_P1" >
+		</pin>
+	</pin_info>
+	<buses>
+	</buses>
+	<group_file_association>
+	</group_file_association>
+	<pin_planner_file_specifies>
+	</pin_planner_file_specifies>
+</pin_planner>

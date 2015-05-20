@@ -1,0 +1,56 @@
+
+
+/home/comodo/Desktop/AP9_NEW/lpm_ram_dq1.vhd
+
+Dec 22 08PM:06:03>: Megafunction LPM_RAM_DQ is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
+
+/home/comodo/Desktop/AP9_NEW/lpm_ram_dq1.vhd
+
+Dec 22 08PM:06:28>: Megafunction LPM_RAM_DQ is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
+
+/home/comodo/Desktop/AP9_NEW/lpm_ram_dq1.vhd
+
+Dec 22 08PM:07:12>: Megafunction LPM_RAM_DQ is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
+
+/home/comodo/Desktop/AP9_NEW/lpm_ram_dq1.vhd
+
+Dec 22 08PM:07:20>: Megafunction LPM_RAM_DQ is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
+
+/media/Share/BCC/LD/FPGA-VHDL/AP9/lpm_ram_dq1.vhd
+
+Feb 27 03PM:27:25>: Megafunction LPM_RAM_DQ is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
+
+/media/Share/BCC/LD/FPGA-VHDL/AP9/lpm_ram_dq1.vhd
+
+Feb 27 03PM:27:38>: Megafunction LPM_RAM_DQ is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
+
+/media/Share/BCC/LD/FPGA-VHDL/AP9/lpm_ram_dq1.vhd
+
+Feb 27 03PM:27:48>: Megafunction LPM_RAM_DQ is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
+
+/media/Share/BCC/LD/FPGA-VHDL/AP9/lpm_ram_dq1.vhd
+
+Feb 27 03PM:27:57>: Megafunction LPM_RAM_DQ is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
+
+/media/Share/BCC/LD/FPGA-VHDL/AP9/lpm_ram_dq1.vhd
+
+Feb 27 03PM:28:01>: Megafunction LPM_RAM_DQ is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
+
+/home/marcelo/Desktop/AP9/lpm_ram_dq1.vhd
+
+Sep 14 06PM:02:36>: Megafunction LPM_RAM_DQ is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
+
+/home/marcelo/Desktop/AP9/lpm_ram_dq1.vhd
+
+Sep 14 06PM:03:12>: Megafunction LPM_RAM_DQ is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted

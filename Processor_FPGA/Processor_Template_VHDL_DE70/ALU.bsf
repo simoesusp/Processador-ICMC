@@ -1,0 +1,70 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2010 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.2"))
+(symbol
+	(rect 64 64 272 192)
+	(text "ALU" (rect 5 0 26 11)(font "Arial" ))
+	(text "inst" (rect 8 80 26 91)(font "Arial" ))
+	(port
+		(pt 208 48)
+		(input)
+		(text "OP[6..0]" (rect 0 0 41 11)(font "Arial" ))
+		(text "OP[6..0]" (rect 142 40 183 51)(font "Arial" ))
+		(line (pt 208 48)(pt 184 48)(line_width 3))
+	)
+	(port
+		(pt 160 0)
+		(input)
+		(text "Y[15..0]" (rect 0 0 38 11)(font "Arial" ))
+		(text "Y[15..0]" (rect 152 25 163 63)(font "Arial" )(vertical)(invisible))
+		(line (pt 160 0)(pt 160 16)(line_width 3))
+	)
+	(port
+		(pt 48 0)
+		(input)
+		(text "X[15..0]" (rect 0 0 38 11)(font "Arial" ))
+		(text "X[15..0]" (rect 40 25 51 63)(font "Arial" )(vertical)(invisible))
+		(line (pt 48 0)(pt 48 16)(line_width 3))
+	)
+	(port
+		(pt 208 80)
+		(output)
+		(text "FR[15..0]" (rect 24 0 71 11)(font "Arial" ))
+		(text "FR[15..0]" (rect 116 75 163 86)(font "Arial" ))
+		(line (pt 208 80)(pt 168 80)(line_width 3))
+	)
+	(port
+		(pt 104 128)
+		(output)
+		(text "RES[15..0]" (rect 24 0 78 11)(font "Arial" ))
+		(text "RES[15..0]" (rect 96 50 107 104)(font "Arial" )(vertical)(invisible))
+		(line (pt 104 128)(pt 104 113)(line_width 3))
+	)
+	(drawing
+		(line (pt 16 16)(pt 56 112))
+		(line (pt 192 16)(pt 152 112))
+		(line (pt 56 112)(pt 152 112))
+		(line (pt 192 16)(pt 128 16))
+		(line (pt 128 16)(pt 104 48))
+		(line (pt 104 48)(pt 80 16))
+		(line (pt 80 16)(pt 16 16))
+	)
+)
