@@ -2723,6 +2723,18 @@ unsigned short RecebeNumero(void)
                 case 'n' :
                     ret = (unsigned short)'\n';
                     break;
+                case 'L' :
+                    ret = (unsigned short) 14;
+                    break;
+                case 'R' :
+                    ret = (unsigned short) 15;
+                    break;
+                case 'U' :
+                    ret = (unsigned short) 16;
+                    break;
+                case 'D' :
+                    ret = (unsigned short) 17;
+                    break;
                 case '0' :
                     ret = (unsigned short)'\0';
                     break;
