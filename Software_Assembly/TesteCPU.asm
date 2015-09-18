@@ -71,9 +71,10 @@
 	outchar r3, r0		; Printa I na linha 16
 
 	; Teste do Inc / Dec
-	inc r0
-	inc r0
+	loadn r0, #18
 	loadn r3, #'K'
+	inc r3
+	dec r3
 	dec r3
 	outchar r3, r0		; Printa J na linha 18
 	

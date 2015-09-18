@@ -442,12 +442,94 @@ ImprimeStr3:	;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que o p
 
 
 
+16) Delay com Inchar
+	--> FPGA: evita de perder teclas quando jogando com delays grandes...
+	--> Mudar o INCHAR R0 do bloco de mover a nave para LOAD R0, LETRA
 	
-16) Como construir um labirinto decente!
+;--------------------- delay -----------------------
+delay:
+	push r0
+	push r1
+	push r2
+	push r3
+	
+	load r0, #10
+	loadn r3, #255
+	store letra, r3		; Guarda 255 na Letra pro caso de nao apertar nenhuma tecla
+	
+	loop_delay_1:
+		loadn r1, #20
+
+; Bloco de ler o Teclado no meio do Delay!!		
+			loop_delay_2:
+				inchar r2
+				cmp r2, r3 
+				jeq loop_skip
+				store letra, r2		; Se apertar uma tecla, guarda na variavel Letra
+			
+	loop_skip:			
+		dec r1
+		jnz loop_delay_2
+		dec r0
+		jnz loop_delay_1
+		jmp sai_dalay
+	
+	sai_dalay:
+		pop r3
+		pop r2
+		pop r1
+		pop r0
+	rts
+;---------------------------------------------------	
+	
+
+
+	
+	
+17) Novo DigLetra para o teclado da FPGA:
+
+;------------------------		
+;********************************************************
+;                   DIGITE UMA LETRA
+;********************************************************
+
+digLetra:	; Espera que uma tecla seja digitada e salva na variavel global "Letra"
+	push fr		; Protege o registrador de flags
+	push r0
+	push r1
+	loadn r1, #255	; Se nao digitar nada vem 255
+
+   digLetra_Loop:
+		inchar r0			; Le o teclado, se nada for digitado = 255
+		cmp r0, r1			;compara r0 com 255
+		jeq digLetra_Loop	; Fica lendo ate' que digite uma tecla valida
+
+	store Letra, r0			; Salva a tecla na variavel global "Letra"
+
+		; Bloco novo para aguardar que o user solte a tecla pressionada!!
+			   digLetra_Loop2:	
+					inchar r0			; Le o teclado, se nada for digitado = 255
+					cmp r0, r1			;compara r0 com 255
+					jne digLetra_Loop2	; Fica lendo ate' que digite uma tecla valida
+				
+	
+	pop r1
+	pop r0
+	pop fr
+	rts
+
+
+
+;--------------------------	
+	
+
+
+	
+18) Como construir um labirinto decente!
 		Aqui tá o link de como fazer um labirinto:
 recursivo http://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_division_method
 
-17) Cenario Colorido!!!
+19) Cenario Colorido!!!
 
 ;********************************************************
 ;                       IMPRIME TELA2
