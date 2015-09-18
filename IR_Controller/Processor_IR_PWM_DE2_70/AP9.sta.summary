@@ -1,0 +1,413 @@
+------------------------------------------------------------
+TimeQuest Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow Model Setup 'cpu:inst21|OP[4]'
+Slack : -49.074
+TNS   : -771.947
+
+Type  : Slow Model Setup 'iSW[16]'
+Slack : -47.055
+TNS   : -13058.072
+
+Type  : Slow Model Setup 'lpm_dff1:inst1|lpm_ff:lpm_ff_component|dffs[0]'
+Slack : -22.968
+TNS   : -1569.543
+
+Type  : Slow Model Setup 'iCLK_50'
+Slack : -8.543
+TNS   : -27827.570
+
+Type  : Slow Model Setup 'clk_div2:inst36|out_clk'
+Slack : -6.209
+TNS   : -487.727
+
+Type  : Slow Model Setup 'clk_div:inst25|clock_100KHz'
+Slack : -2.336
+TNS   : -2.458
+
+Type  : Slow Model Setup 'PS2_KBCLK'
+Slack : -1.527
+TNS   : -31.111
+
+Type  : Slow Model Setup 'dec_keyboard:inst11|f3'
+Slack : -1.259
+TNS   : -7.399
+
+Type  : Slow Model Setup 'clk_div:inst25|clock_10Hz_int'
+Slack : -0.238
+TNS   : -0.280
+
+Type  : Slow Model Setup 'clk_div:inst25|clock_1Mhz_int'
+Slack : -0.072
+TNS   : -0.148
+
+Type  : Slow Model Setup 'clk_div:inst25|clock_10Khz_int'
+Slack : -0.069
+TNS   : -0.145
+
+Type  : Slow Model Setup 'clk_div:inst25|clock_1Khz_int'
+Slack : -0.069
+TNS   : -0.145
+
+Type  : Slow Model Setup 'clk_div:inst25|clock_100Khz_int'
+Slack : -0.061
+TNS   : -0.127
+
+Type  : Slow Model Setup 'clk_div:inst25|clock_100hz_int'
+Slack : -0.061
+TNS   : -0.127
+
+Type  : Slow Model Setup 'clk_div:inst25|clock_1KHz'
+Slack : 0.108
+TNS   : 0.000
+
+Type  : Slow Model Hold 'iSW[16]'
+Slack : -4.796
+TNS   : -278.965
+
+Type  : Slow Model Hold 'cpu:inst21|OP[4]'
+Slack : -3.557
+TNS   : -46.219
+
+Type  : Slow Model Hold 'PS2_KBCLK'
+Slack : -3.537
+TNS   : -3.537
+
+Type  : Slow Model Hold 'iCLK_50'
+Slack : -2.659
+TNS   : -4.048
+
+Type  : Slow Model Hold 'clk_div:inst25|clock_1Mhz_int'
+Slack : -2.503
+TNS   : -2.503
+
+Type  : Slow Model Hold 'clk_div:inst25|clock_100Khz_int'
+Slack : -2.468
+TNS   : -2.468
+
+Type  : Slow Model Hold 'clk_div:inst25|clock_1Khz_int'
+Slack : -2.422
+TNS   : -2.422
+
+Type  : Slow Model Hold 'clk_div:inst25|clock_10Khz_int'
+Slack : -2.297
+TNS   : -2.297
+
+Type  : Slow Model Hold 'clk_div:inst25|clock_100hz_int'
+Slack : -2.239
+TNS   : -2.239
+
+Type  : Slow Model Hold 'clk_div:inst25|clock_1KHz'
+Slack : -2.126
+TNS   : -5.746
+
+Type  : Slow Model Hold 'lpm_dff1:inst1|lpm_ff:lpm_ff_component|dffs[0]'
+Slack : -1.676
+TNS   : -14.487
+
+Type  : Slow Model Hold 'clk_div2:inst36|out_clk'
+Slack : 0.391
+TNS   : 0.000
+
+Type  : Slow Model Hold 'clk_div:inst25|clock_10Hz_int'
+Slack : 0.391
+TNS   : 0.000
+
+Type  : Slow Model Hold 'dec_keyboard:inst11|f3'
+Slack : 0.391
+TNS   : 0.000
+
+Type  : Slow Model Hold 'clk_div:inst25|clock_100KHz'
+Slack : 0.706
+TNS   : 0.000
+
+Type  : Slow Model Recovery 'keyboard:inst14|scan_ready'
+Slack : -3.180
+TNS   : -3.180
+
+Type  : Slow Model Recovery 'keyboard:inst14|ready_set'
+Slack : 0.450
+TNS   : 0.000
+
+Type  : Slow Model Removal 'keyboard:inst14|ready_set'
+Slack : -0.180
+TNS   : -0.180
+
+Type  : Slow Model Removal 'keyboard:inst14|scan_ready'
+Slack : 3.950
+TNS   : 0.000
+
+Type  : Slow Model Minimum Pulse Width 'iCLK_50'
+Slack : -2.000
+TNS   : -15418.420
+
+Type  : Slow Model Minimum Pulse Width 'dec_keyboard:inst11|f3'
+Slack : -1.423
+TNS   : -25.768
+
+Type  : Slow Model Minimum Pulse Width 'iSW[16]'
+Slack : -1.222
+TNS   : -692.222
+
+Type  : Slow Model Minimum Pulse Width 'PS2_KBCLK'
+Slack : -1.222
+TNS   : -24.222
+
+Type  : Slow Model Minimum Pulse Width 'lpm_dff1:inst1|lpm_ff:lpm_ff_component|dffs[0]'
+Slack : -0.500
+TNS   : -243.000
+
+Type  : Slow Model Minimum Pulse Width 'clk_div2:inst36|out_clk'
+Slack : -0.500
+TNS   : -119.000
+
+Type  : Slow Model Minimum Pulse Width 'clk_div:inst25|clock_100KHz'
+Slack : -0.500
+TNS   : -5.000
+
+Type  : Slow Model Minimum Pulse Width 'clk_div:inst25|clock_100Khz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Slow Model Minimum Pulse Width 'clk_div:inst25|clock_100hz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Slow Model Minimum Pulse Width 'clk_div:inst25|clock_10Hz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Slow Model Minimum Pulse Width 'clk_div:inst25|clock_10Khz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Slow Model Minimum Pulse Width 'clk_div:inst25|clock_1Khz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Slow Model Minimum Pulse Width 'clk_div:inst25|clock_1Mhz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Slow Model Minimum Pulse Width 'clk_div:inst25|clock_1KHz'
+Slack : -0.500
+TNS   : -3.000
+
+Type  : Slow Model Minimum Pulse Width 'keyboard:inst14|ready_set'
+Slack : -0.500
+TNS   : -1.000
+
+Type  : Slow Model Minimum Pulse Width 'keyboard:inst14|scan_ready'
+Slack : -0.500
+TNS   : -1.000
+
+Type  : Slow Model Minimum Pulse Width 'cpu:inst21|OP[4]'
+Slack : 0.500
+TNS   : 0.000
+
+Type  : Fast Model Setup 'cpu:inst21|OP[4]'
+Slack : -21.771
+TNS   : -342.215
+
+Type  : Fast Model Setup 'iSW[16]'
+Slack : -20.252
+TNS   : -5463.144
+
+Type  : Fast Model Setup 'lpm_dff1:inst1|lpm_ff:lpm_ff_component|dffs[0]'
+Slack : -9.852
+TNS   : -622.792
+
+Type  : Fast Model Setup 'iCLK_50'
+Slack : -3.726
+TNS   : -11679.117
+
+Type  : Fast Model Setup 'clk_div2:inst36|out_clk'
+Slack : -2.318
+TNS   : -159.818
+
+Type  : Fast Model Setup 'clk_div:inst25|clock_100KHz'
+Slack : -0.910
+TNS   : -0.910
+
+Type  : Fast Model Setup 'PS2_KBCLK'
+Slack : -0.215
+TNS   : -3.547
+
+Type  : Fast Model Setup 'dec_keyboard:inst11|f3'
+Slack : 0.083
+TNS   : 0.000
+
+Type  : Fast Model Setup 'clk_div:inst25|clock_10Hz_int'
+Slack : 0.432
+TNS   : 0.000
+
+Type  : Fast Model Setup 'clk_div:inst25|clock_1Mhz_int'
+Slack : 0.505
+TNS   : 0.000
+
+Type  : Fast Model Setup 'clk_div:inst25|clock_10Khz_int'
+Slack : 0.508
+TNS   : 0.000
+
+Type  : Fast Model Setup 'clk_div:inst25|clock_1Khz_int'
+Slack : 0.508
+TNS   : 0.000
+
+Type  : Fast Model Setup 'clk_div:inst25|clock_100hz_int'
+Slack : 0.510
+TNS   : 0.000
+
+Type  : Fast Model Setup 'clk_div:inst25|clock_100Khz_int'
+Slack : 0.511
+TNS   : 0.000
+
+Type  : Fast Model Setup 'clk_div:inst25|clock_1KHz'
+Slack : 0.573
+TNS   : 0.000
+
+Type  : Fast Model Hold 'iSW[16]'
+Slack : -2.868
+TNS   : -243.731
+
+Type  : Fast Model Hold 'cpu:inst21|OP[4]'
+Slack : -2.028
+TNS   : -26.834
+
+Type  : Fast Model Hold 'PS2_KBCLK'
+Slack : -1.908
+TNS   : -1.908
+
+Type  : Fast Model Hold 'iCLK_50'
+Slack : -1.648
+TNS   : -82.947
+
+Type  : Fast Model Hold 'clk_div:inst25|clock_1Mhz_int'
+Slack : -1.534
+TNS   : -1.534
+
+Type  : Fast Model Hold 'clk_div:inst25|clock_100Khz_int'
+Slack : -1.527
+TNS   : -1.527
+
+Type  : Fast Model Hold 'clk_div:inst25|clock_1Khz_int'
+Slack : -1.512
+TNS   : -1.512
+
+Type  : Fast Model Hold 'clk_div:inst25|clock_10Khz_int'
+Slack : -1.476
+TNS   : -1.476
+
+Type  : Fast Model Hold 'clk_div:inst25|clock_100hz_int'
+Slack : -1.423
+TNS   : -1.423
+
+Type  : Fast Model Hold 'clk_div:inst25|clock_1KHz'
+Slack : -1.375
+TNS   : -3.671
+
+Type  : Fast Model Hold 'lpm_dff1:inst1|lpm_ff:lpm_ff_component|dffs[0]'
+Slack : -1.178
+TNS   : -9.342
+
+Type  : Fast Model Hold 'clk_div2:inst36|out_clk'
+Slack : 0.215
+TNS   : 0.000
+
+Type  : Fast Model Hold 'clk_div:inst25|clock_10Hz_int'
+Slack : 0.215
+TNS   : 0.000
+
+Type  : Fast Model Hold 'dec_keyboard:inst11|f3'
+Slack : 0.215
+TNS   : 0.000
+
+Type  : Fast Model Hold 'clk_div:inst25|clock_100KHz'
+Slack : 0.321
+TNS   : 0.000
+
+Type  : Fast Model Recovery 'keyboard:inst14|scan_ready'
+Slack : -1.438
+TNS   : -1.438
+
+Type  : Fast Model Recovery 'keyboard:inst14|ready_set'
+Slack : 0.476
+TNS   : 0.000
+
+Type  : Fast Model Removal 'keyboard:inst14|ready_set'
+Slack : -0.096
+TNS   : -0.096
+
+Type  : Fast Model Removal 'keyboard:inst14|scan_ready'
+Slack : 2.318
+TNS   : 0.000
+
+Type  : Fast Model Minimum Pulse Width 'iCLK_50'
+Slack : -2.000
+TNS   : -15418.420
+
+Type  : Fast Model Minimum Pulse Width 'dec_keyboard:inst11|f3'
+Slack : -1.423
+TNS   : -25.768
+
+Type  : Fast Model Minimum Pulse Width 'iSW[16]'
+Slack : -1.222
+TNS   : -692.222
+
+Type  : Fast Model Minimum Pulse Width 'PS2_KBCLK'
+Slack : -1.222
+TNS   : -24.222
+
+Type  : Fast Model Minimum Pulse Width 'lpm_dff1:inst1|lpm_ff:lpm_ff_component|dffs[0]'
+Slack : -0.500
+TNS   : -243.000
+
+Type  : Fast Model Minimum Pulse Width 'clk_div2:inst36|out_clk'
+Slack : -0.500
+TNS   : -119.000
+
+Type  : Fast Model Minimum Pulse Width 'clk_div:inst25|clock_100KHz'
+Slack : -0.500
+TNS   : -5.000
+
+Type  : Fast Model Minimum Pulse Width 'clk_div:inst25|clock_100Khz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Fast Model Minimum Pulse Width 'clk_div:inst25|clock_100hz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Fast Model Minimum Pulse Width 'clk_div:inst25|clock_10Hz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Fast Model Minimum Pulse Width 'clk_div:inst25|clock_10Khz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Fast Model Minimum Pulse Width 'clk_div:inst25|clock_1Khz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Fast Model Minimum Pulse Width 'clk_div:inst25|clock_1Mhz_int'
+Slack : -0.500
+TNS   : -4.000
+
+Type  : Fast Model Minimum Pulse Width 'clk_div:inst25|clock_1KHz'
+Slack : -0.500
+TNS   : -3.000
+
+Type  : Fast Model Minimum Pulse Width 'keyboard:inst14|ready_set'
+Slack : -0.500
+TNS   : -1.000
+
+Type  : Fast Model Minimum Pulse Width 'keyboard:inst14|scan_ready'
+Slack : -0.500
+TNS   : -1.000
+
+Type  : Fast Model Minimum Pulse Width 'cpu:inst21|OP[4]'
+Slack : 0.500
+TNS   : 0.000
+
+------------------------------------------------------------

@@ -1,0 +1,132 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2010 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.2"))
+(symbol
+	(rect 64 64 288 272)
+	(text "AP9_cpu" (rect 5 0 56 13)(font " Arial" (font_size 8)))
+	(text "inst" (rect 8 193 26 204)(font " Arial" ))
+	(port
+		(pt 0 80)
+		(input)
+		(text "KEY[7..0]" (rect 0 0 54 13)(font " Arial" (font_size 8)))
+		(text "KEY[7..0]" (rect 21 75 75 88)(font " Arial" (font_size 8))(invisible))
+		(line (pt 0 80)(pt 16 80)(line_width 3))
+	)
+	(port
+		(pt 224 80)
+		(input)
+		(text "MEM_DATA[15..0]" (rect 0 0 107 13)(font " Arial" (font_size 8)))
+		(text "MEM_DATA[15..0]" (rect 92 72 199 85)(font " Arial" (font_size 8))(invisible))
+		(line (pt 208 80)(pt 224 80)(line_width 3))
+	)
+	(port
+		(pt 128 0)
+		(input)
+		(text "HALT_REQ" (rect 0 0 68 13)(font " Arial" (font_size 8)))
+		(text "HALT_REQ" (rect 120 25 133 93)(font " Arial" (font_size 8))(vertical)(invisible))
+		(line (pt 128 0)(pt 128 16))
+	)
+	(port
+		(pt 112 0)
+		(input)
+		(text "CLK" (rect 0 0 27 13)(font " Arial" (font_size 8)))
+		(text "CLK" (rect 104 25 117 52)(font " Arial" (font_size 8))(vertical)(invisible))
+		(line (pt 112 0)(pt 112 16))
+	)
+	(port
+		(pt 96 0)
+		(input)
+		(text "RST" (rect 0 0 27 13)(font " Arial" (font_size 8)))
+		(text "RST" (rect 88 25 101 52)(font " Arial" (font_size 8))(vertical)(invisible))
+		(line (pt 96 0)(pt 96 16))
+	)
+	(port
+		(pt 0 104)
+		(output)
+		(text "VGA_CC[15..0]" (rect -56 0 32 13)(font " Arial" (font_size 8)))
+		(text "VGA_CC[15..0]" (rect 24 96 112 109)(font " Arial" (font_size 8))(invisible))
+		(line (pt 16 104)(pt 0 104)(line_width 3))
+	)
+	(port
+		(pt 0 128)
+		(output)
+		(text "VGA_POS[15..0]" (rect -56 0 39 13)(font " Arial" (font_size 8)))
+		(text "VGA_POS[15..0]" (rect 24 120 119 133)(font " Arial" (font_size 8))(invisible))
+		(line (pt 16 128)(pt 0 128)(line_width 3))
+	)
+	(port
+		(pt 224 144)
+		(output)
+		(text "MEM_RW" (rect 0 0 59 13)(font " Arial" (font_size 8)))
+		(text "MEM_RW" (rect 139 136 198 149)(font " Arial" (font_size 8))(invisible))
+		(line (pt 224 144)(pt 207 144))
+	)
+	(port
+		(pt 224 128)
+		(output)
+		(text "PC_DATA[15..0]" (rect -56 0 39 13)(font " Arial" (font_size 8)))
+		(text "PC_DATA[15..0]" (rect 118 123 213 136)(font " Arial" (font_size 8))(invisible))
+		(line (pt 224 128)(pt 208 128)(line_width 3))
+	)
+	(port
+		(pt 224 112)
+		(output)
+		(text "MEM_ADDR[15..0]" (rect -56 0 53 13)(font " Arial" (font_size 8)))
+		(text "MEM_ADDR[15..0]" (rect 94 107 203 120)(font " Arial" (font_size 8))(invisible))
+		(line (pt 224 112)(pt 208 112)(line_width 3))
+	)
+	(port
+		(pt 224 96)
+		(output)
+		(text "MEM_WDATA[15..0]" (rect -56 0 63 13)(font " Arial" (font_size 8)))
+		(text "MEM_WDATA[15..0]" (rect 84 91 203 104)(font " Arial" (font_size 8))(invisible))
+		(line (pt 224 96)(pt 208 96)(line_width 3))
+	)
+	(port
+		(pt 144 0)
+		(output)
+		(text "HALT_ACK" (rect -56 0 12 13)(font " Arial" (font_size 8)))
+		(text "HALT_ACK" (rect 136 23 149 91)(font " Arial" (font_size 8))(vertical)(invisible))
+		(line (pt 144 0)(pt 144 16))
+	)
+	(port
+		(pt 80 0)
+		(output)
+		(text "VGA_DRAW" (rect 0 0 73 13)(font " Arial" (font_size 8)))
+		(text "VGA_DRAW" (rect 72 25 85 98)(font " Arial" (font_size 8))(vertical)(invisible))
+		(line (pt 80 0)(pt 80 16))
+	)
+	(drawing
+		(text "MicroENIX Inc. '11" (rect 56 72 159 85)(font " Arial" (font_size 8)))
+		(text "AP9 (r)" (rect 56 88 98 101)(font " Arial" (font_size 8)))
+		(text "APx-ARCH" (rect 56 104 119 117)(font " Arial" (font_size 8)))
+		(text "B1000D122011" (rect 56 120 144 133)(font " Arial" (font_size 8)))
+		(line (pt 24 24)(pt 184 24))
+		(line (pt 24 24)(pt 24 184))
+		(line (pt 24 184)(pt 200 184))
+		(line (pt 200 184)(pt 200 40))
+		(line (pt 200 40)(pt 184 24))
+		(line (pt 104 24)(pt 112 32))
+		(line (pt 112 32)(pt 120 24))
+		(rectangle (rect 16 16 208 192))
+		(rectangle (rect 40 40 184 168))
+	)
+)

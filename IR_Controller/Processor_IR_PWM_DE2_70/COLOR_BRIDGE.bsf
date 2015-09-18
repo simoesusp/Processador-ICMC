@@ -1,0 +1,80 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2009 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 64 64 216 192)
+	(text "COLOR_BRIDGE" (rect 5 0 92 12)(font "Arial" ))
+	(text "inst" (rect 8 112 25 124)(font "Arial" ))
+	(port
+		(pt 0 64)
+		(input)
+		(text "RST" (rect 0 0 21 12)(font "Arial" ))
+		(text "RST" (rect 21 59 42 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64)(line_width 1))
+	)
+	(port
+		(pt 64 0)
+		(input)
+		(text "BRG_EN" (rect 0 0 44 12)(font "Arial" ))
+		(text "BRG_EN" (rect 56 24 68 68)(font "Arial" )(vertical))
+		(line (pt 64 0)(pt 64 16)(line_width 1))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "COLOR[3..0]" (rect 0 0 64 12)(font "Arial" ))
+		(text "COLOR[3..0]" (rect 21 75 85 87)(font "Arial" ))
+		(line (pt 0 80)(pt 16 80)(line_width 3))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "CLK" (rect 0 0 21 12)(font "Arial" ))
+		(text "CLK" (rect 21 43 42 55)(font "Arial" )(invisible))
+		(line (pt 0 48)(pt 16 48)(line_width 1))
+	)
+	(port
+		(pt 152 48)
+		(output)
+		(text "R[9..0]" (rect 0 0 34 12)(font "Arial" ))
+		(text "R[9..0]" (rect 97 43 131 55)(font "Arial" ))
+		(line (pt 152 48)(pt 136 48)(line_width 3))
+	)
+	(port
+		(pt 152 64)
+		(output)
+		(text "G[9..0]" (rect 0 0 34 12)(font "Arial" ))
+		(text "G[9..0]" (rect 97 59 131 71)(font "Arial" ))
+		(line (pt 152 64)(pt 136 64)(line_width 3))
+	)
+	(port
+		(pt 152 80)
+		(output)
+		(text "B[9..0]" (rect 0 0 33 12)(font "Arial" ))
+		(text "B[9..0]" (rect 98 75 131 87)(font "Arial" ))
+		(line (pt 152 80)(pt 136 80)(line_width 3))
+	)
+	(drawing
+		(line (pt 24 48)(pt 16 40)(line_width 1))
+		(line (pt 24 48)(pt 16 56)(line_width 1))
+		(rectangle (rect 16 16 136 112)(line_width 1))
+	)
+)

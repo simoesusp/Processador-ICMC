@@ -1,0 +1,66 @@
+--------------------------------------------------------------------------------------
+Timing Analyzer Summary
+--------------------------------------------------------------------------------------
+
+Type           : Worst-case tsu
+Slack          : N/A
+Required Time  : None
+Actual Time    : 11.637 ns
+From           : iKEY[0]
+To             : AP9_cpu:inst11|M4[6]
+From Clock     : --
+To Clock       : iCLK_50
+Failed Paths   : 0
+
+Type           : Worst-case tco
+Slack          : N/A
+Required Time  : None
+Actual Time    : 12.692 ns
+From           : LCD_MOD:inst12|LCD_DATA[7]
+To             : LCD_D[7]
+From Clock     : iCLK_50
+To Clock       : --
+Failed Paths   : 0
+
+Type           : Worst-case th
+Slack          : N/A
+Required Time  : None
+Actual Time    : 3.359 ns
+From           : iKEY[0]
+To             : AP9_cpu:inst11|VGA_CC[10]
+From Clock     : --
+To Clock       : iCLK_50
+Failed Paths   : 0
+
+Type           : Clock Setup: 'iCLK_50'
+Slack          : N/A
+Required Time  : None
+Actual Time    : 18.12 MHz ( period = 55.202 ns )
+From           : AP9_cpu:inst11|Y[12]~_Duplicate_1
+To             : AP9_cpu:inst11|M4[4]
+From Clock     : iCLK_50
+To Clock       : iCLK_50
+Failed Paths   : 0
+
+Type           : Clock Hold: 'iCLK_50'
+Slack          : Not operational: Clock Skew > Data Delay
+Required Time  : None
+Actual Time    : N/A
+From           : RAM:inst6|altsyncram:altsyncram_component|altsyncram_cdc1:auto_generated|out_address_reg_a[2]
+To             : AP9_cpu:inst11|FR[14]
+From Clock     : iCLK_50
+To Clock       : iCLK_50
+Failed Paths   : 8399
+
+Type           : Total number of failed paths
+Slack          : 
+Required Time  : 
+Actual Time    : 
+From           : 
+To             : 
+From Clock     : 
+To Clock       : 
+Failed Paths   : 8399
+
+--------------------------------------------------------------------------------------
+
