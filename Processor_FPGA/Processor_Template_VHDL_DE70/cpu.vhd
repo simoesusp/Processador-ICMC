@@ -196,7 +196,7 @@ begin
 		REG(7)  := x"0000";
 		
 		PC := x"0000";  -- inicializa na linha Zero da memoria -> Programa tem que comecar na linha Zero !!
-		SP := x"3ffc";  -- Inicializa a Pilha no final da mem�ria: 7ffc
+		SP := x"7f00";  -- Inicializa a Pilha no final da mem�ria: 7ffc
 		IR := x"0000";
 		MAR := x"0000";
 			
