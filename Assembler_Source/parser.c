@@ -21,7 +21,7 @@ int CarregaPrograma(char *nome)
     if (in == NULL) parser_Abort("Nao foi possivel carregar o arquivo de programa.");
 
     progr_buffer = (char *)malloc((MAX_BUFF_SIZE+1)*sizeof(char));
-    
+
     if (progr_buffer == NULL) parser_Abort("Memoria insuficiente para buffer do programa!");
 
     int i;
