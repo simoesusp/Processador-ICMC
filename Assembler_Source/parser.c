@@ -12,7 +12,6 @@ char Look; /* Ultimo caractere lido */
 int curr_pos = 0; /* Posicao atual */
 int curr_line = 0; /* Linha atual */
 char * progr_buffer; /* String completa do programa */
-char * last_line_ptr; /* Ponteiro para o inicio da ultima linha */
 
 char progr_buffer_out[MEM_SIZE][17]; /* Buffer de saida */
 
@@ -22,7 +21,6 @@ int CarregaPrograma(char *nome)
     if (in == NULL) parser_Abort("Nao foi possivel carregar o arquivo de programa.");
 
     progr_buffer = (char *)malloc((MAX_BUFF_SIZE+1)*sizeof(char));
-    last_line_ptr = progr_buffer;
     
     if (progr_buffer == NULL) parser_Abort("Memoria insuficiente para buffer do programa!");
 
@@ -76,10 +74,7 @@ char parser_UpCase(char c)
 void parser_GetChar(void)
 {
     Look = progr_buffer[curr_pos];
-    if(Look == '\n' || Look == '\r') {
-        last_line_ptr = progr_buffer + curr_pos + 1;
-        curr_line++;
-    }
+    if(Look == '\n' || Look == '\r') curr_line++;
     if (Look == '\0') Look = EOF;
     curr_pos++;
 }
@@ -99,18 +94,26 @@ void parser_Expected(char *s)
 {
     char ss[400];
 
-    char *line_ptr = last_line_ptr;
-    while (isspace(*line_ptr)) line_ptr++;
-    char *line_end = strchr(line_ptr, ';');
-    if (line_end == NULL)
-        line_end = (char *) strchr(line_ptr, '\n');
-    if (line_end == NULL)
-        line_end = line_ptr + strlen(line_ptr);
-    while (line_end > line_ptr && isspace(*(line_end - 1)))
-        line_end--;
-    int length = line_end - line_ptr;
+    char *line_start = progr_buffer + curr_pos;
+    // line_start aponta para o inicio da linha
+    while (line_start > progr_buffer && *(line_start-1) != '\r' && *(line_start-1) != '\n')
+        line_start--;
+    // line_end aponta para o final da linha
+    char *line_end = progr_buffer + curr_pos;
+    while (*line_end != '\r' && *line_end != '\n' && *line_end != EOF)
+        line_end++;
+    int length = line_end - line_start;
 
-    sprintf(ss,"%s esperado: '%.*s'", s, length, line_ptr);
+    char spaces[100];
+    int i = 0;
+    while (line_start + i < progr_buffer + curr_pos && i < 98) {
+        spaces[i] = line_start[i] == TAB ? TAB : ' ';
+        i++;
+    }
+    spaces[i] = '^';
+    spaces[i + 1] = '\0';
+
+    sprintf(ss,"%s esperado:\n    \"%.*s\"\n     %s", s, length, line_start, spaces);
     parser_Abort(ss);
 }
 
