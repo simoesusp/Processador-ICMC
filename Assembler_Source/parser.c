@@ -92,8 +92,28 @@ void parser_Abort(char *s)
 
 void parser_Expected(char *s)
 {
-    char ss[200];
-    sprintf(ss,"%s esperado.",s);
+    char ss[400];
+
+    char *line_start = progr_buffer + curr_pos;
+    // line_start aponta para o inicio da linha
+    while (line_start > progr_buffer && *(line_start-1) != '\r' && *(line_start-1) != '\n')
+        line_start--;
+    // line_end aponta para o final da linha
+    char *line_end = progr_buffer + curr_pos;
+    while (*line_end != '\r' && *line_end != '\n' && *line_end != EOF)
+        line_end++;
+    int length = line_end - line_start;
+
+    char spaces[100];
+    int i = 0;
+    while (line_start + i < progr_buffer + curr_pos && i < 98) {
+        spaces[i] = line_start[i] == TAB ? TAB : ' ';
+        i++;
+    }
+    spaces[i] = '^';
+    spaces[i + 1] = '\0';
+
+    sprintf(ss,"%s esperado:\n    \"%.*s\"\n     %s", s, length, line_start, spaces);
     parser_Abort(ss);
 }
 
