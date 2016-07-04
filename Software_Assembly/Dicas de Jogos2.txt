@@ -96,6 +96,25 @@ Goto Loop
 5) Delay: ver acima!!
 
 6) Rand: ver acima
+	Código C para gerar rand: 
+
+#include <stdio.h>
+#include <time.h>
+
+#define MAX_VALUE 123
+#define QNT 1000
+
+
+int main(void) {
+    int i;
+    srand(time(NULL));
+    printf("rand : var #%d\n", QNT);
+    for(i = 0; i < QNT; i++){
+        printf("static rand + #%d, #%d\n", i, rand() % MAX_VALUE);
+    }
+
+    return 0;
+}
 
 7) Nave com mais de 1 char:
 		Movimente o primeiro caracter da nave como explicado anteriormente e depois printe os outros caracteres relativamente a posicao do primeiro
@@ -526,7 +545,7 @@ digLetra:	; Espera que uma tecla seja digitada e salva na variavel global "Letra
 
 	
 18) Como construir um labirinto decente!
-		Aqui t� o link de como fazer um labirinto:
+		Aqui tá o link de como fazer um labirinto:
 recursivo http://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_division_method
 
 19) Cenario Colorido!!!
