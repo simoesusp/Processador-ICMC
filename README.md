@@ -5,7 +5,7 @@ This project consists of the development of a complete environment to teach and 
 
 The proposed ICMC-Processor was designed to be simple, efficient, and easy to teach and understand. It was proposed as the main project for Computer Organization classes at the ICMC-University of Sao Paulo, in Sao Carlos, Sao Paulo state, Brazil.
 
-This project consists of four parts:
+This project consists of five parts:
 
 1-	FPGA processor design (Altera VHDL project for Cyclone II DE2-70 board)
 
