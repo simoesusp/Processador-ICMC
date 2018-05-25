@@ -1,0 +1,31 @@
+--========================================================================
+-- JMP END    PC <- 16bit END : b9-b6 = COND
+-- Flag Register: <...Negative|StackUnderflow|StackOverflow|DIVByZero|ARITHmeticOverflow|carRY|zero|equal|lesser|greater>
+-- JMP Condition: (UNconditional, EQual, Not Equal, Zero, Not Zero, CarRY, Not CarRY, GReater, LEsser, Equal or Greater, Equal or Lesser, OVerflow, Not OVerflow, Negative, DIVbyZero, NOT USED)	
+--========================================================================		
+			IF(IR(15 DOWNTO 10) = JMP) THEN 
+					if((IR(9 downto 6) = "0000") or					-- NO COND
+					(IR(9 downto 6) = "0111" and FR(0) = '1') or			-- GREATER
+					(IR(9 downto 6) = "1001" and (FR(2) = '1' or FR(0) = '1')) or 	-- greater equal
+					(IR(9 downto 6) = "1000" and FR(1) = '1') or			-- lesser
+					(IR(9 downto 6) = "1010" and (FR(2) = '1' or FR(1) = '1')) or 	-- lesser equal
+					(IR(9 downto 6) = "0001" and FR(2) = '1') or 			-- equal
+					(IR(9 downto 6) = "0010" and FR(2) = '0') or 			-- not equal
+					(IR(9 downto 6) = "0011" and FR(3) = '1') or 			-- zero
+					(IR(9 downto 6) = "0100" and FR(3) = '0') or 			-- not zero
+					(IR(9 downto 6) = "0101" and FR(4) = '1') or 			-- carry
+					(IR(9 downto 6) = "0110" and FR(4) = '0') or 			-- not carry
+					(IR(9 downto 6) = "1011" and FR(5) = '1') or 			-- overflow
+					(IR(9 downto 6) = "1100" and FR(5) = '0') or 			-- not overflow
+					(IR(9 downto 6) = "1101" and FR(6) = '1') or 			-- DIV0
+					(IR(9 downto 6) = "1110" and FR(9) = '1')) then 		-- result negative
+						M1 <= PC;
+						RW <= '0';
+						LoadPC := '1';
+				else
+					IncPC := '1';
+				end if;
+					state := fetch;
+			END IF;	
+
+--========================================================================
