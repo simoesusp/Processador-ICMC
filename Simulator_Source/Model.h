@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>		// para a funcao delay
-#include <curses.h>	// para a captura de caracteres do inchar
+//#include <curses.h>	// para a captura de caracteres do inchar
 #include <math.h>		// para a funcao pow
 #include <pthread.h>
 
