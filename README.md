@@ -17,3 +17,5 @@ This project consists of five parts:
 
 5-	Documentation (Processor architecture and Assembly language description)
 
+# Email do Monitor 2018-1: 
+Leonardo Gomes <leonardo.alves.gomes@usp.br>
