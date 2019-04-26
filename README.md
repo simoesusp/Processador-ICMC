@@ -29,9 +29,9 @@ This project consists of five parts:
 
 # Configuração da Placa DE115:
 
-1- Configure o Clock para 1MHz: SW[6] = 1   e TODAS as outras para 0
+1- Configure o Clock para 1MHz: SW[6] = 1   e TODAS as outras para 0 (Para outros Clocks, tentar subir uma por uma (e apenas uma!) das SW[0]=1Hz, SW[1]=10Hz  ate' SW[6]=1MHz)
 
-2- Selecione o clock AUTOMATICO => sw[16] = 0
+2- Selecione o clock AUTOMATICO => sw[16] = 1
 
 3- Agora e' so' programar a placa do Quartus
 
@@ -39,9 +39,9 @@ This project consists of five parts:
 
 # Para gerar o PROGRAMA:
 
-1- Escreva o programa NORMALMENTEno Sublime
+1- Escreva o programa NORMALMENTE no Sublime (nome.ASM)
 
-2- F7 para montar o arquivo binario (nome.MIF)
+2- F7 para montar o arquivo binario (nome.MIF) e Simular (pra ver se Funciona, ANTES de esperar 20min no Quartus!!)
 
 3- Mude o NOME do arquivo nome.MIF para CPURAM.MIF
 
@@ -50,6 +50,10 @@ This project consists of five parts:
 5- Compile o projeto no Quartus
 
 6- Programe a Placa e REZE!!!!
+
+7- Troque o  input do Monitor para entrada VGA (tu vai sofrer nos menuzinhos da Philipis!!!)
+
+
 
 
 
