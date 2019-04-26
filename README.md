@@ -17,5 +17,41 @@ This project consists of five parts:
 
 5-	Documentation (Processor architecture and Assembly language description)
 
-# Email do Monitor 2018-1: 
-Leonardo Gomes <leonardo.alves.gomes@usp.br>
+# Configuração da Placa DE0:
+
+1- Configure o Clock para 1MHz: SW[2] = 1; SW[1]=1; SW[0]=0
+
+2- Selecione o clock AUTOMATICO => sw[8] = 0
+
+3- Agora e' so' programar a placa do Quartus
+
+4- Para clock MANUAL => SW[8]=1  e  mudar a SW[9] para dar o clock no circuito
+
+# Configuração da Placa DE115:
+
+1- Configure o Clock para 1MHz: SW[6] = 1   e TODAS as outras para 0
+
+2- Selecione o clock AUTOMATICO => sw[16] = 0
+
+3- Agora e' so' programar a placa do Quartus
+
+4- Para clock MANUAL => SW[16]=1  e  mudar a SW[17] para dar o clock no circuito
+
+# Para gerar o PROGRAMA:
+
+1- Escreva o programa NORMALMENTEno Sublime
+
+2- F7 para montar o arquivo binario (nome.MIF)
+
+3- Mude o NOME do arquivo nome.MIF para CPURAM.MIF
+
+4- Copie CPURAM.MIF para a pasta do Projeto no Quartus
+
+5- Compile o projeto no Quartus
+
+6- Programe a Placa e REZE!!!!
+
+
+
+
+
