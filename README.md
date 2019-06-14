@@ -17,6 +17,11 @@ This project consists of five parts:
 
 5-	Documentation (Processor architecture and Assembly language description)
 
+
+# Projetos dos Alunos
+
+
+
 # Configuração da Placa DE0:
 
 1- Configure o Clock para 1MHz: SW[2] = 1; SW[1]=1; SW[0]=0
