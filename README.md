@@ -21,7 +21,7 @@ This project consists of five parts:
 # Projetos dos Alunos
 
 - Genetic Max Value Calculator: André Fakhoury, Thiago Preischadt, Vitor Santana - https://andrefakhoury.github.io/genetic-max-value-calculator/
-- Felipe gdsgdfhgdfgdfgd
+- Jogo da chuva de letras: Felipe Guilermmo Santuche Moleiro - https://github.com/FelipeMoleiro/ProjetoLabOrgArqComp
 
 # Configuração da Placa DE0:
 
