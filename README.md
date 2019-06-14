@@ -21,6 +21,7 @@ This project consists of five parts:
 # Projetos dos Alunos
 
 - Genetic Max Value Calculator: André Fakhoury, Thiago Preischadt, Vitor Santana - https://andrefakhoury.github.io/genetic-max-value-calculator/
+- Rex Scape: Caio Augusto Duarte Basso, Gabriel Garcia Lorencetti, Giovana Daniele da Silva, Luana Balador Belisario - https://github.com/gabrielgarcia7/game-rexscape
 
 # Configuração da Placa DE0:
 
