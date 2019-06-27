@@ -2,7 +2,7 @@
 
 jmp main
 
-msg_start: string "PRESS 'A' TO START"
+msg_start: string "PRESS ANY KEY TO START"
 
 map_01: string "                                        #########################################@ o o o o o o o o o o o o o o o o o  $## o#o#o###########$#########$#o####### ##o## # o o o o o o o o o o o # o o o # ## o $#o#######o########### #o o#o###o#o##o#### # o o o # o o #o $ o### #  $# # ## o o $ o o o#o#o###o  o o o #o  o #o#o## ############ # $ ###$#####o# ##### # ##$ o o o o o  o o#o  o o o o o o o  o o## # ########o# # ###o#### #### ##### # ##o#o o#o$o#o #o o  o o o#o#o #o o o o#o## # # # # # ######o#o#o o o o# o#$#  # ##o#o#o#o#o#o# o o  o # ##### # ## ## #o## # # # # # #o######## $  o o#o o o o  ## #o#o$o#o o#  o o o o  o  $ o o o o o ##$  o o o o o o $###o# ##### #o## ## # ## #o#### ##### # o o #o o o o# o#$# o#o## # o o o o o o#####o####o####o o  o # ##o#o#### ##### o o o o o o o ####o####o## # # o o o o o## ##o### ###o o o o o# ##o#o#o## ##### # $ # #  $  # ##o # # #o## # o o $ o o $#o# #o o# #o o#o ##o#o# ##o#o#o## ##### # #o# o # # o # o#o # #o## # # o o o o o  $ #o#o $ o#o#o # ##o# ##o  #### ##### ## ## ##o#o## ##o#o#o  o## #$  o o o o o o o o o o o o o o o #o ## ## ### ######## ###### ###### #####  ##$  o o $ o o o  $ o o o o o o $ o o  $######################################## "
 
@@ -13,7 +13,7 @@ p_tail: var #1
 
 main:
 
-	loadn r0, #610		; posicao na tela onde a mensagem sera' escrita
+	loadn r0, #608		; posicao na tela onde a mensagem sera' escrita
 	loadn r1, #msg_start	; carrega r1 com o endereco do vetor que contem a mensagem
 	loadn r2, #2816		; seleciona a cor da mensagem
 	
@@ -23,24 +23,25 @@ main:
 
 	wait_start:
 
+		loadn r7, #snake 
+
 		inchar r0
 		
-		loadn r1, #'a'
+		loadn r1, #255
 		
 		cmp r0, r1
-		jeq call_start 
-		
-		loadn r1, #'A'
-		
-		cmp r0, r1
-		jeq call_start 
+		jne call_start
 
 		inc r5
 		jmp wait_start
 		call_start:
 		
-		call start_game	
+		call start_game
+		; guarda o inicio do jogador.
 		call game_loop
+		
+		; TODO: limpar tela
+		jmp main ; reinicia o jogo.
 
 	halt
 	
@@ -90,11 +91,11 @@ draw_stage:	;  rotina de impresao de mensagens:    r1 = mapa a ser desenhado
 
 	push r0	; protege o r0 na pilha para preservar seu valor
 	push r1	; protege o r1 na pilha para preservar seu valor
-	push r2	; protege o r1 na pilha para preservar seu valor
+	push r2	; protege o r2 na pilha para preservar seu valor
 	push r3	; protege o r3 na pilha para ser usado na subrotina
 	push r4	; protege o r4 na pilha para ser usado na subrotina
 	push r5 ; protege o r5 na pilha para ser usado na subrotina
-	push r7
+	push r7 ; protege o r7 na pilha para ser usado na subrotina
 
 	loadn r0, #0
 	loadn r3, #'\0'	; criterio de parada
@@ -146,9 +147,8 @@ draw_loop:
 	jne end_draw
 	
 	; guarda o inicio do jogador.
-	store snake, r0
-	
 	loadn r5, #0
+	store snake, r0
 	store p_head, r5
 	store p_tail, r5
 	
@@ -180,8 +180,8 @@ draw_exit:
 	add r4, r2, r4
 	outchar r4, r0
 	
-	pop r7
-	pop r5 ; resgata os valores dos registradores utilizados na subrotina da pilha.
+	pop r7 ; resgata os valores dos registradores utilizados na subrotina da pilha.
+	pop r5 
 	pop r4	
 	pop r3
 	pop r2
@@ -191,299 +191,211 @@ draw_exit:
 	
 game_loop:
 
-	push r0
-	push r1
-	
-	push r6
-	push r7
-	
-	game_loop_loop:
-
 	inchar r0
 	
-	loadn r1, #'w'
-	cmp r0, r1
-	jne input_W
-	
-	loadn r6, #1
-	loadn r7, #0
-	
-	call move_player
-	jmp yes_input
+		loadn r1, #'w'
+		cmp r0, r1
+		jne input_W
+		
+		loadn r6, #1
+		loadn r7, #0
+		jmp yes_input
 	
 	input_W:
-	loadn r1, #'W'
-	cmp r0, r1
-	jne input_s
 	
-	loadn r6, #1
-	loadn r7, #0
-	
-	call move_player
-	jmp yes_input
+		loadn r1, #'W'
+		cmp r0, r1
+		jne input_s
+		
+		loadn r6, #1
+		loadn r7, #0
+		jmp yes_input
 	
 	input_s:
-	loadn r1, #'s'
-	cmp r0, r1
-	jne input_S
 	
-	loadn r6, #2
-	loadn r7, #0
-	
-	call move_player
-	jmp yes_input
+		loadn r1, #'s'
+		cmp r0, r1
+		jne input_S
+		
+		loadn r6, #2
+		loadn r7, #0
+		jmp yes_input
 	
 	input_S:
-	loadn r1, #'S'
-	cmp r0, r1
-	jne input_a
 	
-	loadn r6, #2
-	loadn r7, #0
-	
-	call move_player
-	jmp yes_input
+		loadn r1, #'S'
+		cmp r0, r1
+		jne input_a
+		
+		loadn r6, #2
+		loadn r7, #0
+		jmp yes_input
 	
 	input_a:
-	loadn r1, #'a'
-	cmp r0, r1
-	jne input_A
 	
-	loadn r6, #0
-	loadn r7, #2
-	
-	call move_player
-	jmp yes_input
+		loadn r1, #'a'
+		cmp r0, r1
+		jne input_A
+		
+		loadn r6, #0
+		loadn r7, #2
+		jmp yes_input
 	
 	input_A:
-	loadn r1, #'A'
-	cmp r0, r1
-	jne input_d
 	
-	loadn r6, #0
-	loadn r7, #2
-	
-	call move_player
-	jmp yes_input
+		loadn r1, #'A'
+		cmp r0, r1
+		jne input_d
+		
+		loadn r6, #0
+		loadn r7, #2
+		jmp yes_input
 	
 	input_d:
-	loadn r1, #'d'
-	cmp r0, r1
-	jne input_D
 	
-	loadn r6, #0
-	loadn r7, #1
-	
-	call move_player
-	jmp yes_input
+		loadn r1, #'d'
+		cmp r0, r1
+		jne input_D
+		
+		loadn r6, #0
+		loadn r7, #1
+		jmp yes_input
 	
 	input_D:
-	loadn r1, #'D'
-	cmp r0, r1
-	jne no_input
 	
-	loadn r6, #0
-	loadn r7, #1
-	
-	call move_player
-	jmp yes_input
-	
-	no_input:
-	
-	loadn r6, #0
-	loadn r7, #0
-	
+		loadn r1, #'D'
+		cmp r0, r1
+		jne end_input_check
+		
+		loadn r6, #0
+		loadn r7, #1
+		
 	yes_input:
 	
-	jmp game_loop_loop
+		call update_pos ; atualiza a posicao do player.
+		call redraw_player ; redesenha o player.
+		jmp end_input_check
 	
-	pop r7
-	pop r6
+	end_input_check:
 	
-	pop r1
-	pop r0
+	jmp game_loop
 	
 	rts
-	
-move_player:
+
+; parametros:
+;	r6: movementação no eixo x.
+; 		0 - sem movimemento, 1 - direita, 2 - esquerda
+;	r6: movementação no eixo x.
+; 		0 - sem movimemento, 1 - cima, 2 - baixo
+; retorna a nova posicao do player em r2.
+update_pos:
 
 	push r0
 	push r1
-	push r2
 	push r3
 	push r4
 	push r5
 	
-	; carrega a cabeça do jogador.
-	loadn r0, #snake
-	load r1, p_head
-	add r2, r0, r1
-	loadi r2, r2
+	loadn r0, #snake ; carrega a posicao inicial do vetor do player.
+	load r1, p_head ; carrega em que posicao do vetor esta a cabeca do player.
+	add r3, r0, r1 ; calcula o endereco da posicao da cabeca do player.
+	
+	loadi r2, r3 ; carega a posicao atual da cabeca do player.
 	
 	loadn r4, #40
 	
 	loadn r5, #1
 	cmp r6, r5
 	jne move_right
-	
-	sub r2, r2, r4
-	call check_movement
-	call redraw_player
-	jmp end_move
+		
+		sub r2, r2, r4
+		jmp end_move
 	
 	move_right:
 	cmp r7, r5
 	jne move_down
 	
-	inc r2
-	call check_movement
-	call redraw_player
-	jmp end_move
+		inc r2
+		jmp end_move
 	
 	move_down:
 	loadn r5, #2
 	cmp r6, r5
 	jne move_left
 	
-	add r2, r2, r4
-	call check_movement
-	call redraw_player
-	jmp end_move
+		add r2, r2, r4
+		jmp end_move
 	
 	move_left:
 	cmp r7, r5
 	jne end_move
 	
-	dec r2
-	call check_movement
-	call redraw_player
-	jmp end_move
+		dec r2
+		jmp end_move
 	
 	end_move:
+	
+	inc r1 ; calcula a nova posicao no vetor da cabeca do player.
+	loadn r5, #1200
+	mod r1, r1, r5
+	
+	store p_head, r1 ; guarda na memoria.
+	
+	add r3, r0, r1 ; calcula o endereco da posicao da cabeca do player.
+	storei r3, r2 ; guarda a posicao da cabeca do jogador na memoria.
+	
+	load r3, p_tail ; atualiza a posicao da calda do jogador no vetor.
+	
+	loadn r4, #1 ; detecta se a calda do jogador deve ser atualiza
+	sub r0, r1, r3
+	cmp r0, r4
+	jel end_update_pos
+	
+		inc r3 ; atualzia a calda do jogador.
+		loadn r0, #1200
+		mod r3, r3, r0
+		store p_tail, r3
+		
+	end_update_pos:
 	
 	pop r5
 	pop r4
 	pop r3
-	pop r2
 	pop r1
 	pop r0
 	
 	rts
-
-check_movement:
-
-	push r5
-	push r6
-	push r7
-	
-	loadn r6, #cur_map
-	add r6, r2, r6
-	
-	loadi r7, r6
-
-	loadn r5, #'#'
-	cmp r7, r5
-	jne check_money
-	
-	halt
-	
-	check_money:
-	
-		loadn r5, #'o'
-		cmp r7, r5
-		jne check_money_bonus
-		
-		jmp empty
-	
-	check_money_bonus:
-	
-		loadn r5, #'$'
-		cmp r7, r5
-		jne check_self_tail
-		
-		jmp empty
-	
-	check_self_tail:
-	
-		loadn r5, #'*'
-		cmp r7, r5
-		jne check_self_head
-		
-		halt
-	
-	check_self_head:
-	
-		loadn r5, #'@'
-		cmp r7, r5
-		jne empty
-		
-		halt
-	
-	empty:
-	
-		load r5, p_tail
-		
-		loadn r6, #' '
-		add r7, r5, r0
-		loadi r5, r7
-		outchar r6, r5
-		
-		inc r5
-		store p_tail, r5
-	
-	checked:
-
-	pop r7
-	pop r6
-	pop r5
-
-	rts
 	
 redraw_player:
-
+	
+	push r0
 	push r1
 	push r2
 	push r3
-	push r4
-	push r5
 	
-	add r3, r1, r0
-	loadi r5, r3
+	loadn r0, #snake ; carrega a posicao inicial do vetor do player.
+	load r1, p_head ; carrega em que posicao do vetor esta a nova cabeca do player.
+	add r3, r0, r1 ; calcula o endereco da posicao da nova cabeca do player.
+	
+	loadi r2, r3 ; carega a posicao nova da cabeca do player.
+	
+	loadn r0, #'@' ; printa a nova cabeca do player.
+	loadn r1, #1536
+	add r0, r0, r1
+	outchar r0, r2
+	
+	loadn r0, #snake ; carrega a posicao inicial do vetor do player.
+	load r1, p_tail ; carrega em que posicao do vetor esta a calda do player.
+	add r3, r0, r1 ; calcula o endereco da posicao da calda do player.
+	
+	loadi r2, r3 ; carega a posicao da calda do player.
+	
+	loadn r0, #' ' ; apaga a calda do player.
+	outchar r0, r2
 
-	; printa o corpo do jogador
-	loadn r3, #'*'
-	loadn r4, #1536
-	add r3, r3, r4
-	
-	;outchar r3, r5
-
-	; atualiza a onde na lista esta a cabeca do jogador
-	inc r1
-	loadn r3, #1200
-	mod r1, r1, r3
-	
-	store p_head, r1
-	
-	; guarda a posicao da cabeca do jogador na lista
-	add r3, r0, r1
-	storei r3, r2
-	
-	; atualiza o mapa na memoria
-	loadn r5, #cur_map
-	add r5, r2, r5
-	storei r5, r2
-	
-	; printa a nova cabeca do jogador
-	loadn r3, #'@'
-	loadn r4, #1536
-	add r3, r3, r4
-	
-	outchar r3, r2
-
-	pop r5
-	pop r4
 	pop r3
 	pop r2
 	pop r1
+	pop r0
 
 	rts
