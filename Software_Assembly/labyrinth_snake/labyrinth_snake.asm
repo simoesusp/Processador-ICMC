@@ -2,6 +2,7 @@
 
 ; Julia Carolina Frare Peixoto - 10734727
 ; Luís Eduardo Rozante de Freitas Pereira - 10734794
+; Maurílio da Motta Meireles - 10734501
 ; nome - numUSP
 
 jmp main ; inicia o programa
