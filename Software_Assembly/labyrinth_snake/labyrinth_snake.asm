@@ -8,6 +8,7 @@ jmp main ; inicia o programa
 
 ;---- inicio da declaracao de variaveis -----
 
+msg_title: string "LABYRINTH SNAKE" ; mensagem de titulo.
 msg_start: string "PRESS ANY KEY TO START" ; mensagem de inicio.
 msg_end: string "GAME OVER" ; mensagem de game over.
 msg_restart: string "PRESS ANY KEY TO RESTART" ; mensagem de reinicio.
@@ -29,7 +30,14 @@ points: var #1 ; guarda a pontuacao do jogador.
 
 main:
 
-	loadn r0, #609			; posicao na tela onde a mensagem sera escrita
+	; printa o titulo.
+	loadn r0, #492			; posicao na tela onde a mensagem sera escrita
+	loadn r1, #msg_title	; carrega r1 com o endereco do vetor que contem a mensagem
+	loadn r2, #512			; seleciona a cor da mensagem
+	call print_str  
+
+	; printa a mensagem de inicio.
+	loadn r0, #689			; posicao na tela onde a mensagem sera escrita
 	loadn r1, #msg_start	; carrega r1 com o endereco do vetor que contem a mensagem
 	loadn r2, #0			; seleciona a cor da mensagem
 	call print_str  
@@ -248,6 +256,7 @@ gameplay_loop:
 
 	push r0 ; protege os valores dos registradores que serao usados na subrotina na pilha.
 	push r1
+	push r2
 	push r6
 	push r7
 
@@ -369,6 +378,7 @@ gameplay_loop:
 	
 	pop r7 ; resgata os valores dos registradores utilizados na subrotina da pilha.
 	pop r6
+	pop r2
 	pop r1
 	pop r0
 	
