@@ -1,9 +1,9 @@
 ; labyrinth snake
+; configure para clock automatico de 1MHz.
 
 ; Julia Carolina Frare Peixoto - 10734727
 ; Luís Eduardo Rozante de Freitas Pereira - 10734794
 ; Maurílio da Motta Meireles - 10734501
-; nome - numUSP
 
 jmp main ; inicia o programa
 
@@ -271,9 +271,20 @@ gameplay_loop:
 			
 			loadn r1, #'W' ; verifica se o player pressionou para cima (maiuscula).
 			cmp r0, r1
-			jne input_s
+			jne input_s				
 			
 			input_forward: ; marca que o player tentou mover para cima.
+			
+				loadn r1, #255 ; carrega para comparacao.
+				wait_release_key_w: ; espera a tecla ser solta.
+			
+					inchar r2
+					cmp r1, r2 ; condicao de saida.
+					jeq wait_release_key_w_exit
+					
+					jmp wait_release_key_w ; continua o loop.
+				wait_release_key_w_exit:
+			
 				loadn r6, #1
 				loadn r7, #0
 				jmp yes_input
@@ -289,6 +300,17 @@ gameplay_loop:
 			jne input_a
 			
 			input_down: ; marca que o player tentou mover para baixo.
+			
+				loadn r1, #255 ; carrega para comparacao.
+				wait_release_key_s: ; espera a tecla ser solta.
+			
+					inchar r2
+					cmp r1, r2 ; condicao de saida.
+					jeq wait_release_key_s_exit
+					
+					jmp wait_release_key_s ; continua o loop.
+				wait_release_key_s_exit:
+				
 				loadn r6, #2
 				loadn r7, #0
 				jmp yes_input
@@ -304,6 +326,17 @@ gameplay_loop:
 			jne input_d
 			
 			input_left:	; marca que o player tentou mover para esquerda.
+			
+				loadn r1, #255 ; carrega para comparacao.
+				wait_release_key_a: ; espera a tecla ser solta.
+			
+					inchar r2
+					cmp r1, r2 ; condicao de saida.
+					jeq wait_release_key_a_exit
+					
+					jmp wait_release_key_a ; continua o loop.
+				wait_release_key_a_exit:
+				
 				loadn r6, #0
 				loadn r7, #2
 				jmp yes_input
@@ -319,6 +352,17 @@ gameplay_loop:
 			jne end_input_check
 			
 			input_right: ; marca que o player tentou mover para direita.
+			
+				loadn r1, #255 ; carrega para comparacao.
+				wait_release_key_d: ; espera a tecla ser solta.
+			
+					inchar r2
+					cmp r1, r2 ; condicao de saida.
+					jeq wait_release_key_d_exit
+					
+					jmp wait_release_key_d ; continua o loop.
+				wait_release_key_d_exit:
+			
 				loadn r6, #0
 				loadn r7, #1
 				jmp yes_input
@@ -367,16 +411,26 @@ gameplay_loop:
 		
 		loop_wait_restart: ; espera o jogador reiniciar.
 
-		loadn r0, #0 ; limpa o registrador que recebera input.
-		inchar r0 ; tenta receber input.
-		
-		loadn r1, #' ' ; verifica se o input ocorreu.
-		cmp r0, r1
-		jeq call_restart ; reinicia o jogo.
+			loadn r0, #0 ; limpa o registrador que recebera input.
+			inchar r0 ; tenta receber input.
+			
+			loadn r1, #' ' ; verifica se o input ocorreu.
+			cmp r0, r1			
+			jeq call_restart ; reinicia o jogo.
 
-		jmp loop_wait_restart ; continua o loop.
+			jmp loop_wait_restart ; continua o loop.
 		
 	call_restart:
+	
+	loadn r1, #255 ; carrega para comparacao.
+	wait_release_key_restart: ; espera a tecla ser solta.
+
+		inchar r0
+		cmp r1, r0 ; condicao de saida.
+		jeq wait_release_key_restart_exit
+		
+		jmp wait_release_key_restart ; continua o loop.
+	wait_release_key_restart_exit:
 	
 	call hold ; faz um delay antes de recomecar.
 	
