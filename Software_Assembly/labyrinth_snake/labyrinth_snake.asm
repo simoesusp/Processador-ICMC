@@ -1,8 +1,8 @@
 ; labyrinth snake
 
-; nome - numUSP
-; nome - numUSP
-; nome - numUSP
+; Julia Carolina Frare Peixoto - 10734727
+; Luís Eduardo Rozante de Freitas Pereira - 10734794
+; Maurilio da Motta Meireles - nUSP
 
 jmp main ; inicia o programa
 
