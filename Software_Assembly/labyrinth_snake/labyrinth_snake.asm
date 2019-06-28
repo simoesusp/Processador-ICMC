@@ -47,6 +47,7 @@ main:
 
 	loop_wait_start: ; espera o jogador iniciar.
 
+		loadn r0, #0 ; limpa o registrador que recebera input.
 		inchar r0 ; tenta receber input.
 		
 		loadn r1, #' ' ; verifica se o input ocorreu.
@@ -259,6 +260,7 @@ gameplay_loop:
 
 	game_loop:
 
+		loadn r0, #0 ; limpa o registrador que recebera input.
 		inchar r0 ; recebe input.
 		
 		input_w: ; move o jogador para a frente.
@@ -347,6 +349,8 @@ gameplay_loop:
 		
 		end_input_check:
 		
+		call hold ; aguarda por alguns ciclos.
+		
 		jmp game_loop ; continua o loop.
 	
 	end_game:
@@ -363,6 +367,7 @@ gameplay_loop:
 		
 		loop_wait_restart: ; espera o jogador reiniciar.
 
+		loadn r0, #0 ; limpa o registrador que recebera input.
 		inchar r0 ; tenta receber input.
 		
 		loadn r1, #' ' ; verifica se o input ocorreu.
@@ -372,6 +377,8 @@ gameplay_loop:
 		jmp loop_wait_restart ; continua o loop.
 		
 	call_restart:
+	
+	call hold ; faz um delay antes de recomecar.
 	
 	pop r7 ; resgata os valores dos registradores utilizados na subrotina da pilha.
 	pop r6
@@ -717,6 +724,44 @@ clear_screen:
 	pop r1 ; resgata os valores dos registradores utilizados na subrotina da pilha.
 	pop r0
 	
+	rts
+		
+hold: ; aguarda por alguns ciclos.
+
+	
+	push r0 ; protege os valores dos registradores que serao usados na subrotina na pilha.
+	push r1
+	push r2
+	
+	loadn r0, #0 ; usados para contar o loop de fora.
+	loadn r2, #72 ; ciclos para desperdicar.
+	
+	hold_loop:
+		cmp r0, r2 ; condicao de parada do loop externo.
+		jeq hold_exit
+		
+			loadn r1, #0 ; usado para contar o loop de dentro.
+		
+			hold_loop_in:
+			cmp r1, r2 ; condicao de parada do loop interno.
+			jeq hold_exit_in
+			
+				nop ; noop para dar sorte.		
+			
+				inc r1
+				jmp hold_loop_in ; continua o loop.	
+			
+			hold_exit_in:
+		
+			inc r0
+			jmp hold_loop ; continua o loop.	
+	
+	hold_exit:
+	
+	pop r2 ; resgata os valores dos registradores utilizados na subrotina da pilha.
+	pop r1
+	pop r0
+
 	rts
 		
 ;---- fim das subrotinas -----
