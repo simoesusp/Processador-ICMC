@@ -4,17 +4,25 @@
 ; nome - numUSP
 ; nome - numUSP
 
+jmp main ; inicia o programa
+
 ;---- inicio da declaracao de variaveis -----
 
 msg_start: string "PRESS ANY KEY TO START" ; mensagem de inicio.
+msg_end: string "GAME OVER" ; mensagem de game over.
+msg_restart: string "PRESS ANY KEY TO RESTART" ; mensagem de reinicio.
 
 ; mapas iniciais do jogo.
 map_01: string "                                        #########################################@ o o o o o o o o o o o o o o o o o  $## o#o#o###########$#########$#o####### ##o## # o o o o o o o o o o o # o o o # ## o $#o#######o########### #o o#o###o#o##o#### # o o o # o o #o $ o### #  $# # ## o o $ o o o#o#o###o  o o o #o  o #o#o## ############ # $ ###$#####o# ##### # ##$ o o o o o  o o#o  o o o o o o o  o o## # ########o# # ###o#### #### ##### # ##o#o o#o$o#o #o o  o o o#o#o #o o o o#o## # # # # # ######o#o#o o o o# o#$#  # ##o#o#o#o#o#o# o o  o # ##### # ## ## #o## # # # # # #o######## $  o o#o o o o  ## #o#o$o#o o#  o o o o  o  $ o o o o o ##$  o o o o o o $###o# ##### #o## ## # ## #o#### ##### # o o #o o o o# o#$# o#o## # o o o o o o#####o####o####o o  o # ##o#o#### ##### o o o o o o o ####o####o## # # o o o o o## ##o### ###o o o o o# ##o#o#o## ##### # $ # #  $  # ##o # # #o## # o o $ o o $#o# #o o# #o o#o ##o#o# ##o#o#o## ##### # #o# o # # o # o#o # #o## # # o o o o o  $ #o#o $ o#o#o # ##o# ##o  #### ##### ## ## ##o#o## ##o#o#o  o## #$  o o o o o o o o o o o o o o o #o ## ## ### ######## ###### ###### #####  ##$  o o $ o o o  $ o o o o o o $ o o  $######################################## "
+map_02: string "                                        #########################################@ o o o o o o o o o o o o o o o o o  $## o#o#o###########$#########$#o####### ##o## # o o o o o o o o o o o # o o o # ## o $#o#######o########### #o o#o###o#o##o#### # o o o # o o #o $ o### #  $# # ## o o $ o o o#o#o###o  o o o #o  o #o#o## ############ # $ ###$#####o# ##### # ##$ o o o o o  o o#o  o o o o o o o  o o## # ########o# # ###o#### #### ##### # ##o#o o#o$o#o #o o  o o o#o#o #o o o o#o## # # # # # ######o#o#o o o o# o#$#  # ##o#o#o#o#o#o# o o  o # ##### # ## ## #o## # # # # # #o######## $  o o#o o o o  ## #o#o$o#o o#  o o o o  o  $ o o o o o ##$  o o o o o o $###o# ##### #o## ## # ## #o#### ##### # o o #o o o o# o#$# o#o## # o o o o o o#####o####o####o o  o # ##o#o#### ##### o o o o o o o ####o####o## # # o o o o o## ##o### ###o o o o o# ##o#o#o## ##### # $ # #  $  # ##o # # #o## # o o $ o o $#o# #o o# #o o#o ##o#o# ##o#o#o## ##### # #o# o # # o # o#o # #o## # # o o o o o  $ #o#o $ o#o#o # ##o# ##o  #### ##### ## ## ##o#o## ##o#o#o  o## #$  o o o o o o o o o o o o o o o #o ## ## ### ######## ###### ###### #####  ##$  o o $ o o o  $ o o o o o o $ o o  $######################################## "
+map_03: string "                                        #########################################@ o o o o o o o o o o o o o o o o o  $## o#o#o###########$#########$#o####### ##o## # o o o o o o o o o o o # o o o # ## o $#o#######o########### #o o#o###o#o##o#### # o o o # o o #o $ o### #  $# # ## o o $ o o o#o#o###o  o o o #o  o #o#o## ############ # $ ###$#####o# ##### # ##$ o o o o o  o o#o  o o o o o o o  o o## # ########o# # ###o#### #### ##### # ##o#o o#o$o#o #o o  o o o#o#o #o o o o#o## # # # # # ######o#o#o o o o# o#$#  # ##o#o#o#o#o#o# o o  o # ##### # ## ## #o## # # # # # #o######## $  o o#o o o o  ## #o#o$o#o o#  o o o o  o  $ o o o o o ##$  o o o o o o $###o# ##### #o## ## # ## #o#### ##### # o o #o o o o# o#$# o#o## # o o o o o o#####o####o####o o  o # ##o#o#### ##### o o o o o o o ####o####o## # # o o o o o## ##o### ###o o o o o# ##o#o#o## ##### # $ # #  $  # ##o # # #o## # o o $ o o $#o# #o o# #o o#o ##o#o# ##o#o#o## ##### # #o# o # # o # o#o # #o## # # o o o o o  $ #o#o $ o#o#o # ##o# ##o  #### ##### ## ## ##o#o## ##o#o#o  o## #$  o o o o o o o o o o o o o o o #o ## ## ### ######## ###### ###### #####  ##$  o o $ o o o  $ o o o o o o $ o o  $######################################## "
+map_04: string "                                        #########################################@ o o o o o o o o o o o o o o o o o  $## o#o#o###########$#########$#o####### ##o## # o o o o o o o o o o o # o o o # ## o $#o#######o########### #o o#o###o#o##o#### # o o o # o o #o $ o### #  $# # ## o o $ o o o#o#o###o  o o o #o  o #o#o## ############ # $ ###$#####o# ##### # ##$ o o o o o  o o#o  o o o o o o o  o o## # ########o# # ###o#### #### ##### # ##o#o o#o$o#o #o o  o o o#o#o #o o o o#o## # # # # # ######o#o#o o o o# o#$#  # ##o#o#o#o#o#o# o o  o # ##### # ## ## #o## # # # # # #o######## $  o o#o o o o  ## #o#o$o#o o#  o o o o  o  $ o o o o o ##$  o o o o o o $###o# ##### #o## ## # ## #o#### ##### # o o #o o o o# o#$# o#o## # o o o o o o#####o####o####o o  o # ##o#o#### ##### o o o o o o o ####o####o## # # o o o o o## ##o### ###o o o o o# ##o#o#o## ##### # $ # #  $  # ##o # # #o## # o o $ o o $#o# #o o# #o o#o ##o#o# ##o#o#o## ##### # #o# o # # o # o#o # #o## # # o o o o o  $ #o#o $ o#o#o # ##o# ##o  #### ##### ## ## ##o#o## ##o#o#o  o## #$  o o o o o o o o o o o o o o o #o ## ## ### ######## ###### ###### #####  ##$  o o $ o o o  $ o o o o o o $ o o  $######################################## "
 
 cur_map: var #1200 ; guarda o mapa atual atualizado na memoria
 snake: var #1200 ; vetor com as posicoes dos segmentos do player.
 p_head: var #1 ; guarda o indice da cabeca do player na lista.
 p_tail: var #1 ; guarda o indice da cauda do player na lista.
+points: var #1 ; guarda a pontuacao do jogador.
 
 ;---- fim da declaracao de variaveis -----
 
@@ -24,7 +32,7 @@ main:
 
 	loadn r0, #609			; posicao na tela onde a mensagem sera escrita
 	loadn r1, #msg_start	; carrega r1 com o endereco do vetor que contem a mensagem
-	loadn r2, #2816			; seleciona a cor da mensagem
+	loadn r2, #0			; seleciona a cor da mensagem
 	call print_str  
 
 	loadn r7, #0 ; seed para o mapa aleatório
@@ -44,7 +52,7 @@ main:
 	
 	call start_game ; inicia um novo jogo.
 	
-	; TODO: limpar tela
+	call clear_screen ; limpa a tela apos o final do jogo.
 	jmp main ; reinicia o jogo.
 	
 ;---- fim do programa principal -----
@@ -95,8 +103,11 @@ start_game:
 
 	push r1 ; protege os valores dos registradores que serao usados na subrotina na pilha.
 
+	loadn r1, #0 ; inicializa os pontos.
+	store points, r1
+
 	call draw_stage ; desenha o estagio.
-	call game_loop ; chama o loop principal do jogo.
+	call gameplay_loop ; chama o loop principal do jogo.
 	
 	pop r1 ; resgata os valores dos registradores utilizados na subrotina da pilha.
 	
@@ -114,9 +125,44 @@ draw_stage:
 	push r4
 	push r5
 	push r6
+	push r7
 
+	loadn r0, #4 ; numero total de maps.
+	mod r7, r7, r0 ; calcula qual mapa usar.
+	inc r7
+	
+	loadn r1, #1 ; usado para comparacao
+	
+	seed_1: 
+		cmp r1, r7 ; verifica se a seed aponta para o mapa 1.
+		jne seed_2
+		
+			loadn r1, #map_01 ; carrega o mapa 1.
+			jmp seeded
+	
+	seed_2:
+		inc r1
+		cmp r1, r7 ; verifica se a seed aponta para o mapa 2.
+		jne seed_3
+		
+			loadn r1, #map_02 ; carrega o mapa 2.
+			jmp seeded
+		
+	seed_3:
+		inc r1
+		cmp r1, r7 ; verifica se a seed aponta para o mapa 3.
+		jne seed_4
+		
+			loadn r1, #map_03 ; carrega o mapa 3.
+			jmp seeded
+		
+	seed_4:
+	
+		loadn r1, #map_04 ; carrega o mapa que sobrar (4).
+	
+	seeded:
+	
 	loadn r0, #0 ; carrega o offset inicial.
-	loadn r1, #map_01 ; carrega o mapa (TODO - adicionar multiplos mapas).
 	loadn r3, #'\0'	; criterio de parada.	
 	loadn r6, #cur_map ; carrega o mapa da memoria.
 
@@ -190,16 +236,13 @@ draw_stage:
 		; printa o numero da fase.
 		loadn r0, #1199
 		loadn r2, #256
-		
-		loadn r5, #1 ; numero de mapas.
-		mod r3, r7, r5 ; obetem o numero do mapa atual.
-		add r3, r3, r5 ; adiciona 1 ao numero
-		add r4, r4, r3 ; obtem o char do numero.
+		add r4, r4, r7 ; obtem o char do numero.
 		
 		add r4, r4, r2 ; adiciona a cor.
 		outchar r4, r0 ; printa o numero do mapa.
 	
-		pop r6 ; resgata os valores dos registradores utilizados na subrotina da pilha.
+		pop r7 ; resgata os valores dos registradores utilizados na subrotina da pilha.
+		pop r6
 		pop r5 
 		pop r4	
 		pop r3
@@ -210,101 +253,137 @@ draw_stage:
 	rts
 
 ; faz o loop principal do jogo.
-game_loop:
+gameplay_loop:
 
-	inchar r0 ; recebe input.
-	
-	input_w: ; move o jogador para a frente.
-	
-		loadn r1, #'w' ; verifica se o player pressionou para cima.
-		cmp r0, r1
-		jeq input_forward
+	push r0 ; protege os valores dos registradores que serao usados na subrotina na pilha.
+	push r1
+	push r6
+	push r7
+
+	game_loop:
+
+		inchar r0 ; recebe input.
 		
-		loadn r1, #'W' ; verifica se o player pressionou para cima (maiuscula).
-		cmp r0, r1
-		jne input_s
+		input_w: ; move o jogador para a frente.
 		
-		input_forward: ; marca que o player tentou mover para cima.
-			loadn r6, #1
-			loadn r7, #0
-			jmp yes_input
-	
-	input_s:
-	
-		loadn r1, #'s' ; verifica se o player pressionou para baixo.
-		cmp r0, r1
-		jeq input_down
-		
-		loadn r1, #'S' ; verifica se o player pressionou para baixo (maiuscula).
-		cmp r0, r1
-		jne input_a
-		
-		input_down: ; marca que o player tentou mover para baixo.
-			loadn r6, #2
-			loadn r7, #0
-			jmp yes_input
-	
-	input_a:
-	
-		loadn r1, #'a' ; verifica se o player pressionou para esquerda.
-		cmp r0, r1
-		jeq input_left
-		
-		loadn r1, #'A' ; verifica se o player pressionou para esquerda (maiuscula).
-		cmp r0, r1
-		jne input_d
-		
-		input_left:	; marca que o player tentou mover para esquerda.
-			loadn r6, #0
-			loadn r7, #2
-			jmp yes_input
-	
-	input_d:
-	
-		loadn r1, #'d' ; verifica se o player pressionou para direita.
-		cmp r0, r1
-		jeq input_right
-		
-		loadn r1, #'D' ; verifica se o player pressionou para direita (maiuscula).
-		cmp r0, r1
-		jne end_input_check
-		
-		input_right: ; marca que o player tentou mover para direita.
-			loadn r6, #0
-			loadn r7, #1
-			jmp yes_input
-		
-	yes_input: ; verifica se houve input valido.
-	
-		call update_pos ; atualiza a posicao do player.
-		call check_pos ; checa o que ha na nova posicao do player.
-		
-		l_checked_money:
-			loadn r6, #1 ; verifica se o player coletou dinheiro.
-			cmp r6, r7
-			jne l_checked_obstacle
+			loadn r1, #'w' ; verifica se o player pressionou para cima.
+			cmp r0, r1
+			jeq input_forward
 			
-				; call update_points
-				jmp checked
-		
-		l_checked_obstacle: ; verifica se o player colidiu com um obstaculo.
-			loadn r6, #2
-			cmp r6, r7
-			jne checked
+			loadn r1, #'W' ; verifica se o player pressionou para cima (maiuscula).
+			cmp r0, r1
+			jne input_s
 			
-				halt ; TEMP
-				jmp checked
+			input_forward: ; marca que o player tentou mover para cima.
+				loadn r6, #1
+				loadn r7, #0
+				jmp yes_input
 		
-		checked:
+		input_s:
 		
-			call redraw_player ; redesenha o player.
+			loadn r1, #'s' ; verifica se o player pressionou para baixo.
+			cmp r0, r1
+			jeq input_down
+			
+			loadn r1, #'S' ; verifica se o player pressionou para baixo (maiuscula).
+			cmp r0, r1
+			jne input_a
+			
+			input_down: ; marca que o player tentou mover para baixo.
+				loadn r6, #2
+				loadn r7, #0
+				jmp yes_input
+		
+		input_a:
+		
+			loadn r1, #'a' ; verifica se o player pressionou para esquerda.
+			cmp r0, r1
+			jeq input_left
+			
+			loadn r1, #'A' ; verifica se o player pressionou para esquerda (maiuscula).
+			cmp r0, r1
+			jne input_d
+			
+			input_left:	; marca que o player tentou mover para esquerda.
+				loadn r6, #0
+				loadn r7, #2
+				jmp yes_input
+		
+		input_d:
+		
+			loadn r1, #'d' ; verifica se o player pressionou para direita.
+			cmp r0, r1
+			jeq input_right
+			
+			loadn r1, #'D' ; verifica se o player pressionou para direita (maiuscula).
+			cmp r0, r1
+			jne end_input_check
+			
+			input_right: ; marca que o player tentou mover para direita.
+				loadn r6, #0
+				loadn r7, #1
+				jmp yes_input
+			
+		yes_input: ; verifica se houve input valido.
+		
+			call update_pos ; atualiza a posicao do player.
+			call check_pos ; checa o que ha na nova posicao do player.
+			
+			l_checked_money:
+				loadn r6, #1 ; verifica se o player coletou dinheiro.
+				cmp r6, r7
+				jne l_checked_obstacle
+				
+					call update_points
+					jmp checked
+			
+			l_checked_obstacle: ; verifica se o player colidiu com um obstaculo.
+				loadn r6, #2
+				cmp r6, r7
+				jne checked
+				
+					jmp end_game ; finaliza o jogo.
+			
+			checked:
+			
+				call redraw_player ; redesenha o player.
+		
+		end_input_check:
+		
+		jmp game_loop ; continua o loop.
 	
-	end_input_check:
+	end_game:
 	
-	jmp game_loop ; continua o loop.
+		loadn r0, #608			; posicao na tela onde a mensagem sera escrita
+		loadn r1, #msg_restart	; carrega r1 com o endereco do vetor que contem a mensagem
+		loadn r2, #0			; seleciona a cor da mensagem
+		call print_str
+		
+		loadn r0, #31			; posicao na tela onde a mensagem sera escrita
+		loadn r1, #msg_end		; carrega r1 com o endereco do vetor que contem a mensagem
+		loadn r2, #2304			; seleciona a cor da mensagem
+		call print_str  
+		
+		loop_wait_restart: ; espera o jogador reiniciar.
+
+		inchar r0 ; tenta receber input.
+		
+		loadn r1, #255 ; verifica se o input ocorreu.
+		cmp r0, r1
+		jne call_restart ; reinicia o jogo.
+
+		jmp loop_wait_restart ; continua o loop.
+		
+	call_restart:
+	
+	pop r7 ; resgata os valores dos registradores utilizados na subrotina da pilha.
+	pop r6
+	pop r1
+	pop r0
 	
 	rts
-	
+
+; atualiza a posicao do player baseada no input.
 ; parametros:
 ;	r6: movimentação no eixo x.
 ; 		0 - sem movimemento, 1 - direita, 2 - esquerda
@@ -313,7 +392,7 @@ game_loop:
 ; retorna a nova posicao do player em r2.
 update_pos:
 
-	push r0
+	push r0 ; protege os valores dos registradores que serao usados na subrotina na pilha.
 	push r1
 	push r3
 	push r4
@@ -325,41 +404,42 @@ update_pos:
 	
 	loadi r2, r3 ; carega a posicao atual da cabeca do player.
 	
-	loadn r4, #'*' ; apaga a cauda do player.
+	loadn r4, #'*' ; transforma a cabeca antiga do player em corpo.
 	loadn r5, #1536
 	add r4, r4, r5
 	outchar r4, r2
 	
-	loadn r4, #40
+	loadn r4, #40 ; guarda o tamanho de uma linha.
 	
+	move_up:
 	loadn r5, #1
-	cmp r6, r5
-	jne move_right
-		
-		sub r2, r2, r4
-		jmp end_move
+	cmp r6, r5 ; detecta se o input eh para cima.
+		jne move_right
+			
+			sub r2, r2, r4 ; calcula a nova posicao da cabeca do player.
+			jmp end_move
 	
 	move_right:
-	cmp r7, r5
-	jne move_down
-	
-		inc r2
-		jmp end_move
+	cmp r7, r5 ; detecta se o input eh para direita.
+		jne move_down
+		
+			inc r2 ; calcula a nova posicao da cabeca do player.
+			jmp end_move
 	
 	move_down:
-	loadn r5, #2
+	loadn r5, #2 ; detecta se o input eh para baixo.
 	cmp r6, r5
-	jne move_left
-	
-		add r2, r2, r4
-		jmp end_move
+		jne move_left
+		
+			add r2, r2, r4 ; calcula a nova posicao da cabeca do player.
+			jmp end_move
 	
 	move_left:
-	cmp r7, r5
-	jne end_move
-	
-		dec r2
-		jmp end_move
+	cmp r7, r5 ; detecta se o input eh para esquerda.
+		jne end_move
+		
+			dec r2 ; calcula a nova posicao da cabeca do player.
+			jmp end_move
 	
 	end_move:
 	
@@ -372,7 +452,7 @@ update_pos:
 	add r3, r0, r1 ; calcula o endereco da posicao da cabeca do player.
 	storei r3, r2 ; guarda a posicao da cabeca do jogador na memoria.
 	
-	pop r5
+	pop r5 ; resgata os valores dos registradores utilizados na subrotina da pilha.
 	pop r4
 	pop r3
 	pop r1
@@ -380,11 +460,12 @@ update_pos:
 	
 	rts
 
+; checa a posicao para a qual o player se moveu.
 ; retorna em r7 o resultado ao checar a posição:
 ; 	0 - vazia, 1 - dinheiro (crescimento do player) , 2 - Obstaculo (morte do player)
 check_pos:
 
-	push r0
+	push r0 ; protege os valores dos registradores que serao usados na subrotina na pilha.
 	push r1
 	push r2
 	push r3
@@ -400,67 +481,77 @@ check_pos:
 	
 	loadi r2, r3 ; carrega o que ha no mapa na posicao da nova cabeca do player.
 	
-	loadn r1, #'#'
-	cmp r2, r1
-	jne player_head_check
+	loadn r1, #'#' ; checa se o jogador andou para uma parede.
+		cmp r2, r1
+		jne player_head_check
 	
 		jmp check_die
 	
-	player_head_check:
-	loadn r1, #'@'
-	cmp r2, r1
-	jne player_body_check
+	player_head_check: ; checa se o jogador andou para a propria cabeca.
+		loadn r1, #'@'
+		cmp r2, r1
+		jne player_body_check
 	
 		jmp check_die
 	
-	player_body_check:
-	loadn r1, #'*'
-	cmp r2, r1
-	jne money_check
+	player_body_check: ; checa se o jogador andou para o proprio corpo.
+		loadn r1, #'*'
+		cmp r2, r1
+		jne money_check
 	
 		jmp check_die
 		
-	money_check:
-	loadn r1, #'o'
-	cmp r2, r1
-	jne bonus_money_check
+	money_check: ; checa se o jogador andou para um dinheiro.
+		loadn r1, #'o'
+		cmp r2, r1
+		jne bonus_money_check
 	
+		load r1, points ; adiciona pontos ao jogador.
+		loadn r7, #1
+		add r1, r1, r7
+		store points, r1
 		jmp get_money
 		
-	bonus_money_check:
-	loadn r1, #'$'
-	cmp r2, r1
-	jne check_empty
+	bonus_money_check: ; checa se o jogador andou para um dinheiro bonus.
+		loadn r1, #'$'
+		cmp r2, r1
+		jne check_empty
 	
-	get_money:
+		load r1, points ; adiciona pontos bonus ao jogador.
+		loadn r7, #4
+		add r1, r1, r7
+		store points, r1
+	
+	get_money: ; marca que o jogador conseguiu dinheiro (deve crescer e atualizar pontos).
 	
 		loadn r7, #1
 		jmp end_check 
 		
-	check_die:
+	check_die: ; marca que o jogador colidiu (deve morrer e acabar o jogo).
 	
 		loadn r7, #2
 		jmp end_check
 		
-	check_empty:
+	check_empty: ; marca que o jogador andou para um espaco vazio (deve apenas se movimentar).
 	
 		loadn r7, #0		
 	
 	end_check:
 
-	pop r3
+	pop r3 ; resgata os valores dos registradores utilizados na subrotina da pilha.
 	pop r2
 	pop r1
 	pop r0
 
 	rts
 
+; redesenha o player.
 ; parametros:
 ;	r7: crescimento do player.
 ; 		0 - nao cresce, 1 - cresce
 redraw_player:
 	
-	push r0
+	push r0 ; protege os valores dos registradores que serao usados na subrotina na pilha.
 	push r1
 	push r2
 	push r3
@@ -482,7 +573,7 @@ redraw_player:
 	storei r0, r1
 	
 	loadn r0, #1
-	cmp r0, r7
+	cmp r0, r7 ; apaga a cauda do player caso ele nao tenha crescido.
 	jeq redrawn
 	
 		loadn r0, #snake ; carrega a posicao inicial do vetor do player.
@@ -498,16 +589,142 @@ redraw_player:
 		add r3, r3, r2
 		storei r3, r0
 		
-		inc r1
+		inc r1 ; atualiza a posicao da cauda no vetor.
 		store p_tail, r1
 		
 	redrawn:
 
-	pop r3
+	pop r3 ; resgata os valores dos registradores utilizados na subrotina da pilha.
 	pop r2
 	pop r1
 	pop r0
 
 	rts
 	
-	;---- fim das subrotinas -----
+; atualiza o placar.
+update_points:
+
+	push r0 ; protege os valores dos registradores que serao usados na subrotina na pilha.
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+
+	load r0, points ; carrega os pontos.
+	
+	loadn r1, #0 ; posicao para printar.
+	loadn r2, #0 ; usado para comparacao.
+	loadn r5, #'0' ; char de referencia.
+	
+	print_ten_thousands:
+	
+		loadn r3, #10000 ; verifica as dezenas de milhares.
+		div r4, r0, r3
+		
+		cmp r2, r4 ; se nao ha dezenas de milhares, so printa se algo ja foi printado.
+		jeq print_thousands
+		
+			add r4, r4, r5 ; obtem o char correto.
+			outchar r4, r1 ; printa.
+			inc r1 ; avanca a posicao.
+			dec r2 ; marca que algo foi printado.
+			
+			mod r0, r0, r3 ; remove o que ja foi printado do numero.
+			
+	print_thousands: ; verifica os milhares.
+	
+		loadn r3, #1000
+		div r4, r0, r3
+		
+		cmp r2, r4 ; se nao ha milhares, so printa se algo ja foi printado.
+		jeq print_hundreds 
+		
+			add r4, r4, r5 ; obtem o char correto.
+			outchar r4, r1 ; printa.
+			inc r1 ; avanca a posicao.
+			dec r2 ; marca que algo foi printado.
+			
+			mod r0, r0, r3 ; remove o que ja foi printado do numero.
+		
+	print_hundreds:
+	
+		loadn r3, #100 ; verifica as centenas.
+		div r4, r0, r3
+		
+		cmp r2, r4 ; se nao ha centenas, so printa se algo ja foi printado.
+		jeq print_tens
+		
+			add r4, r4, r5 ; obtem o char correto.
+			outchar r4, r1 ; printa.
+			inc r1 ; avanca a posicao.
+			dec r2 ; marca que algo foi printado.
+			
+			mod r0, r0, r3 ; remove o que ja foi printado do numero.
+	
+	print_tens:
+	
+		loadn r3, #10 ; verifica as dezenas.
+		div r4, r0, r3
+		
+		cmp r2, r4 ; se nao ha dezenas, so printa se algo ja foi printado.
+		jeq print_units
+		
+			add r4, r4, r5 ; obtem o char correto.
+			outchar r4, r1 ; printa.
+			inc r1 ; avanca a posicao.
+			dec r2 ; marca que algo foi printado.
+			
+			mod r0, r0, r3 ; remove o que ja foi printado do numero.
+	
+	print_units: 
+		
+		cmp r2, r0 ; se nao ha unidades, so printa se algo ja foi printado.
+		jeq print_extra_zero
+		
+			add r4, r0, r5 ; obtem o char correto.
+			outchar r4, r1 ; printa.
+			inc r1 ; avanca a posicao.
+			dec r2 ; marca que algo foi printado.
+			
+	print_extra_zero:
+		outchar r5, r1 ; printa um 0 extra no final.
+	
+	pop r5 ; resgata os valores dos registradores utilizados na subrotina da pilha.
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+		
+rts
+
+; limpa completamente a tela
+clear_screen:
+
+	push r0 ; protege os valores dos registradores que serao usados na subrotina na pilha.
+	push r1
+	push r2
+
+	loadn r0, #0 ; posicao inicial;
+	loadn r1, #' ' ; caracter de vazio.
+	loadn r2, #1200 ; condicao de parada.
+	
+	loop_clear_screen:
+	
+		cmp r0, r2 ; verifica a condicao de parada.
+		jeq exit_clear_screen
+		
+			outchar r1, r0 ; limpa a posicao da tela.
+			inc r0
+			jmp loop_clear_screen ; continua o loop.
+	
+	exit_clear_screen:
+	
+	pop r2 ; resgata os valores dos registradores utilizados na subrotina da pilha.
+	pop r1
+	pop r0
+	
+	rts
+		
+;---- fim das subrotinas -----
