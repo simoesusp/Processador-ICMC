@@ -20,8 +20,18 @@ This project consists of five parts:
 
 # Projetos dos Alunos
 
-- Genetic Max Value Calculator: André Fakhoury, Thiago Preischadt, Vitor Santana - https://andrefakhoury.github.io/genetic-max-value-calculator/
+- TODOS OS ALUNOS PRECISAM APRESENTAR O TRABALHO PESSOALMENTE!! Incluir no seu GIT: Software; Circuito com TODAS as conexoes com o Arduino; Fotos do circuito TOP VIEW; E um video mostrando o Projeto funcionando e explicando como construiu (Upa no Youtube e poe um link no teu Github). Dai' Forca a pagina da disciplina no teu git, edita o READ.ME e Comita. Depois faz um Pull Request No git original. Veja o video: 
+
+[![FELIZ WAS HERE](http://img.youtube.com/vi/0vT8zuG9CYM/0.jpg)](http://www.youtube.com/watch?v=0vT8zuG9CYM)
+
+
+- Jogo da chuva de letras: Felipe Guilermmo Santuche Moleiro - https://github.com/FelipeMoleiro/ProjetoLabOrgArqComp
+
 - Rex Scape: Caio Augusto Duarte Basso, Gabriel Garcia Lorencetti, Giovana Daniele da Silva, Luana Balador Belisario - https://github.com/gabrielgarcia7/game-rexscape
+
+- Inserir seu projeto aqui!!
+
+
 
 # Configuração da Placa DE0:
 
