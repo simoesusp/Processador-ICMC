@@ -2,16 +2,16 @@
 
 ; Julia Carolina Frare Peixoto - 10734727
 ; Luís Eduardo Rozante de Freitas Pereira - 10734794
-; Maurilio da Motta Meireles - nUSP
+; nome - numUSP
 
 jmp main ; inicia o programa
 
 ;---- inicio da declaracao de variaveis -----
 
 msg_title: string "LABYRINTH SNAKE" ; mensagem de titulo.
-msg_start: string "PRESS ANY KEY TO START" ; mensagem de inicio.
+msg_start: string "PRESS 'SPACE' TO START" ; mensagem de inicio.
 msg_end: string "GAME OVER" ; mensagem de game over.
-msg_restart: string "PRESS ANY KEY TO RESTART" ; mensagem de reinicio.
+msg_restart: string "PRESS 'SPACE' TO RESTART" ; mensagem de reinicio.
 
 ; mapas iniciais do jogo.
 map_01: string "                                        #########################################@ o o o o o o o o o o o o o o o o o  $## o#o#o###########$#########$#o####### ##o## # o o o o o o o o o o o # o o o # ## o $#o#######o########### #o o#o###o#o##o#### # o o o # o o #o $ o### #  $# # ## o o $ o o o#o#o###o  o o o #o  o #o#o## ############ # $ ###$#####o# ##### # ##$ o o o o o  o o#o  o o o o o o o  o o## # ########o# # ###o#### #### ##### # ##o#o o#o$o#o #o o  o o o#o#o #o o o o#o## # # # # # ######o#o#o o o o# o#$#  # ##o#o#o#o#o#o# o o  o # ##### # ## ## #o## # # # # # #o######## $  o o#o o o o  ## #o#o$o#o o#  o o o o  o  $ o o o o o ##$  o o o o o o $###o# ##### #o## ## # ## #o#### ##### # o o #o o o o# o#$# o#o## # o o o o o o#####o####o####o o  o # ##o#o#### ##### o o o o o o o ####o####o## # # o o o o o## ##o### ###o o o o o# ##o#o#o## ##### # $ # #  $  # ##o # # #o## # o o $ o o $#o# #o o# #o o#o ##o#o# ##o#o#o## ##### # #o# o # # o # o#o # #o## # # o o o o o  $ #o#o $ o#o#o # ##o# ##o  #### ##### ## ## ##o#o## ##o#o#o  o## #$  o o o o o o o o o o o o o o o #o ## ## ### ######## ###### ###### #####  ##$  o o $ o o o  $ o o o o o o $ o o  $######################################## "
@@ -48,9 +48,9 @@ main:
 
 		inchar r0 ; tenta receber input.
 		
-		loadn r1, #255 ; verifica se o input ocorreu.
+		loadn r1, #' ' ; verifica se o input ocorreu.
 		cmp r0, r1
-		jne call_start ; inicia o jogo.
+		jeq call_start ; inicia o jogo.
 
 		inc r7 ; caso nao haja input, incrementa o contador da seed.
 		jmp loop_wait_start ; continua o loop.
@@ -364,9 +364,9 @@ gameplay_loop:
 
 		inchar r0 ; tenta receber input.
 		
-		loadn r1, #255 ; verifica se o input ocorreu.
+		loadn r1, #' ' ; verifica se o input ocorreu.
 		cmp r0, r1
-		jne call_restart ; reinicia o jogo.
+		jeq call_restart ; reinicia o jogo.
 
 		jmp loop_wait_restart ; continua o loop.
 		
