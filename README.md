@@ -20,7 +20,9 @@ This project consists of five parts:
 
 # Projetos dos Alunos
 
-- TODOS OS ALUNOS PRECISAM APRESENTAR O TRABALHO PESSOALMENTE!! Incluir no seu GIT: Software; Circuito com TODAS as conexoes com o Arduino; Fotos do circuito TOP VIEW; E um video mostrando o Projeto funcionando e explicando como construiu (Upa no Youtube e poe um link no teu Github). Dai' Forca a pagina da disciplina no teu git, edita o READ.ME e Comita. Depois faz um Pull Request No git original. Veja o video: 
+- TODOS OS ALUNOS PRECISAM APRESENTAR O TRABALHO PESSOALMENTE!! 
+
+- COMO FAZER: Incluir no seu GIT: CPU.VHD e JOGO.ASM e o CPURAM.MIF, e caso tenha alterado, o CHARMAP.MIF. Se possível, incluir um video mostrando o jogo funcionando e explicando tudo. (Upa no Youtube e poe um link no teu Github). Dai' Forca a pagina da disciplina (esta página!!) no teu git, edita o READ.ME e Comita. Depois faz um Pull Request No git original da disciplina. Veja o video: 
 
 [![FELIZ WAS HERE](http://img.youtube.com/vi/0vT8zuG9CYM/0.jpg)](http://www.youtube.com/watch?v=0vT8zuG9CYM)
 
