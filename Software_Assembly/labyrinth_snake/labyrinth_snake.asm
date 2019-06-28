@@ -128,7 +128,6 @@ draw_stage:
 	push r0	; protege os valores dos registradores que serao usados na subrotina na pilha.
 	push r1
 	push r2
-	push r3
 	push r4
 	push r5
 	push r6
@@ -161,18 +160,16 @@ draw_stage:
 	
 	seeded:
 	
-	loadn r0, #0 ; carrega o offset inicial.
-	loadn r3, #'\0'	; criterio de parada.	
+	loadn r0, #1199 ; carrega o offset do ultimo char.
 	loadn r6, #cur_map ; carrega o mapa da memoria.
+	
+	add r1, r0, r1 ; carrega a posicao apos o ultimo char no mapa base.
+	add r6, r0, r6 ; carrega a posicao apos o ultimo char no mapa da memoria.
 
 	; desenha o estágio.
 	draw_loop:	
 
-		loadi r4, r1 ; carrega o char a ser printado.
-		
-		cmp r4, r3 ; verifica o criterio de parada.
-		jeq draw_exit
-		
+		loadi r4, r1 ; carrega o char a ser printado.		
 		storei r6, r4 ; guarda o mapa na memoria para usar no jogo
 		
 		draw_wall: ; verifica se eh uma parede e carrega a cor certa.
@@ -219,11 +216,11 @@ draw_stage:
 		
 		outchar r4, r0 ; escreve o caracter.
 		
-		inc r0
-		inc r1
-		inc r6
+		dec r1 ; reposiciona no mapa base.
+		dec r6 ; reposiciona no mapa da memoria.
+		dec r0 ; reposiciona na tela.
 		
-		jmp draw_loop
+		jnz draw_loop ; criterio de parada.
 		
 	draw_exit:
 
@@ -243,8 +240,7 @@ draw_stage:
 		pop r7 ; resgata os valores dos registradores utilizados na subrotina da pilha.
 		pop r6
 		pop r5 
-		pop r4	
-		pop r3
+		pop r4
 		pop r2
 		pop r1
 		pop r0
@@ -705,25 +701,19 @@ clear_screen:
 
 	push r0 ; protege os valores dos registradores que serao usados na subrotina na pilha.
 	push r1
-	push r2
 
-	loadn r0, #0 ; posicao inicial;
+	loadn r0, #1200 ; posicao inicial;
 	loadn r1, #' ' ; caracter de vazio.
-	loadn r2, #1200 ; condicao de parada.
 	
 	loop_clear_screen:
-	
-		cmp r0, r2 ; verifica a condicao de parada.
-		jeq exit_clear_screen
 		
-			outchar r1, r0 ; limpa a posicao da tela.
-			inc r0
-			jmp loop_clear_screen ; continua o loop.
+		dec r0
+		outchar r1, r0 ; limpa a posicao da tela.
+		jnz loop_clear_screen ; condicao de saida.
 	
 	exit_clear_screen:
 	
-	pop r2 ; resgata os valores dos registradores utilizados na subrotina da pilha.
-	pop r1
+	pop r1 ; resgata os valores dos registradores utilizados na subrotina da pilha.
 	pop r0
 	
 	rts
