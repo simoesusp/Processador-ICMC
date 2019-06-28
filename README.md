@@ -31,6 +31,8 @@ This project consists of five parts:
 
 - Rex Scape: Caio Augusto Duarte Basso, Gabriel Garcia Lorencetti, Giovana Daniele da Silva, Luana Balador Belisario - https://github.com/gabrielgarcia7/game-rexscape
 
+- Space Laser: Gustavo Vinicius Vieira Silva Soares - https://github.com/gsoares1928/ProjLabOrgArq
+
 - Inserir seu projeto aqui!!
 
 
