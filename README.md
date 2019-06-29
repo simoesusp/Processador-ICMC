@@ -33,6 +33,8 @@ This project consists of five parts:
 
 - Space Laser: Gustavo Vinicius Vieira Silva Soares - https://github.com/gsoares1928/ProjLabOrgArq
 
+- Labyrinth Snake: Julia Carolina Frare Peixoto, Luís Eduardo Rozante de Freitas Pereira, Maurílio da Motta Meireles - https://github.com/LuisEduardoR/Processador-ICMC
+
 - Inserir seu projeto aqui!!
 
 
