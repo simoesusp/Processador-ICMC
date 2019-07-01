@@ -33,6 +33,8 @@ This project consists of five parts:
 
 - Space Laser: Gustavo Vinicius Vieira Silva Soares - https://github.com/gsoares1928/ProjLabOrgArq
 
+- Pencil: Marcelo Isaias de Moraes Junior - https://github.com/MarceloMoraesJr/JogoOrgComp
+
 - Inserir seu projeto aqui!!
 
 
