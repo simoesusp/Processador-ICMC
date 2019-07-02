@@ -33,6 +33,8 @@ This project consists of five parts:
 
 - Space Laser: Gustavo Vinicius Vieira Silva Soares - https://github.com/gsoares1928/ProjLabOrgArq
 
+- Bandersnack - A Dora's Text Adventure: Igor Lovatto Resende, Lucas Mateus M. A. Castro, Marcelo Temoteo de Castro - https://github.com/Beadurof/dora-machineworks
+
 - Inserir seu projeto aqui!!
 
 
