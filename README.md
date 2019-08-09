@@ -33,8 +33,8 @@ This project consists of five parts:
 
 - Space Laser: Gustavo Vinicius Vieira Silva Soares - https://github.com/gsoares1928/ProjLabOrgArq
 
---Tic-Tac-Toe-Assembly-ICMC:--
--NOMES:
+* Tic-Tac-Toe-Assembly-ICMC: *
+NOMES:
 Guilherme Holanda Sanches
 Lucas Henrique Rodrigues
 João Vitor VIllaça
