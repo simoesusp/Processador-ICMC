@@ -33,14 +33,12 @@ This project consists of five parts:
 
 - Space Laser: Gustavo Vinicius Vieira Silva Soares - https://github.com/gsoares1928/ProjLabOrgArq
 
-#Tic-Tac-Toe-Assembly-ICMC
-
-https://github.com/holondo/Tic-Tac-Toe-Assembly-ICMC
-
+--Tic-Tac-Toe-Assembly-ICMC:--
 -NOMES:
-Guilherme Holanda Sanches - 10734370
-Lucas Henrique Rodrigues - 10723691
-João Vitor VIllaça - 10724239
+Guilherme Holanda Sanches
+Lucas Henrique Rodrigues
+João Vitor VIllaça
+https://github.com/holondo/Tic-Tac-Toe-Assembly-ICMC
 
 # Configuração da Placa DE0:
 
