@@ -35,8 +35,8 @@ This project consists of five parts:
 
 * Tic-Tac-Toe-Assembly-ICMC: *
 NOMES:
-Guilherme Holanda Sanches
-Lucas Henrique Rodrigues
+Guilherme Holanda Sanches,
+Lucas Henrique Rodrigues,
 João Vitor VIllaça
 https://github.com/holondo/Tic-Tac-Toe-Assembly-ICMC
 
