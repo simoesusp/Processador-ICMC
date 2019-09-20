@@ -33,6 +33,8 @@ This project consists of five parts:
 
 - Space Laser: Gustavo Vinicius Vieira Silva Soares - https://github.com/gsoares1928/ProjLabOrgArq
 
+- Snake: Gabriel Mattheus Bezerra Alves de Carvalho, Wallace Cruz de Souza - https://github.com/GabrielBCarvalho/Snake-Assembly
+
 - Pencil: Marcelo Isaias de Moraes Junior - https://github.com/MarceloMoraesJr/JogoOrgComp
 
 - Battle of Tiers: Jonas Wendel Costa de Souza - https://github.com/4Vertrigo/BattleOfTiers
