@@ -33,6 +33,8 @@ This project consists of five parts:
 
 - Space Laser: Gustavo Vinicius Vieira Silva Soares - https://github.com/gsoares1928/ProjLabOrgArq
 
+- Battle of Tiers: Jonas Wendel Costa de Souza - https://github.com/4Vertrigo/BattleOfTiers
+
 - Bandersnack - A Dora's Text Adventure: Igor Lovatto Resende, Lucas Mateus M. A. Castro, Marcelo Temoteo de Castro - https://github.com/Beadurof/dora-machineworks
 
 - Tic-Tac-Toe-Assembly-ICMC: NOMES: Guilherme Holanda Sanches, Lucas Henrique Rodrigues, João Vitor VIllaça - https://github.com/holondo/Tic-Tac-Toe-Assembly-ICMC
