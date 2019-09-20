@@ -35,8 +35,13 @@ This project consists of five parts:
 
 - Snake: Gabriel Mattheus Bezerra Alves de Carvalho, Wallace Cruz de Souza - https://github.com/GabrielBCarvalho/Snake-Assembly
 
-- Inserir seu projeto aqui!!
+- Pencil: Marcelo Isaias de Moraes Junior - https://github.com/MarceloMoraesJr/JogoOrgComp
 
+- Battle of Tiers: Jonas Wendel Costa de Souza - https://github.com/4Vertrigo/BattleOfTiers
+
+- Bandersnack - A Dora's Text Adventure: Igor Lovatto Resende, Lucas Mateus M. A. Castro, Marcelo Temoteo de Castro - https://github.com/Beadurof/dora-machineworks
+
+- Tic-Tac-Toe-Assembly-ICMC: NOMES: Guilherme Holanda Sanches, Lucas Henrique Rodrigues, João Vitor VIllaça - https://github.com/holondo/Tic-Tac-Toe-Assembly-ICMC
 
 
 # Configuração da Placa DE0:
@@ -74,7 +79,6 @@ This project consists of five parts:
 6- Programe a Placa e REZE!!!!
 
 7- Troque o  input do Monitor para entrada VGA (tu vai sofrer nos menuzinhos da Philipis!!!)
-
 
 
 
