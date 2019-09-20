@@ -33,9 +33,12 @@ This project consists of five parts:
 
 - Space Laser: Gustavo Vinicius Vieira Silva Soares - https://github.com/gsoares1928/ProjLabOrgArq
 
-- Inserir seu projeto aqui!!
-
-
+* Tic-Tac-Toe-Assembly-ICMC: *
+NOMES:
+Guilherme Holanda Sanches,
+Lucas Henrique Rodrigues,
+João Vitor VIllaça
+https://github.com/holondo/Tic-Tac-Toe-Assembly-ICMC
 
 # Configuração da Placa DE0:
 
@@ -72,7 +75,6 @@ This project consists of five parts:
 6- Programe a Placa e REZE!!!!
 
 7- Troque o  input do Monitor para entrada VGA (tu vai sofrer nos menuzinhos da Philipis!!!)
-
 
 
 
