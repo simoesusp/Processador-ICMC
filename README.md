@@ -19,7 +19,7 @@ This project consists of five parts:
 
 ## Aulas a Distância
 
-- Aula01 - https://meet.google.com/rbw-nhqo-vzx
+- Aula01 - https://drive.google.com/file/d/1ucFPXroi7lXQq5qj4DN_a59JgJtiMLZR/view?usp=sharing
 
 # Projetos dos Alunos
 
