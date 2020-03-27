@@ -17,6 +17,9 @@ This project consists of five parts:
 
 5-	Documentation (Processor architecture and Assembly language description)
 
+## Aulas a Distância
+
+- Aula01 - https://meet.google.com/rbw-nhqo-vzx
 
 # Projetos dos Alunos
 
