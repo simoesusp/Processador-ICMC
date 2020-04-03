@@ -21,7 +21,7 @@ This project consists of five parts:
 
 - Aula01 - https://drive.google.com/file/d/1ucFPXroi7lXQq5qj4DN_a59JgJtiMLZR/view?usp=sharing
 
-- Aula02 - https://meet.google.com/vee-etbk-ebh
+- Aula02 - https://drive.google.com/file/d/1okiL76FewUbyGMTcjNSI0Xhy0rsizia2/view?usp=sharing
 
 # Projetos dos Alunos
 
