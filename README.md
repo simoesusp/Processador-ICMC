@@ -23,6 +23,8 @@ This project consists of five parts:
 
 - Aula02 - https://drive.google.com/file/d/1okiL76FewUbyGMTcjNSI0Xhy0rsizia2/view?usp=sharing
 
+- Aula03 10/04/20 - Cancelada devido a Semana Santa
+
 # Projetos dos Alunos
 
 - TODOS OS ALUNOS PRECISAM APRESENTAR O TRABALHO PESSOALMENTE!! 
