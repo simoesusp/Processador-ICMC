@@ -27,6 +27,8 @@ This project consists of five parts:
 
 # Projetos dos Alunos
 
+- Processador do Breno: https://github.com/Brenocq/MyMachine
+
 - TODOS OS ALUNOS PRECISAM APRESENTAR O TRABALHO PESSOALMENTE!! 
 
 - COMO FAZER: Incluir no seu GIT: CPU.VHD e JOGO.ASM e o CPURAM.MIF, e caso tenha alterado, o CHARMAP.MIF. Se possível, incluir um video mostrando o jogo funcionando e explicando tudo. (Upa no Youtube e poe um link no teu Github). Dai' Forca a pagina da disciplina (esta página!!) no teu git, edita o READ.ME e Comita. Depois faz um Pull Request No git original da disciplina. Veja o video: 
