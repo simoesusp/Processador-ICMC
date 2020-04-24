@@ -30,7 +30,7 @@ This project consists of five parts:
 
 # Projetos dos Alunos 2020
 
-- Processador do Breno: https://github.com/Brenocq/MyMachine
+- Processador do Breno Cunha Queiroz: https://github.com/Brenocq/MyMachine
 
 - TODOS OS ALUNOS PRECISAM APRESENTAR O TRABALHO PESSOALMENTE!! 
 
