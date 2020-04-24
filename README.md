@@ -23,7 +23,10 @@ This project consists of five parts:
 
 - Aula02 - https://drive.google.com/file/d/1okiL76FewUbyGMTcjNSI0Xhy0rsizia2/view?usp=sharing
 
-- Aula03 10/04/20 - Cancelada devido a Semana Santa
+- Aula03 17/04/20 - Estou preparandoo o video
+
+- Aula04 24/0420 - https://meet.google.com/fyg-ovvx-wmq
+
 
 # Projetos dos Alunos
 
