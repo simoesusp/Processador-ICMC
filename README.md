@@ -23,7 +23,8 @@ This project consists of five parts:
 
 - Aula02 - https://drive.google.com/file/d/1okiL76FewUbyGMTcjNSI0Xhy0rsizia2/view?usp=sharing
 
-- Aula03 17/04/20 - Estou preparandoo o video
+- Aula03 17/04/20 - Parte1: https://drive.google.com/file/d/1JugSodvm6wiZIyiCYXl-gaDbAdB2Yd1P/view?usp=sharing - 
+Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?usp=sharing
 
 - Aula04 24/0420 - https://drive.google.com/file/d/1UgvGZ4suo8emRTWnyZTSAoGBYFHCAPB-/view?usp=sharing
 
