@@ -25,7 +25,7 @@ This project consists of five parts:
 
 - Aula03 17/04/20 - Estou preparandoo o video
 
-- Aula04 24/0420 - https://meet.google.com/fyg-ovvx-wmq
+- Aula04 24/0420 - https://drive.google.com/file/d/1UgvGZ4suo8emRTWnyZTSAoGBYFHCAPB-/view?usp=sharing
 
 
 # Projetos dos Alunos 2020
