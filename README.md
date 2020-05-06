@@ -33,6 +33,8 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Processador do Breno Cunha Queiroz: https://github.com/Brenocq/MyMachine
 
+- RNAssembly: Anderson Cardoso Gonçalves - https://github.com/ansoncg/RNAssembly_LabOrgComp
+
 - TODOS OS ALUNOS PRECISAM APRESENTAR O TRABALHO PESSOALMENTE!! 
 
 # Projetos dos Alunos 2019
