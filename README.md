@@ -19,6 +19,8 @@ This project consists of five parts:
 
 ## Aulas a Distância
 
+- Minicurso OpenGL do Breno - https://github.com/Brenocq/OpenGL-Tutorial
+
 - Aula01 - https://drive.google.com/file/d/1ucFPXroi7lXQq5qj4DN_a59JgJtiMLZR/view?usp=sharing
 
 - Aula02 - https://drive.google.com/file/d/1okiL76FewUbyGMTcjNSI0Xhy0rsizia2/view?usp=sharing
