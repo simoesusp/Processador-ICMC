@@ -101,6 +101,3 @@ ImprimestrSai:
 	pop r1
 	pop r0
 	rts		; retorno da subrotina
-	
-	
-	

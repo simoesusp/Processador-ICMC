@@ -666,7 +666,7 @@ Delay:
 	Push R0
 	Push R1
 	
-	Loadn R1, #5  ; a
+	Loadn R1, #50  ; a
    Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
 	Loadn R0, #3000	; b
    Delay_volta: 

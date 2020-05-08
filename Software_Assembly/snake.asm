@@ -581,7 +581,7 @@ Delay:
 	push r0
 	
 	inc r6
-	loadn r0, #200
+	loadn r0, #60000
 	cmp r6, r0
 	jgr Reset_Timer
 	
