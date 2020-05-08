@@ -26,8 +26,9 @@ This project consists of five parts:
 - Aula03 17/04/20 - Parte1: https://drive.google.com/file/d/1JugSodvm6wiZIyiCYXl-gaDbAdB2Yd1P/view?usp=sharing - 
 Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?usp=sharing
 
-- Aula04 24/0420 - https://drive.google.com/file/d/1UgvGZ4suo8emRTWnyZTSAoGBYFHCAPB-/view?usp=sharing
+- Aula04 24/04/20 - https://drive.google.com/file/d/1UgvGZ4suo8emRTWnyZTSAoGBYFHCAPB-/view?usp=sharing
 
+- Aula05 08/05/20 - https://meet.google.com/hjz-ufuq-xqp
 
 # Projetos dos Alunos 2020
 
