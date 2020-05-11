@@ -10,6 +10,8 @@ A) Instalando o Simulador:
 	4) Copie o executavel (simulador) para a pasta que deseja trabalhar
 
 	5) Confira se tem direito de execucao: [x]
+	--> give the sim file permission to execute:
+		chmod +x sim
 
 B) Instalando o Montador:
 	1) Va' na pasta que contem os arquivos do montador: "montador_fonte"
