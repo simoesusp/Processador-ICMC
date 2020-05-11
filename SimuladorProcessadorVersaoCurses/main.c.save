@@ -1,0 +1,222 @@
+// Programa de um jogo para Teste da Lib NCurses
+
+//Extrutura do codigo:
+
+// Loop:
+//          Le teclado
+//          Apaga Nave
+//          Recalcula posicao da Nave
+//          Desenha nave
+//          Apaga Bola
+//          Recalcula posicao da Bola
+//          Desenha Bola
+//          Checa se Colidiu e Explode
+//          Delay 80mseg
+//          Goto Loop
+//
+
+
+
+
+
+
+
+
+
+//        COLOR_BLACK   0
+//        COLOR_RED     1
+//        COLOR_GREEN   2
+//        COLOR_YELLOW  3
+//        COLOR_BLUE    4
+//        COLOR_MAGENTA 5
+//        COLOR_CYAN    6
+//        COLOR_WHITE   7
+
+//    A_NORMAL        Normal display (no highlight)
+//    A_STANDOUT      Best highlighting mode of the terminal.
+//    A_UNDERLINE     Underlining
+//    A_REVERSE       Reverse video
+//    A_BLINK         Blinking  --> e' o unico qu enao funciona!!!
+//    A_DIM           Half bright
+//    A_BOLD          Extra bright or bold
+//    A_PROTECT       Protected mode
+//    A_INVIS         Invisible or blank mode
+//    A_ALTCHARSET    Alternate character set
+//    A_CHARTEXT      Bit-mask to extract a character
+//    COLOR_PAIR(n)   Color-pair number n
+
+
+
+
+#include <curses.h> // Novo Terminal cheio de funcoes!!!
+#include <stdlib.h> // Rand
+
+void explode(int xe,int ye)
+{
+	int z;
+// Muda cor
+    start_color();          // Start color
+	init_pair(1, COLOR_RED, COLOR_BLACK);   //Define the foreground and background for the pair number you give
+	attron(COLOR_PAIR(1));  // Activate the defined collor pair
+    attron(A_BOLD);    //  Bolda tudo!
+    //attroff(A_BOLD);  // Disbolda tudo
+    //attrset(A_NORMAL) // turns off all attributes and brings you to normal mode.
+
+
+	for(z = 0; z<30; z=z+1)
+	{
+		mvprintw(ye,xe, "*");
+		xe = xe + (int) (rand() %3 - 1);
+		ye = ye + (int) (rand() %3 - 1);
+		// Delay0.05seg
+            timeout(50);  // 5 seg
+            getch();      // Wait for user input
+		refresh();        // Print it on to the real screen
+	}
+	timeout(25000);  // 25 seg
+	getch();        /* Wait for user input */
+}
+
+int main()
+{
+	int key;    // Le Teclado
+	int x = 1, y = 1;   // Coord. Nave
+	int xb = 10, yb = 10;   // Coord Bola
+	int dir = 0;    // Sorteia direcao da bola
+	int xd = 0, yd = 0; // Ajuste nas Coord. da Bola
+
+	initscr();      // Start curses mode
+	noecho();       // Nao echoa as teclas digitadas no getch()
+    clear();
+	raw();      // Desliga um buffer que nao faz diferenca!!!
+	keypad(stdscr, TRUE);   // Liga Teclado numerico e setas e F1..F12
+	resize_term(64,159);    // Tamanho Maximo na tela de 1200x800 = 64,159
+	curs_set(0);    // Cursor disapeer!!!
+    //      0 : invisible
+    //      1 : normal
+    //      2 : very visible.
+
+loop:
+	timeout(80);    // Uso isso para dar o delay na movimentacao da bolinha
+                    // Ou deixo "0" e dou o delay no final do codigo!!
+	key = getch();        // Wait for user input
+
+	mvprintw(y,x, " "); // Apaga Nave
+
+	if (key == KEY_LEFT)
+		x--;
+	if (key == KEY_RIGHT)
+		x++;
+	if (key == KEY_UP)
+		y--;
+	if (key == KEY_DOWN)
+		y++;
+	if (key == 'q')
+		goto fim;
+
+// Condicoes de contorno da Nave em funcao das variaveis de tamanho da tela
+    if (y == -1)
+        y = LINES-1;
+    if (y == LINES+1)
+        y = 0;
+    if (x == -1)
+        x = COLS-1;
+    if (x == COLS+1)
+        x = 0;
+
+	mvprintw(y,x, "X"); // Desenha Nave
+
+	mvprintw(0,0, "X= %2d  Y= %2d", x, y);  // Debuga Coord. Nave
+
+	// Move Bolinha
+	mvprintw(yb,xb, " ");   // Apaga Bola
+
+            // Antiga Maneira de Movimentar a Bola
+            //	xb = xb + (int) (rand() %3 - 1);
+            //	if(xb<0)    xb=0;
+            //	if(xb>79)   xb=79;
+            //
+            //	yb = yb + (int) (rand() %3 - 1);
+            //	if(yb<0)    yb=0;
+            //	if(yb>24)   yb=24;
+
+    dir = dir + (int) (rand() %3 - 1);  // Escolhe uma das 8 direcoes possiveis da bola
+    if (dir < 0)
+        dir = dir + 8;
+    if (dir > 7)
+        dir = dir - 8;
+
+    switch(dir){
+        case 0: // Cima
+            xd = 0;
+            yd = -1;
+            break;
+        case 1: // Cima/Direita
+            xd = 1;
+            yd = -1;
+            break;
+        case 2: // Direita
+            xd = 1;
+            yd = 0;
+            break;
+        case 3: // Direita/Baixo
+            xd = 1;
+            yd = 1;
+            break;
+        case 4: // Baixo
+            xd = 0;
+            yd = 1;
+            break;
+        case 5: // Baixo/Esquerda
+            xd = -1;
+            yd = 1;
+            break;
+        case 6: // Esquerda
+            xd = -1;
+            yd = 0;
+            break;
+        case 7: // Esquerda/Cima
+            xd = -1;
+            yd = -1;
+            break;
+    }
+// Atualica coord. Bola
+    yb = yb + yd;
+    xb = xb + xd;
+// Condicoes de contorno da Bola em funcao das variaveis de tamanho da tela
+    if (yb == -1)
+        yb = LINES-1;
+    if (yb == LINES+1)
+        yb = 0;
+    if (xb == -1)
+        xb = COLS-1;
+    if (xb == COLS+1)
+        xb = 0;
+
+	mvprintw(yb,xb, "O");   // Redesenha a Bola
+
+	mvprintw(0,15, "Xb= %2d  Yb= %2d", xb, yb); // Debuga Coord. Bola
+	// Fim Move Bolinha
+
+	refresh();      // Print it on to the real screen
+
+// Se Colidiu, Explode!!
+	if(((x==xb) || (x==xb+1) || (x==xb-1)) && ((y==yb) || (y==yb+1) || (y==yb-1)))
+	{   explode(x,y);
+		goto fim;
+	}
+
+// Delay008seg
+    //napms(80);  // Delay em miliseconds --> Funcao do NCurses
+
+	goto loop;
+
+fim:
+    resetty();   // Reseta o tamanho da janela!
+	endwin();       /* End curses mode		  */
+
+	return 0;
+}
+
+
+

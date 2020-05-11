@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1321906949 source:c:\simoes\aplic\cprojects\simuladorprocessadoreld2\main.c
+	<curses.h>
+	<stdlib.h>
+	<stdio.h>
+	<fcntl.h>
+

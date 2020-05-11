@@ -29,7 +29,7 @@
 
 // Selecao do Mux3 --> E´ so´ colocar: 0, 1, 2 ... 7  para selecionar os Registradores
 
-// Selecao do Mux4 --> E´ so´ colocar: 0, 1, 2 ... 7  para selecionar os Registradores
+// Selecao do Mux4 --> E´ so´ colocar: 0, 1, 2 ... 7  para selecionar os Registradores ou 8 para entrar o nr. 1
 
 // Selecao do Mux5
 //#define sPC 0
@@ -129,7 +129,7 @@ int main()
     int opcode;
     int temp;
     unsigned char state=0; // reset
-    int OP, x, y, result;  // ULA
+    int OP, result;  // ULA
 
 
     le_arquivo();
@@ -160,7 +160,9 @@ loop:
     
         if(DecSP) SP--;
 
-        if(LoadFR) FR = M6; // ** Tem que trasfrmar em Vetor
+        if(LoadFR)
+            for(i=16; i--; )              // Converte o int M6 para o vetor FR
+                FR[i] = pega_pedaco(M6,i,i); //  Tem que trasformar em Vetor
     
         // Carrega dados do Mux 2 para os registradores
         rx = pega_pedaco(IR,9,7);
@@ -190,7 +192,7 @@ loop:
     LoadFR  = 0;
 
          
-
+// Maquina de Controle
 switch(state)
 {
  case STATE_RESET:
@@ -292,17 +294,17 @@ case STATE_DECODE:
 
     case LOADINDEX:
         // reg[rx] = MEMORY[reg[ry]];
-        selM4 = Ry;
+        selM4 = ry;
         selM1 = sM4;
         RW = 0;
         selM2 := sDATA_OUT
-        LoadReg(rx) = 1;
+        LoadReg[rx] = 1;
       // -----------------------------
       state=STATE_FETCH;
       break;
 
     case STORE:
-        //MEMORY[MEMORY[PC]] = reg[rx];
+        //MAR = MEMORY[PC];
         //PC++;
         selM1 = sPC;
         RW = 0;
@@ -314,10 +316,10 @@ case STATE_DECODE:
 
     case STOREINDEX:
         //mem[reg[rx]] = reg[ry];
-        selM4 = Rx;
+        selM4 = rx;
         selM1 = sM4;
         RW = 1;
-        selM3 = Ry;
+        selM3 = ry;
         selM5 = sM3;
       // -----------------------------
       state=STATE_FETCH;
@@ -370,7 +372,7 @@ case STATE_DECODE:
       
     case INC:
         //reg[rx]++;                                  // Inc Rx ou DEC
-        selM3 = ry;
+        selM3 = rx;
         selM4 = 8;  // 8 para selecionar o nr. 1 como entrada do MUX4
         
         if(pega_pedaco(IR,6,6) == 0) OP = ADD;  // Se IR6 = 0 --> INC
@@ -385,7 +387,7 @@ case STATE_DECODE:
       state=STATE_FETCH;
       break;
 
-    case CMP:
+    case CMP:   // seta 3 flags: maior, menor ou igual
         //if(rx == ry)
         selM3 = ry;
         selM4 = rz;
@@ -398,10 +400,7 @@ case STATE_DECODE:
       break;
 
     case SHIFT:
-        FR[3] = 0; // -- FR = <...|zero|equal|lesser|greater>
-        if(!reg[rx])
-            FR[3] = 1;  // Se resultado = 0, seta o Flag de Zero
-
+        
         switch(pega_pedaco(IR,6,4))
         {   case 0: reg[rx] = reg[rx] << pega_pedaco(IR,3,0);           break;
             case 1: reg[rx] = ~((~(reg[rx]) << pega_pedaco(IR,3,0)));   break;
@@ -414,6 +413,10 @@ case STATE_DECODE:
                    reg[rx] = _rotr(reg[rx],pega_pedaco(IR,3,0)); 
             break;
         }
+        FR[3] = 0; // -- FR = <...|zero|equal|lesser|greater>
+        if(!reg[rx])
+            FR[3] = 1;  // Se resultado = 0, seta o Flag de Zero
+
       // -----------------------------
       state=STATE_FETCH;
       break;
@@ -421,51 +424,29 @@ case STATE_DECODE:
     case JMP:
             COND = pega_pedaco(IR,9,6);
 
-            if((COND == 0) // NO COND
+            if((COND == 0)                                            // NO COND
                 || (FR[0]==1 && (COND==7))                            // GREATER
-                || ((FR[2]==1 || FR[0]==1) && (COND==9))  // GREATER EQUAL
+                || ((FR[2]==1 || FR[0]==1) && (COND==9))              // GREATER EQUAL
                 || (FR[1]==1 && (COND==8))                            // LESSER
-                || ((FR[2]==1 || FR[1]==1) && (COND==10)) // LESSER EQUAL
+                || ((FR[2]==1 || FR[1]==1) && (COND==10))             // LESSER EQUAL
                 || (FR[2]==1 && (COND==1))                            // EQUAL
                 || (FR[2]==0 && (COND==2))                            // NOT EQUAL
                 || (FR[3]==1 && (COND==3))                            // ZERO
                 || (FR[3]==0 && (COND==4))                            // NOT ZERO
                 || (FR[4]==1 && (COND==5))                            // CARRY
                 || (FR[4]==0 && (COND==6))                            // NOT CARRY
-                || (FR[5]==1 && (COND==11))                       // OVERFLOW
-                || (FR[5]==0 && (COND==12))                       // NOT OVERFLOW
-                || (FR[6]==1 && (COND==14))                       // NEGATIVO
-                || (FR[9]==1 && (COND==13)))                      // DIVBYZERO
-                 { PC = MEMORY[PC];
-                                }
+                || (FR[5]==1 && (COND==11))                           // OVERFLOW
+                || (FR[5]==0 && (COND==12))                           // NOT OVERFLOW
+                || (FR[6]==1 && (COND==14))                           // NEGATIVO
+                || (FR[9]==1 && (COND==13)))                          // DIVBYZERO
+                 { // PC = MEMORY[PC];
+                    selM1 = sPC;
+                    RW = 0;
+                    LoadPC = 1;
+                 }
                 else
-                    PC++;
-      // -----------------------------
-      state=STATE_FETCH;
-      break;
-      
-    case PUSH:
-      if(!pega_pedaco(IR,6,6)) // Registrador
-                MEMORY[SP] = reg[rx];
-      else  // FR
-            {   temp = 0;
-        for(i=16; i--; )        // Converte o vetor FR para int
-                    temp = temp + (int) (FR[i] * (pow(2.0,i)));
-        MEMORY[SP] = temp;
-      }
-      SP--;
-      // -----------------------------
-      state=STATE_FETCH;
-      break;
-      
-    case POP:
-      SP++;
-      if(!pega_pedaco(IR,6,6))  // Registrador
-                reg[rx] = MEMORY[SP];
-      else // FR
-            { for(i=16; i--; )              // Converte o int MEMORY[SP] para o vetor FR
-                    FR[i] = pega_pedaco(MEMORY[SP],i,i);
-      }
+                    //PC++;
+                    IncPC = 1;
       // -----------------------------
       state=STATE_FETCH;
       break;
@@ -488,48 +469,79 @@ case STATE_DECODE:
                 || (FR[5]==0 && (COND==12)) // NOT OVERFLOW
                 || (FR[6]==1 && (COND==14)) // NEGATIVO
                 || (FR[9]==1 && (COND==13))) { // DIVBYZERO
-                    MEMORY[SP] = PC;
-                    SP--;
-                    PC = MEMORY[PC];
+                    // MEMORY[SP] = PC;
+                    // SP--;
+                    // PC = MEMORY[PC];
+
+                    RW = 1;
+                    selM1 = sSP;
+                    selM5 = sPC;
+                    DecSP = 1;   
+                    state=STATE_EXECUTE;
                     }
-                else
-                    PC++;
+                else {
+                    //PC++;
+                    IncPC = 1;
+                    state=STATE_FETCH;
+                }
+      // -----------------------------
+      break;
+
+    case PUSH:
+        selM1 = sSP;
+        RW = 1;
+
+        if(pega_pedaco(IR,6,6) == 0) // Registrador
+            //MEMORY[SP] = reg[rx];
+            selM3 = rx;            
+        else  // FR
+            selM3 = 8;  // com 8 entra o FR no M3
+
+        selM5 = sM3;
+        DecSP = 1;
       // -----------------------------
       state=STATE_FETCH;
       break;
       
-      case RTS:
-        SP++;
-        PC = MEMORY[SP];
-        PC++;
+    case POP:
+        //SP++;
+        IncSP = 1;
+
       // -----------------------------
-      state=STATE_FETCH;
+      state=STATE_EXECUTE;
+      break;
+       
+    case RTS:
+        // SP++;
+        IncSP = 1;
+      // -----------------------------
+      state=STATE_EXECUTE;
       break;
  
-      case SETC:
+    case SETC:
         FR[4] = pega_pedaco(IR,9,9);
       // -----------------------------
       state=STATE_FETCH;
       break;
       
-      case HALT:        
+    case HALT:        
       // -----------------------------
       state=STATE_HALTED;
       break;
 
-      case NOP:         
+    case NOP:         
       // -----------------------------
       state=STATE_FETCH;
       break;
 
-      case BREAKP:  
+    case BREAKP: 
+        key = getchar(); 
       // -----------------------------
       state=STATE_FETCH;
       break;
 
       default:
-        //printf("Default\n");
-        //printf("Rx: %d    Ry: %d  Rz: %d\nPC: %d  IR: %d  opcode: %d\n\n", rx, ry, rz, PC, ir, opcode);
+        
       state=STATE_FETCH;
       break;
     }
@@ -541,16 +553,71 @@ case STATE_DECODE:
     // -----------------------------
     switch(opcode){
         case LOAD:
-            reg[rx] = MEMORY[MAR];
-            // -----------------------------
-            state=STATE_FETCH;
-            break;
+            //reg[rx] = MEMORY[MAR];
+            selM1 = sMAR;
+            RW = 0;
+            selM2 := sDATA_OUT;
+            LoadReg(rx) = 1;
+          // -----------------------------
+          state=STATE_FETCH;
+          break;
+
+        case STORE:
+            //MEMORY[MAR] = reg[rx];
+            selM1 = sMAR;
+            RW = 1;
+            selM3 = rx;
+            selM5 = sM3;
+          // -----------------------------
+          state=STATE_FETCH;
+          break; 
+
+        case CALL:
+            selM1 = sPC;
+            RW = 0;
+            LoadPC = 1;
+          // -----------------------------
+          state=STATE_FETCH;
+          break; 
+
+        case POP:
+            selM1 = sSP;
+            RW = 0;
+            if(pega_pedaco(IR,6,6) == 0) { // Registrador
+                //reg[rx] = MEMORY[SP];
+                selM2 = sDATA_OUT;
+                LoadReg[rx] = 1;
+                }
+            else { // FR
+                selM6 = sDATA_OUT;
+                LoadFR = 1;
+                }
+          // -----------------------------
+          state=STATE_FETCH;
+          break; 
+
+        case RTS:
+            //PC = MEMORY[SP];
+            selM1 = sSP;
+            RW = 0;
+            LoadPC = 1;
+          // -----------------------------
+          state=STATE_EXECUTE2;
+          break;
+
+
+      
+
         }
       
     //state=STATE_EXECUTE2;
  break;
 
  case STATE_EXECUTE2:
+
+        //case RTS:
+        //PC++;
+        IncPC = 1;
     // -----------------------------
     state=STATE_FETCH;
  break;
@@ -587,7 +654,14 @@ case STATE_DECODE:
         if (RW == 0) DATA_OUT = MEMORY[M1];  // Tem que vir antes do M2 que usa DATA_OUT
 
 // Selecao do Mux3  --> Tem que vir antes da ULA e do M5
-        M3 = reg[selM3];
+        temp = 0;
+        for(i=16; i--; )        // Converte o vetor FR para int
+            temp = temp + (int) (FR[i] * (pow(2.0,i)));       
+        
+        if(selM3 == 8) M3 = temp;  // Seleciona com 8 o FR
+        else M3 = reg[selM3]; 
+
+        
 
 // Operacao da ULA
         result = ULA(M3, M4, OP, &auxFR);

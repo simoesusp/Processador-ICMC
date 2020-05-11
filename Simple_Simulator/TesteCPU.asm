@@ -155,3 +155,13 @@ Fim:
 	
 Dado : var #1
 static Dado + #0, #'B'
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

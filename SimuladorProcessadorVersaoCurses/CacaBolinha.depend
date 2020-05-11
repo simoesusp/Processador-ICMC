@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1284482010 source:c:\users\guampa\simoes\aplic\cprojects\cacabolinha\main.c
+	<curses.h>
+	<stdlib.h>
+
+1302099544 source:c:\simoes\aplic\cprojects\best\cacabolinha\main.c
+	<curses.h>
+	<stdlib.h>
+
