@@ -116,23 +116,23 @@ unsigned int _rotl(const unsigned int value, int shift);
 unsigned int _rotr(const unsigned int value, int shift);
 
 // ULA
-unsigned int ula(unsigned int val1, unsigned int val2, unsigned int OP, unsigned int* FR);
+unsigned int ULA(unsigned int x, unsigned int y, unsigned int OP, unsigned int* FR);
 
 int main()
 {
-	int i;
-	int key;    // Le Teclado
-	int PC, IR, SP, MAR, rx, ry, rz, COND, RW, DATA_OUT;
-	int LoadPC, IncPC, LoadIR, LoadSP, IncSP, DecSP, LoadMAR, LoadFR;
-	int M1, M2, M3, M4, M5, M6;
-	int selM1, selM2, selM3, selM4, selM5, selM6;
-	int LoadReg[8];
+	int i=0;
+	int key=0;    // Le Teclado
+	int PC=0, IR=0, SP=0, MAR=0, rx=0, ry=0, rz=0, COND=0, RW=0, DATA_OUT=0;
+	int LoadPC=0, IncPC=0, LoadIR=0, LoadSP=0, IncSP=0, DecSP=0, LoadMAR=0, LoadFR=0;
+	int M1=0, M2=0, M3=0, M4=0, M5=0, M6=0;
+	int selM1=0, selM2=0, selM3=0, selM4=0, selM5=0, selM6=0;
+	int LoadReg[8] = {0,0,0,0,0,0,0,0};
 	int FR[16];  // Flag Register: <...|Negativo|StackUnderflow|StackOverflow|DivByZero|ArithmeticOverflow|carry|zero|equal|lesser|greater>
-	int CARRY;
-	int opcode;
-	int temp;
+	int CARRY=0;
+	int opcode=0;
+	int temp=0;
 	unsigned char state=0; // reset
-	int OP, result;  // ULA
+	int OP=0, result=0;  // ULA
 
 
 	le_arquivo();
@@ -141,7 +141,6 @@ inicio:
 	printf("Rodando...\n");
 
 	state = STATE_RESET;
-
 
 	// Loop principal do processador: Nunca para!!
 loop:
@@ -255,11 +254,11 @@ loop:
 
 			switch(opcode){
 				case INCHAR:
-					if(kbhit())    TECLADO = getchar();
-					else TECLADO = 255;
-
-					TECLADO = pega_pedaco(TECLADO,7,0);
-					selM2 = sTECLADO;
+					// TODO: entrada teclado
+					//if(kbhit())    TECLADO = getchar();
+					//else TECLADO = 255;
+					//TECLADO = pega_pedaco(TECLADO,7,0);
+					//selM2 = sTECLADO;
 					LoadReg[rx] = 1;
 
 					// -----------------------------
@@ -427,7 +426,7 @@ loop:
 				case JMP:
 					COND = pega_pedaco(IR,9,6);
 
-					if((COND == 0)                                            // NO COND
+					if((COND == 0)                       	                      // NO COND
 							|| (FR[0]==1 && (COND==7))                            // GREATER
 							|| ((FR[2]==1 || FR[0]==1) && (COND==9))              // GREATER EQUAL
 							|| (FR[1]==1 && (COND==8))                            // LESSER
@@ -657,29 +656,34 @@ loop:
 	if (RW == 0) DATA_OUT = MEMORY[M1];  // Tem que vir antes do M2 que usa DATA_OUT
 
 	// Selecao do Mux3  --> Tem que vir antes da ULA e do M5
+	// Converte o vetor FR para int
 	temp = 0;
-	for(i=16; i--; )        // Converte o vetor FR para int
+	for(i=16; i--; )        
 		temp = temp + (int) (FR[i] * (pow(2.0,i)));       
 
 	if(selM3 == 8) M3 = temp;  // Seleciona com 8 o FR
 	else M3 = reg[selM3]; 
 
 	// Operacao da ULA
-	result = ULA(M3, M4, OP, FR);
+	result = ULA(M3, M4, OP, (unsigned int*)FR);
 
 	// Selecao do Mux2
 	if      (selM2 == sULA) M2 = result;
 	else if (selM2 == sDATA_OUT) M2 = DATA_OUT;
 	else if (selM2 == sM4)  M2 = M4;
-	else if (selM2 == sTECLADO) M2 = TECLADO;
+	//else if (selM2 == sTECLADO) M2 = TECLADO;// TODO: selM2 com teclado
 	else if (selM2 == sSP)  M2 = SP; 
 
 	// Selecao do Mux5
 	if (selM5 == sPC) M5 = PC;
 	else if (selM5 == sM3) M5 = M3;
 
+	// Converte o vetor FR para int
+	temp = 0;
+	for(i=16; i--; )        
+		temp = temp + (int) (FR[i] * (pow(2.0,i)));       
 	// Selecao do Mux6
-	if (selM6 == sULA) break;//M6 = auxFR;   TODO: Talvez o auxFR deva ser o valor do FR //**Sempre recebe flags da ULA
+	if (selM6 == sULA) M6 = temp;// TODO: Talvez o auxFR deva ser o valor do FR //**Sempre recebe flags da ULA
 	else if (selM6 == sDATA_OUT) M6 = DATA_OUT; //** A menos que seja POP FR, quando recebe da Memoria
 
 	goto loop;
@@ -801,7 +805,47 @@ unsigned int _rotr(const unsigned int value, int shift) {
 }
 
 // ULA
-unsigned int ula(unsigned int val1, unsigned int val2, unsigned int OP, unsigned int* FR)
-{
-
+unsigned int ULA(unsigned int x, unsigned int y, unsigned int OP, unsigned int* FR) {
+	int auxFR;
+	unsigned int result = 0;
+	switch(pega_pedaco(OP, 5, 4)) {
+		case ARITH:
+			switch(pega_pedaco(OP, 3, 0)) {
+				case ADD:
+				   break;	
+				case SUB:
+				   break;	
+				case MULT:
+				   break;	
+				case DIV:
+				   break;	
+				case LMOD:
+				   break;	
+				case MULT:
+				   break;	
+			}
+			break;
+		case LOGIC:
+			switch(pega_pedaco(OP, 3, 0)) {
+				case COMP:
+					result = x;
+					break;
+				case LAND:
+					result = x && y;
+					break;
+				case LXOR:
+					result = (x || y) && (x!=y);
+					break;
+				case LOR:
+					result = x || y;
+					break;
+				case LNOT:
+					result = !x;
+					break;
+				default:
+					result = x;
+			}
+			break;
+	}
+	return result;
 }
