@@ -30,7 +30,7 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula04 24/04/20 - https://drive.google.com/file/d/1UgvGZ4suo8emRTWnyZTSAoGBYFHCAPB-/view?usp=sharing
 
-- Aula05 08/05/20 - https://meet.google.com/hjz-ufuq-xqp
+- Aula05 08/05/20 - https://drive.google.com/file/d/1aMhA7_8POKLhRMsvV9SxC-DVYDXbCiBP/view?usp=sharing
 
 # Projetos dos Alunos 2020
 
