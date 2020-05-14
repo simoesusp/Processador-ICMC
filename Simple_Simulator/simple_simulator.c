@@ -910,7 +910,7 @@ unsigned int ULA(unsigned int x, unsigned int y, unsigned int OP, unsigned int a
 						result = x | y;
 						break;
 					case LNOT:
-						result = !x & 65535;
+						result = ~x & 65535;
 						break;
 					default:
 						result = x;
