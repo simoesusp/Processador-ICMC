@@ -105,11 +105,16 @@
 #include <stdlib.h>     // Rand
 #include <stdio.h>      // Printf
 #include <fcntl.h>      // Fileopen - Fileclose - fprintf - fscanf
+#include <curses.h>      // kbhit() 
 #include <math.h>
 
 unsigned int MEMORY[TAMANHO_MEMORIA]; // Vetor que representa a Memoria de programa e de dados do Processador
 int reg[8]; // 8 registradores
 
+typedef struct _resultadoUla{
+	unsigned int result;
+	unsigned int auxFR;
+} ResultadoUla;
 
 
 //  Processa dados do Arquivo CPU.MIF
@@ -128,7 +133,9 @@ unsigned int _rotl(const unsigned int value, int shift);
 unsigned int _rotr(const unsigned int value, int shift);
 
 // ULA
-unsigned int ULA(unsigned int x, unsigned int y, unsigned int OP, unsigned int auxFR[]);
+ResultadoUla ULA(unsigned int x, unsigned int y, unsigned int OP, int carry);
+
+int FR[16] = {0};  // Flag Register: <...|Negativo|StackUnderflow|StackOverflow|DivByZero|ArithmeticOverflow|carry|zero|equal|lesser|greater>
 
 int main()
 {
@@ -139,14 +146,13 @@ int main()
 	int M1=0, M2=0, M3=0, M4=0, M5=0, M6=0;
 	int selM1=0, selM2=0, selM3=0, selM4=0, selM5=0, selM6=0;
 	int LoadReg[8] = {0};
-	int FR[16] = {0};  // Flag Register: <...|Negativo|StackUnderflow|StackOverflow|DivByZero|ArithmeticOverflow|carry|zero|equal|lesser|greater>
-	int auxFR[16] = {0};  // Flag Register: <...|Negativo|StackUnderflow|StackOverflow|DivByZero|ArithmeticOverflow|carry|zero|equal|lesser|greater>
-	int carry=0;// TODO quando usa esse carry?
+	int carry=0;// Flag do IR que indica se a ULA vai fazer operação com carry ou não 
 	int opcode=0;
 	int temp=0;
 	unsigned char state=0; // reset
-	int OP=0, result=0;  // ULA
-
+	int OP=0;  // ULA
+	int TECLADO;
+	ResultadoUla resultadoUla;
 
 	le_arquivo();
 
@@ -266,10 +272,17 @@ loop:
 			switch(opcode){
 				case INCHAR:
 					// TODO: entrada teclado
-					//if(kbhit())    TECLADO = getchar();
-					//else TECLADO = 255;
-					//TECLADO = pega_pedaco(TECLADO,7,0);
-					//selM2 = sTECLADO;
+					//TECLADO = getchar();
+					//timeout(99999);
+					//if(TECLADO == ERR)
+					//	TECLADO = 255;
+					if(kbhit())
+						TECLADO = getch();
+					else
+						TECLADO = 255;
+
+					TECLADO = pega_pedaco(TECLADO,7,0);
+					selM2 = sTECLADO;
 					LoadReg[rx] = 1;
 
 					// -----------------------------
@@ -677,10 +690,10 @@ loop:
 	else M3 = reg[selM3]; 
 
 	// Operacao da ULA
-	result = ULA(M3, M4, OP, (unsigned int*)auxFR);
+	resultadoUla = ULA(M3, M4, OP, carry);
 
 	// Selecao do Mux2
-	if      (selM2 == sULA) M2 = result;
+	if      (selM2 == sULA) M2 = resultadoUla.result;
 	else if (selM2 == sDATA_OUT) M2 = DATA_OUT;
 	else if (selM2 == sM4)  M2 = M4;
 	//else if (selM2 == sTECLADO) M2 = TECLADO;// TODO: selM2 com teclado
@@ -693,12 +706,8 @@ loop:
 	if (selM5 == sPC) M5 = PC;
 	else if (selM5 == sM3) M5 = M3;
 
-	// Converte o vetor FR para int
-	temp = 0;
-	for(i=16; i--; )        
-		temp = temp + (int) (auxFR[i] * (pow(2.0,i)));       
 	// Selecao do Mux6
-	if (selM6 == sULA) M6 = temp;// TODO: Talvez o auxFR deva ser o valor do FR //**Sempre recebe flags da ULA
+	if (selM6 == sULA) M6 = resultadoUla.auxFR;// TODO: Talvez o auxFR deva ser o valor do FR //**Sempre recebe flags da ULA
 	else if (selM6 == sDATA_OUT) M6 = DATA_OUT; //** A menos que seja POP FR, quando recebe da Memoria
 
 	goto loop;
@@ -724,7 +733,6 @@ void le_arquivo(void){
 
 	while (fscanf(stream,"%s", linha)!=EOF)   // Le linha por linha ate' o final do arquivo: eof = end of file !!
 	{
-		//printf("Line %d = %s\n", j, linha);
 		char letra[2] = "00";
 
 		if (!processando) {
@@ -819,66 +827,68 @@ unsigned int _rotr(const unsigned int value, int shift) {
 }
 
 // ULA
-unsigned int ULA(unsigned int x, unsigned int y, unsigned int OP, unsigned int auxFR[]) {
-	//unsigned int auxFR[16]={0};// TODO ficar 0 quando der reset? Nao entendi o auxFR
+ResultadoUla ULA(unsigned int x, unsigned int y, unsigned int OP, int carry) {
+	unsigned int auxFRbits[16]={0};// TODO ficar 0 quando der reset? Nao entendi o auxFR
 	unsigned int result = 0;
+
 	//printf("OP:%d - arith:%d add:%d\n", OP, pega_pedaco(OP, 5, 4), pega_pedaco(OP, 3, 0));
 	switch(pega_pedaco(OP, 5, 4)) {
 		case ARITH:
 			switch(OP) {
 				case ADD:
-					if(pega_pedaco(OP, 6, 6)==1)
-						result = x+y+auxFR[CARRY];
+					if(carry==1)
+						result = x+y+FR[CARRY];
 					else
 						result = x+y;
 
-					if(result > 65535)// Carry
-						auxFR[CARRY] = 1;
-					else 
-						auxFR[CARRY] = 0;
+					if(result > 65535){// Carry
+						auxFRbits[CARRY] = 1;
+						result -= 65535;
+					}else 
+						auxFRbits[CARRY] = 0;
 
 					break;	
 				case SUB:
 					result = x-y;
 
 					if(result < 0)// Negative
-						auxFR[NEGATIVE] = 1;
+						auxFRbits[NEGATIVE] = 1;
 					else 
-						auxFR[NEGATIVE] = 0;
+						auxFRbits[NEGATIVE] = 0;
 					break;	
 				case MULT:
 					result = x*y;
 
 					if(result > 65535)// Arithmetic overflow
-						auxFR[ARITHMETIC_OVERFLOW] = 1;
+						auxFRbits[ARITHMETIC_OVERFLOW] = 1;
 					else 
-						auxFR[ARITHMETIC_OVERFLOW] = 0;
+						auxFRbits[ARITHMETIC_OVERFLOW] = 0;
 					break;	
 				case DIV:
 					if(y==0) {
 						result = 0;
-						auxFR[DIV_BY_ZERO] = 1;
+						auxFRbits[DIV_BY_ZERO] = 1;
 					}else {
 						result = x/y;
-						auxFR[DIV_BY_ZERO] = 0;
+						auxFRbits[DIV_BY_ZERO] = 0;
 					}
 					break;	
 				case LMOD:
 					if(y==0) {
 						result = 0;
-						auxFR[DIV_BY_ZERO] = 1;
+						auxFRbits[DIV_BY_ZERO] = 1;
 					}else {
 						result = x%y;
-						auxFR[DIV_BY_ZERO] = 0;
+						auxFRbits[DIV_BY_ZERO] = 0;
 					}
 					break;	
 				default:
 					result = x;
 			}
 			if(result==0)
-				auxFR[ZERO] = 1;
+				auxFRbits[ZERO] = 1;
 			else
-				auxFR[ZERO] = 0;
+				auxFRbits[ZERO] = 0;
 
 			break;
 		case LOGIC:
@@ -886,17 +896,17 @@ unsigned int ULA(unsigned int x, unsigned int y, unsigned int OP, unsigned int a
 			{
 				result = x;
 				if(x>y){
-					auxFR[GREATER] = 1;
-					auxFR[LESSER] = 0;
-					auxFR[EQUAL] = 0;
+					auxFRbits[GREATER] = 1;
+					auxFRbits[LESSER] = 0;
+					auxFRbits[EQUAL] = 0;
 				}else if(x<y){
-					auxFR[GREATER] = 0;
-					auxFR[LESSER] = 1;
-					auxFR[EQUAL] = 0;
+					auxFRbits[GREATER] = 0;
+					auxFRbits[LESSER] = 1;
+					auxFRbits[EQUAL] = 0;
 				}else if(x==y){
-					auxFR[GREATER] = 0;
-					auxFR[LESSER] = 0;
-					auxFR[EQUAL] = 1;
+					auxFRbits[GREATER] = 0;
+					auxFRbits[LESSER] = 0;
+					auxFRbits[EQUAL] = 1;
 				}
 			}else{
 				switch(OP) {
@@ -910,17 +920,27 @@ unsigned int ULA(unsigned int x, unsigned int y, unsigned int OP, unsigned int a
 						result = x | y;
 						break;
 					case LNOT:
+						// ~x -> 000000101 para 111111010
+						// & 65535 -> para garantir que vai ficar menor igual que 65535
 						result = ~x & 65535;
 						break;
 					default:
 						result = x;
 				}
 				if(result==0)
-					auxFR[ZERO] = 1;
+					auxFRbits[ZERO] = 1;
 				else
-					auxFR[ZERO] = 0;
+					auxFRbits[ZERO] = 0;
 			}
 			break;
 	}
-	return result;
+
+	unsigned int auxFR = 0;
+	for(int i=16; i--; )        
+		auxFR = auxFR + (int) (auxFRbits[i] * (pow(2.0,i))); 
+
+	ResultadoUla resultadoUla;
+	resultadoUla.result = result;
+	resultadoUla.auxFR = auxFR;
+	return resultadoUla;
 }
