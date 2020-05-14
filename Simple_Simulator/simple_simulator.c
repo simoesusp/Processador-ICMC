@@ -105,8 +105,13 @@
 #include <stdlib.h>     // Rand
 #include <stdio.h>      // Printf
 #include <fcntl.h>      // Fileopen - Fileclose - fprintf - fscanf
-#include <curses.h>      // kbhit() 
+//#include <curses.h>      // kbhit() 
 #include <math.h>
+
+// kbhit()
+#include <termios.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 unsigned int MEMORY[TAMANHO_MEMORIA]; // Vetor que representa a Memoria de programa e de dados do Processador
 int reg[8]; // 8 registradores
@@ -134,6 +139,33 @@ unsigned int _rotr(const unsigned int value, int shift);
 
 // ULA
 ResultadoUla ULA(unsigned int x, unsigned int y, unsigned int OP, int carry);
+
+int kbhit(void)
+{
+  struct termios oldt, newt;
+  int ch;
+  int oldf;
+ 
+  tcgetattr(STDIN_FILENO, &oldt);
+  newt = oldt;
+  newt.c_lflag &= ~(ICANON | ECHO);
+  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+ 
+  ch = getchar();
+ 
+  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+  fcntl(STDIN_FILENO, F_SETFL, oldf);
+ 
+  if(ch != EOF)
+  {
+    ungetc(ch, stdin);
+    return 1;
+  }
+ 
+  return 0;
+}
 
 int FR[16] = {0};  // Flag Register: <...|Negativo|StackUnderflow|StackOverflow|DivByZero|ArithmeticOverflow|carry|zero|equal|lesser|greater>
 
@@ -277,7 +309,7 @@ loop:
 					//if(TECLADO == ERR)
 					//	TECLADO = 255;
 					if(kbhit())
-						TECLADO = getch();
+						TECLADO = getchar();
 					else
 						TECLADO = 255;
 
