@@ -56,6 +56,7 @@
 
 
 // Aritmethic Instructions(All should begin wiht "10"):
+#define ARITH 2
 #define ADD 32      // "100000"; -- ADD Rx Ry Rz / ADDC Rx Ry Rz  	-- Rx <- Ry + Rz / Rx <- Ry + Rz + C  -- b0=Carry	  	Format: < inst(6) | Rx(3) | Ry(3) | Rz(3)| C >
 #define SUB 33      // "100001"; -- SUB Rx Ry Rz / SUBC Rx Ry Rz  	-- Rx <- Ry - Rz / Rx <- Ry - Rz + C  -- b0=Carry	  	Format: < inst(6) | Rx(3) | Ry(3) | Rz(3)| C >
 #define MULT 34     // "100010"; -- MUL Rx Ry Rz  / MUL Rx Ry Rz	-- Rx <- Ry * Rz / Rx <- Ry * Rz + C  -- b0=Carry		Format: < inst(6) | Rx(3) | Ry(3) | Rz(3)| C >
@@ -65,6 +66,7 @@
 
 
 // Logic Instructions (All should begin wiht "01"):
+#define LOGIC 1
 #define LAND 18     // "010010"; -- AND Rx Ry Rz  	-- Rz <- Rx AND Ry	Format: < inst(6) | Rx(3) | Ry(3) | Rz(3)| x >
 #define LOR 19      // "010011"; -- OR Rx Ry Rz   	-- Rz <- Rx OR Ry		Format: < inst(6) | Rx(3) | Ry(3) | Rz(3)| x >
 #define LXOR 20     // "010100"; -- XOR Rx Ry Rz  	-- Rz <- Rx XOR Ry	Format: < inst(6) | Rx(3) | Ry(3) | Rz(3)| x >
@@ -87,7 +89,17 @@
 #define SETC 8      // "001000"; -- CLEARC / SETC  -- Set/Clear Carry: b9 = 1-set; 0-clear	Format: < inst(6) | b9 | xxxxxxxxx >
 #define BREAKP 14   // "001110"; -- BREAKP         -- Break Point: Pausa execussao			Format: < inst(6) | xxxxxxxxxx >
 
-
+// Flag register
+#define NEGATIVE 9
+#define STACK_UNDERFLOW 8
+#define STACK_OVERFLOW 7
+#define DIV_BY_ZERO 6
+#define ARITHMETIC_OVERFLOW 5
+#define CARRY 4
+#define ZERO 3
+#define EQUAL 2
+#define LESSER 1
+#define GREATER 0
 
 //#include <curses.h>     //  Novo Terminal cheio de funcoes!!!
 #include <stdlib.h>     // Rand
@@ -116,7 +128,7 @@ unsigned int _rotl(const unsigned int value, int shift);
 unsigned int _rotr(const unsigned int value, int shift);
 
 // ULA
-unsigned int ULA(unsigned int x, unsigned int y, unsigned int OP, unsigned int* FR);
+unsigned int ULA(unsigned int x, unsigned int y, unsigned int OP, unsigned int auxFR[]);
 
 int main()
 {
@@ -126,9 +138,10 @@ int main()
 	int LoadPC=0, IncPC=0, LoadIR=0, LoadSP=0, IncSP=0, DecSP=0, LoadMAR=0, LoadFR=0;
 	int M1=0, M2=0, M3=0, M4=0, M5=0, M6=0;
 	int selM1=0, selM2=0, selM3=0, selM4=0, selM5=0, selM6=0;
-	int LoadReg[8] = {0,0,0,0,0,0,0,0};
-	int FR[16];  // Flag Register: <...|Negativo|StackUnderflow|StackOverflow|DivByZero|ArithmeticOverflow|carry|zero|equal|lesser|greater>
-	int CARRY=0;
+	int LoadReg[8] = {0};
+	int FR[16] = {0};  // Flag Register: <...|Negativo|StackUnderflow|StackOverflow|DivByZero|ArithmeticOverflow|carry|zero|equal|lesser|greater>
+	int auxFR[16] = {0};  // Flag Register: <...|Negativo|StackUnderflow|StackOverflow|DivByZero|ArithmeticOverflow|carry|zero|equal|lesser|greater>
+	int carry=0;// TODO quando usa esse carry?
 	int opcode=0;
 	int temp=0;
 	unsigned char state=0; // reset
@@ -170,8 +183,6 @@ loop:
 	rx = pega_pedaco(IR,9,7);
 	ry = pega_pedaco(IR,6,4);
 	rz = pega_pedaco(IR,3,1);
-
-	if(LoadReg[rx]) reg[rx] = M2;
 
 	// Operacao de Escrita da Memoria
 	if (RW == 1) MEMORY[M1] = M5;
@@ -277,7 +288,7 @@ loop:
 					selM1 = sPC;
 					RW = 0;
 					selM2 = sDATA_OUT;
-						LoadReg[rx] = 1;
+					LoadReg[rx] = 1;
 					IncPC = 1;
 					// -----------------------------
 					state=STATE_FETCH;
@@ -300,7 +311,7 @@ loop:
 					selM1 = sM4;
 					RW = 0;
 					selM2 = sDATA_OUT;
-						LoadReg[rx] = 1;
+					LoadReg[rx] = 1;
 					// -----------------------------
 					state=STATE_FETCH;
 					break;
@@ -363,7 +374,7 @@ loop:
 					selM3 = ry;
 					selM4 = rz;
 					OP = pega_pedaco(IR,15,10);
-					CARRY = pega_pedaco(IR,0,0);
+					carry = pega_pedaco(IR,0,0);
 					selM2 = sULA;
 					LoadReg[rx] = 1;
 					selM6 = sULA;
@@ -380,7 +391,7 @@ loop:
 					if(pega_pedaco(IR,6,6) == 0) OP = ADD;  // Se IR6 = 0 --> INC
 					else OP = SUB;                          // Se IR6 = 1 --> DEC
 
-					CARRY = 0;
+					carry = 0;
 					selM2 = sULA;
 					LoadReg[rx] = 1;
 					selM6 = sULA;
@@ -391,10 +402,10 @@ loop:
 
 				case CMP:   // seta 3 flags: maior, menor ou igual
 					//if(rx == ry)
-					selM3 = ry;
-					selM4 = rz;
+					selM3 = rx;
+					selM4 = ry;
 					OP = pega_pedaco(IR,15,10);
-					CARRY = 0;
+					carry = 0;
 					selM6 = sULA;
 					LoadFR  = 1;
 					// -----------------------------
@@ -657,15 +668,16 @@ loop:
 
 	// Selecao do Mux3  --> Tem que vir antes da ULA e do M5
 	// Converte o vetor FR para int
+	// TODO talvez fazer isso depois da operação da ula?
 	temp = 0;
 	for(i=16; i--; )        
-		temp = temp + (int) (FR[i] * (pow(2.0,i)));       
+		temp = temp + (int) (FR[i] * (pow(2.0,i))); 
 
 	if(selM3 == 8) M3 = temp;  // Seleciona com 8 o FR
 	else M3 = reg[selM3]; 
 
 	// Operacao da ULA
-	result = ULA(M3, M4, OP, (unsigned int*)FR);
+	result = ULA(M3, M4, OP, (unsigned int*)auxFR);
 
 	// Selecao do Mux2
 	if      (selM2 == sULA) M2 = result;
@@ -674,6 +686,9 @@ loop:
 	//else if (selM2 == sTECLADO) M2 = TECLADO;// TODO: selM2 com teclado
 	else if (selM2 == sSP)  M2 = SP; 
 
+	// Coloca valor do Mux2 para o registrador com Load
+	if(LoadReg[rx]) reg[rx] = M2;
+
 	// Selecao do Mux5
 	if (selM5 == sPC) M5 = PC;
 	else if (selM5 == sM3) M5 = M3;
@@ -681,7 +696,7 @@ loop:
 	// Converte o vetor FR para int
 	temp = 0;
 	for(i=16; i--; )        
-		temp = temp + (int) (FR[i] * (pow(2.0,i)));       
+		temp = temp + (int) (auxFR[i] * (pow(2.0,i)));       
 	// Selecao do Mux6
 	if (selM6 == sULA) M6 = temp;// TODO: Talvez o auxFR deva ser o valor do FR //**Sempre recebe flags da ULA
 	else if (selM6 == sDATA_OUT) M6 = DATA_OUT; //** A menos que seja POP FR, quando recebe da Memoria
@@ -707,9 +722,8 @@ void le_arquivo(void){
 	char linha[110];
 	j = 0;
 
-	while (!feof(stream))   // Le linha por linha ate' o final do arquivo: eof = end of file !!
+	while (fscanf(stream,"%s", linha)!=EOF)   // Le linha por linha ate' o final do arquivo: eof = end of file !!
 	{
-		fscanf(stream,"%s", linha);  // Le uma linha inteira ate' o \n
 		//printf("Line %d = %s\n", j, linha);
 		char letra[2] = "00";
 
@@ -805,45 +819,106 @@ unsigned int _rotr(const unsigned int value, int shift) {
 }
 
 // ULA
-unsigned int ULA(unsigned int x, unsigned int y, unsigned int OP, unsigned int* FR) {
-	int auxFR;
+unsigned int ULA(unsigned int x, unsigned int y, unsigned int OP, unsigned int auxFR[]) {
+	//unsigned int auxFR[16]={0};// TODO ficar 0 quando der reset? Nao entendi o auxFR
 	unsigned int result = 0;
+	//printf("OP:%d - arith:%d add:%d\n", OP, pega_pedaco(OP, 5, 4), pega_pedaco(OP, 3, 0));
 	switch(pega_pedaco(OP, 5, 4)) {
 		case ARITH:
-			switch(pega_pedaco(OP, 3, 0)) {
+			switch(OP) {
 				case ADD:
-				   break;	
+					if(pega_pedaco(OP, 6, 6)==1)
+						result = x+y+auxFR[CARRY];
+					else
+						result = x+y;
+
+					if(result > 65535)// Carry
+						auxFR[CARRY] = 1;
+					else 
+						auxFR[CARRY] = 0;
+
+					break;	
 				case SUB:
-				   break;	
+					result = x-y;
+
+					if(result < 0)// Negative
+						auxFR[NEGATIVE] = 1;
+					else 
+						auxFR[NEGATIVE] = 0;
+					break;	
 				case MULT:
-				   break;	
+					result = x*y;
+
+					if(result > 65535)// Arithmetic overflow
+						auxFR[ARITHMETIC_OVERFLOW] = 1;
+					else 
+						auxFR[ARITHMETIC_OVERFLOW] = 0;
+					break;	
 				case DIV:
-				   break;	
+					if(y==0) {
+						result = 0;
+						auxFR[DIV_BY_ZERO] = 1;
+					}else {
+						result = x/y;
+						auxFR[DIV_BY_ZERO] = 0;
+					}
+					break;	
 				case LMOD:
-				   break;	
-				case MULT:
-				   break;	
-			}
-			break;
-		case LOGIC:
-			switch(pega_pedaco(OP, 3, 0)) {
-				case COMP:
-					result = x;
-					break;
-				case LAND:
-					result = x && y;
-					break;
-				case LXOR:
-					result = (x || y) && (x!=y);
-					break;
-				case LOR:
-					result = x || y;
-					break;
-				case LNOT:
-					result = !x;
-					break;
+					if(y==0) {
+						result = 0;
+						auxFR[DIV_BY_ZERO] = 1;
+					}else {
+						result = x%y;
+						auxFR[DIV_BY_ZERO] = 0;
+					}
+					break;	
 				default:
 					result = x;
+			}
+			if(result==0)
+				auxFR[ZERO] = 1;
+			else
+				auxFR[ZERO] = 0;
+
+			break;
+		case LOGIC:
+			if(OP==CMP)
+			{
+				result = x;
+				if(x>y){
+					auxFR[GREATER] = 1;
+					auxFR[LESSER] = 0;
+					auxFR[EQUAL] = 0;
+				}else if(x<y){
+					auxFR[GREATER] = 0;
+					auxFR[LESSER] = 1;
+					auxFR[EQUAL] = 0;
+				}else if(x==y){
+					auxFR[GREATER] = 0;
+					auxFR[LESSER] = 0;
+					auxFR[EQUAL] = 1;
+				}
+			}else{
+				switch(OP) {
+					case LAND:
+						result = x & y;
+						break;
+					case LXOR:
+						result = x ^ y;
+						break;
+					case LOR:
+						result = x | y;
+						break;
+					case LNOT:
+						result = !x & 65535;
+						break;
+					default:
+						result = x;
+				}
+				if(result==0)
+					auxFR[ZERO] = 1;
+				else
+					auxFR[ZERO] = 0;
 			}
 			break;
 	}
