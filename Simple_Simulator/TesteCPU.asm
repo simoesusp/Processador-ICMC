@@ -164,4 +164,3 @@ static Dado + #0, #'B'
 	
 	
 	
-	
