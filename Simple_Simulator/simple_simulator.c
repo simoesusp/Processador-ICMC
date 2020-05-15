@@ -1,9 +1,9 @@
-// gcc simple_simulator.c -O3 -march=native -o simulador -Wall -lm
+// gcc simple_simulator.c -O3 -march=native -o simulador -Wall -lm -lcurses
 // -lm is option to execute math.h library file.
-
 
 #define TAMANHO_PALAVRA 16
 #define TAMANHO_MEMORIA 32768
+#define MAX_VAL 65535
 
 // Estados do Processador
 #define STATE_RESET 0
@@ -38,7 +38,6 @@
 // Selecao do Mux6
 //#define sULA 0
 //#define sDATA_OUT 1
-
 
 // Opcodes das Instrucoes:
 // Data Manipulation:
@@ -101,14 +100,13 @@
 #define LESSER 1
 #define GREATER 0
 
-//#include <curses.h>     //  Novo Terminal cheio de funcoes!!!
+#include <curses.h>     //  Novo Terminal cheio de funcoes!!!
 #include <stdlib.h>     // Rand
 #include <stdio.h>      // Printf
 #include <fcntl.h>      // Fileopen - Fileclose - fprintf - fscanf
-//#include <curses.h>      // kbhit() 
 #include <math.h>
 
-// kbhit()
+// kbhit() TODO: deletar
 #include <termios.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -207,7 +205,7 @@ loop:
 
 	if(LoadMAR) MAR = DATA_OUT;
 
-	if(LoadSP) SP = M3;
+	if(LoadSP) SP = M4;
 
 	if(IncSP) SP++;
 
@@ -221,6 +219,9 @@ loop:
 	rx = pega_pedaco(IR,9,7);
 	ry = pega_pedaco(IR,6,4);
 	rz = pega_pedaco(IR,3,1);
+	
+	// Coloca valor do Mux2 para o registrador com Load
+	if(LoadReg[rx]) reg[rx] = M2;
 
 	// Operacao de Escrita da Memoria
 	if (RW == 1) MEMORY[M1] = M5;
@@ -294,7 +295,6 @@ loop:
 			// ----------- -- ---------------
 			state=STATE_DECODE;
 			break;
-
 
 		case STATE_DECODE:
 
@@ -662,10 +662,6 @@ loop:
 					// -----------------------------
 					state=STATE_EXECUTE2;
 					break;
-
-
-
-
 			}
 
 			//state=STATE_EXECUTE2;
@@ -690,7 +686,6 @@ loop:
 		default:
 			break;
 	}
-
 
 	// Selecao do Mux4   --> Tem que vir antes do M1 e do M2 que usam M4
 	if(selM4 == 8) M4 = 1;  // Seleciona 1 para fazer INC e DEC
@@ -730,9 +725,6 @@ loop:
 	else if (selM2 == sM4)  M2 = M4;
 	//else if (selM2 == sTECLADO) M2 = TECLADO;// TODO: selM2 com teclado
 	else if (selM2 == sSP)  M2 = SP; 
-
-	// Coloca valor do Mux2 para o registrador com Load
-	if(LoadReg[rx]) reg[rx] = M2;
 
 	// Selecao do Mux5
 	if (selM5 == sPC) M5 = PC;
@@ -872,10 +864,10 @@ ResultadoUla ULA(unsigned int x, unsigned int y, unsigned int OP, int carry) {
 						result = x+y+FR[CARRY];
 					else
 						result = x+y;
-
-					if(result > 65535){// Carry
+					//MAX_VAL = 1111 1111 1111 1111
+					if(result > MAX_VAL){// Carry
 						auxFRbits[CARRY] = 1;
-						result -= 65535;
+						result -= MAX_VAL;
 					}else 
 						auxFRbits[CARRY] = 0;
 
@@ -891,7 +883,7 @@ ResultadoUla ULA(unsigned int x, unsigned int y, unsigned int OP, int carry) {
 				case MULT:
 					result = x*y;
 
-					if(result > 65535)// Arithmetic overflow
+					if(result > MAX_VAL)// Arithmetic overflow
 						auxFRbits[ARITHMETIC_OVERFLOW] = 1;
 					else 
 						auxFRbits[ARITHMETIC_OVERFLOW] = 0;
@@ -953,8 +945,8 @@ ResultadoUla ULA(unsigned int x, unsigned int y, unsigned int OP, int carry) {
 						break;
 					case LNOT:
 						// ~x -> 000000101 para 111111010
-						// & 65535 -> para garantir que vai ficar menor igual que 65535
-						result = ~x & 65535;
+						// & MAX_VAL -> para garantir que vai ficar menor igual que 65535
+						result = ~x & MAX_VAL;
 						break;
 					default:
 						result = x;
