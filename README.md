@@ -32,6 +32,9 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula05 08/05/20 - https://drive.google.com/file/d/1aMhA7_8POKLhRMsvV9SxC-DVYDXbCiBP/view?usp=sharing
 
+- Aula05 15/05/20 - https://meet.google.com/ocp-tmjt-qno
+
+
 # Projetos dos Alunos 2020
 
 - Processador do Breno Cunha Queiroz: https://github.com/Brenocq/MyMachine
