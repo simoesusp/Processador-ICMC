@@ -17,7 +17,7 @@ This project consists of five parts:
 
 5-	Documentation (Processor architecture and Assembly language description)
 
-## Aulas a Distância
+## Aulas a Distância  (As aulas terão sempreo mesmo nome no MEEI: ssc0119)
 
 - Minicurso OpenGL do Breno - https://github.com/Brenocq/OpenGL-Tutorial
 
@@ -33,6 +33,8 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 - Aula05 08/05/20 - https://drive.google.com/file/d/1aMhA7_8POKLhRMsvV9SxC-DVYDXbCiBP/view?usp=sharing
 
 - Aula05 15/05/20 - https://meet.google.com/ocp-tmjt-qno
+
+- Aula06 20/05/20 - https://meet.google.com/edf-xhwo-ztc
 
 
 # Projetos dos Alunos 2020
