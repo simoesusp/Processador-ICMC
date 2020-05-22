@@ -32,9 +32,9 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula05 08/05/20 - https://drive.google.com/file/d/1aMhA7_8POKLhRMsvV9SxC-DVYDXbCiBP/view?usp=sharing
 
-- Aula05 15/05/20 - https://meet.google.com/ocp-tmjt-qno
+- Aula06 15/05/20 - https://drive.google.com/file/d/1V-i44oPmlpRQ5K5WAYF6ywZH5auTft93/view?usp=sharing
 
-- Aula06 20/05/20 - https://meet.google.com/edf-xhwo-ztc
+- Aula07 20/05/20 - https://drive.google.com/file/d/1DRlHb2YtotdG1Rkqs8OJSG8z4QznJbyy/view?usp=sharing
 
 
 # Projetos dos Alunos 2020
