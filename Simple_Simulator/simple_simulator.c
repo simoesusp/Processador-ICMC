@@ -1,5 +1,15 @@
 // gcc simple_simulator.c -O3 -march=native -o simulador -Wall -lm -lcurses
 // -lm is option to execute math.h library file.
+/*
+Perguntas:
+1) O que tenho que fazer?
+2) Onde começa?
+3) Onde Termina?
+4) Qual é o caminho?
+Do todos os comandos...
+5) Acabou??
+6) E o PC ????????
+*/
 
 #define TAMANHO_PALAVRA 16
 #define TAMANHO_MEMORIA 32768
