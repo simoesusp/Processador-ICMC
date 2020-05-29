@@ -36,7 +36,7 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula07 20/05/20 - https://drive.google.com/file/d/1DRlHb2YtotdG1Rkqs8OJSG8z4QznJbyy/view?usp=sharing
 
-- Aula07 29/05/20 - https://meet.google.com/yvc-xqmh-mco
+- Aula08 29/05/20 - https://drive.google.com/file/d/10DAdvf9fJx04aoz0vpfWeKK0oT7K8vpt/view?usp=sharing
 
 
 # Projetos dos Alunos 2020
