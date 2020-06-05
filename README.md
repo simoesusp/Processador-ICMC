@@ -38,6 +38,8 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula08 29/05/20 - https://drive.google.com/file/d/10DAdvf9fJx04aoz0vpfWeKK0oT7K8vpt/view?usp=sharing
 
+- Aula09 05/06/20 - https://meet.google.com/ivj-gtuq-yuh
+
 
 # Projetos dos Alunos 2020
 
