@@ -182,9 +182,9 @@ int main()
 	int i=0;
 	int key=0;    // Le Teclado
 	int PC=0, IR=0, SP=0, MAR=0, rx=0, ry=0, rz=0, COND=0, RW=0, DATA_OUT=0;
-	int LoadPC=0, IncPC=0, LoadIR=0, LoadSP=0, IncSP=0, DecSP=0, LoadMAR=0, LoadFR=0;
 	int M1=0, M2=0, M3=0, M4=0, M5=0, M6=0;
 	int selM1=0, selM2=0, selM3=0, selM4=0, selM5=0, selM6=0;
+	int LoadPC=0, IncPC=0, LoadIR=0, LoadSP=0, IncSP=0, DecSP=0, LoadMAR=0, LoadFR=0;
 	int LoadReg[8] = {0};
 	int carry=0;// Flag do IR que indica se a ULA vai fazer operação com carry ou não 
 	int opcode=0;
@@ -195,6 +195,7 @@ int main()
 	ResultadoUla resultadoUla;
 
 	le_arquivo();
+	openGL_create_window();
 
 inicio:
 	printf("Rodando...\n");
@@ -203,6 +204,7 @@ inicio:
 
 	// Loop principal do processador: Nunca para!!
 loop:
+	openGL_update();
 
 	//key = getchar();   
 
@@ -688,9 +690,10 @@ loop:
 
 		case STATE_HALTED:
 			printf("\n");
-			key = getchar();
-			if (key == 'r') goto inicio;
-			if (key == 'q') goto fim;
+			goto fim;
+			//key = getchar();
+			//if (key == 'r') goto inicio;
+			//if (key == 'q') goto fim;
 			break;
 
 		default:
@@ -747,6 +750,7 @@ loop:
 	goto loop;
 
 fim:
+	openGL_destroy_window();
 	return 0;
 }
 
@@ -758,7 +762,7 @@ void le_arquivo(void){
 
 	if ( (stream = fopen("CPURAM.mif","r")) == NULL)  // Abre o arquivo para leitura
 	{
-		printf("Error: File not OPEN!");
+		printf("[Simple Simulator] Nao conseguiu abrir o arquivo!\n");
 		exit(1);
 	}
 
