@@ -26,7 +26,7 @@ void openGL_draw_ula();
 void openGL_draw_registers_paths();
 void openGL_draw_memory_paths();
 void openGL_draw_keyboard_path();
-void openGL_draw_mux_registers_paths();
+void openGL_draw_mux_paths();
 void openGL_draw_ula_paths();
 
 // Funcoes auxiliares
@@ -34,5 +34,6 @@ void openGL_draw_rectangle(float x, float y, float width, float height);
 void openGL_draw_mux(float x, float y, float width, float height, char orientation);
 void openGL_draw_path(float x0, float y0, float x1, float y1, char selected);
 void openGL_draw_path_arrow(float x0, float y0, float x1, float y1, char selected);
+void openGL_draw_dot_paths(float x, float y);
 
 #endif// ARCHITECTURE_OPENGL_H

@@ -1,4 +1,5 @@
 #include "architecture_opengl.h"
+#include <math.h>
 
 GLFWwindow* window;
 
@@ -82,11 +83,11 @@ void openGL_draw()
 	openGL_draw_ula();
 
 	glLineWidth(2);
-
+	
 	openGL_draw_registers_paths();
 	openGL_draw_memory_paths();
 	openGL_draw_keyboard_path();
-	openGL_draw_mux_registers_paths();
+	openGL_draw_mux_paths();
 	openGL_draw_ula_paths();
 }
 
@@ -147,10 +148,10 @@ void openGL_draw_keyboard()
 void openGL_draw_video()
 {
 	// Big box
-	openGL_draw_rectangle(-0.8, 0, 0.2, 0.5);
+	openGL_draw_rectangle(-0.8, 0.15, 0.2, 0.5);
 	// Small boxes
-	openGL_draw_rectangle(-0.8, 0, 0.15, 0.08);
-	openGL_draw_rectangle(-0.8, 0.12, 0.15, 0.08);
+	openGL_draw_rectangle(-0.8, 0.15, 0.15, 0.08);
+	openGL_draw_rectangle(-0.8, 0.27, 0.15, 0.08);
 }
 
 void openGL_draw_ula()
@@ -187,6 +188,17 @@ void openGL_draw_ula()
 	glEnd();
 }
 
+void openGL_draw_dot_paths(float x, float y)
+{
+	glBegin(GL_POLYGON);
+	int i;
+	float raio = 0.015;
+	for(i=0; i<360; i+=30){
+		glVertex2f(raio*cos(i/180.f*M_PI)+x, raio*sin(i/180.f*M_PI)+y);
+	}
+	glEnd();
+}
+
 void openGL_draw_registers_paths()
 {
 	float x = -0.4;
@@ -205,6 +217,14 @@ void openGL_draw_registers_paths()
 		// Registers to M4
 		openGL_draw_path_arrow(x-totalWidth/2+dist*r, y-size/2, -0.25-(0.25/2)+(0.25/(qtyRegisters-1))*r, 0.535, 'n');
 	}
+	
+	//MAR to M1
+	openGL_draw_path_arrow(0.4, -0.76, 0.5, -0.635, 'n');
+  	//PC to M1
+	openGL_draw_path_arrow(0.6, -0.76, 0.6, -0.635, 'n');	
+	//SP to M1
+	openGL_draw_path_arrow(0.85, -0.76, 0.7, -0.635, 'n');
+
 }
 
 void openGL_draw_memory_paths()
@@ -235,7 +255,7 @@ void openGL_draw_memory_paths()
 	
 	// Ate MAR
 	openGL_draw_path_arrow(0.35, -0.92, 0.35, -0.84, 'n');
-	
+		
 	// Ate PC
 	openGL_draw_path(0.35, -0.92, 0.6, -0.92, 'n');
 	openGL_draw_path_arrow(0.6, -0.92, 0.6, -0.84, 'n');
@@ -246,17 +266,30 @@ void openGL_draw_keyboard_path()
 	openGL_draw_path_arrow(-0.325, -0.6, -0.465, -0.6, 'n');
 }
 
-void openGL_draw_mux_registers_paths()
+void openGL_draw_mux_paths()
 {
+	//M3 to ULA
 	openGL_draw_path_arrow(-0.55, 0.465, -0.55, (0.12/2), 'n');
+	//M4 to ULA
 	openGL_draw_path_arrow(-0.25, 0.465, -0.25, (0.12/2), 'n');
+	//M4 to Video(X)
+	openGL_draw_path_arrow(-0.25, 0.15, -0.725, 0.15, 'n');
+	openGL_draw_dot_paths(-0.25, 0.15);
+	//M1 to Memoria
+	openGL_draw_path_arrow(0.6, -0.565, 0.6, -0.4, 'n'); 	
+	//M5 to Memoria
+	openGL_draw_path_arrow(0.6, 0.665, 0.6, 0.4, 'n');
 }
 
 void openGL_draw_ula_paths()
 {
 	// ULA to M2
-	
+	openGL_draw_path(-0.4, -0.06, -0.4, -0.4, 'n');
+	openGL_draw_path_arrow(-0.4, -0.4, -0.465, -0.4, 'n');
 	// ULA to M6
+	openGL_draw_path(-0.35, -0.06, -0.35, -0.1, 'n');
+	openGL_draw_path(-0.35, -0.1, -0.05, -0.1, 'n');
+   	openGL_draw_path_arrow(-0.05, -0.1, -0.05, -0.03, 'n'); 	
 }
 
 void openGL_draw_rectangle(float x, float y, float width, float height)
