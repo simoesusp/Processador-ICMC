@@ -34,6 +34,6 @@ void openGL_draw_rectangle(float x, float y, float width, float height);
 void openGL_draw_mux(float x, float y, float width, float height, char orientation);
 void openGL_draw_path(float x0, float y0, float x1, float y1, char selected);
 void openGL_draw_path_arrow(float x0, float y0, float x1, float y1, char selected);
-void openGL_draw_dot_paths(float x, float y);
+void openGL_draw_dot_paths(float x, float y, char selected);
 
 #endif// ARCHITECTURE_OPENGL_H

@@ -3,6 +3,34 @@
 
 GLFWwindow* window;
 
+// Selecao do Mux1
+#define sPC 0
+#define sMAR 1
+#define sM4 2
+#define sSP 3
+
+// Selecao do Mux2
+#define sULA 0
+#define sDATA_OUT 1
+//#define sM4 2
+//#define sSP 3
+#define sTECLADO 4
+
+// Selecao do Mux3 --> E´ so´ colocar: 0, 1, 2 ... 7  para selecionar os Registradores
+
+// Selecao do Mux4 --> E´ so´ colocar: 0, 1, 2 ... 7  para selecionar os Registradores ou 8 para entrar o nr. 1
+
+// Selecao do Mux5
+//#define sPC 0
+#define sM3 1
+
+// Selecao do Mux6
+//#define sULA 0
+//#define sDATA_OUT 1
+//
+extern int LoadPC, IncPC, LoadIR, LoadSP, IncSP, DecSP, LoadMAR, LoadFR;
+extern int selM1, selM2, selM3, selM4, selM5, selM6;
+
 void openGL_create_window()
 {
 	// Checa se foi possivel inicializar o glfw (window manager)
@@ -148,7 +176,7 @@ void openGL_draw_keyboard()
 void openGL_draw_video()
 {
 	// Big box
-	openGL_draw_rectangle(-0.8, 0.15, 0.2, 0.5);
+	openGL_draw_rectangle(-0.8, 0.15, 0.2, 0.45);
 	// Small boxes
 	openGL_draw_rectangle(-0.8, 0.15, 0.15, 0.08);
 	openGL_draw_rectangle(-0.8, 0.27, 0.15, 0.08);
@@ -188,17 +216,6 @@ void openGL_draw_ula()
 	glEnd();
 }
 
-void openGL_draw_dot_paths(float x, float y)
-{
-	glBegin(GL_POLYGON);
-	int i;
-	float raio = 0.015;
-	for(i=0; i<360; i+=30){
-		glVertex2f(raio*cos(i/180.f*M_PI)+x, raio*sin(i/180.f*M_PI)+y);
-	}
-	glEnd();
-}
-
 void openGL_draw_registers_paths()
 {
 	float x = -0.4;
@@ -218,12 +235,36 @@ void openGL_draw_registers_paths()
 		openGL_draw_path_arrow(x-totalWidth/2+dist*r, y-size/2, -0.25-(0.25/2)+(0.25/(qtyRegisters-1))*r, 0.535, 'n');
 	}
 	
-	//MAR to M1
+	// MAR to M1
 	openGL_draw_path_arrow(0.4, -0.76, 0.5, -0.635, 'n');
-  	//PC to M1
+  	// PC to M1
 	openGL_draw_path_arrow(0.6, -0.76, 0.6, -0.635, 'n');	
-	//SP to M1
+	// SP to M1
 	openGL_draw_path_arrow(0.85, -0.76, 0.7, -0.635, 'n');
+	// FR to IR
+	openGL_draw_path(0.0, 0.17, 0.0, 0.5, 'n');
+	openGL_draw_path_arrow(0.0, 0.5, 0.11, 0.5, 'n');
+	// PC to M5
+	openGL_draw_path(0.6, -0.7, 0.97, -0.7, 'n');
+	openGL_draw_path(0.97, -0.7, 0.97, 0.85, 'n');
+	openGL_draw_dot_paths(0.6, -0.7, 'n');
+	openGL_draw_path(0.97, 0.85, 0.65, 0.85, 'n');
+	openGL_draw_path_arrow(0.65, 0.85, 0.65, 0.735, 'n');
+	// SP to M2
+	openGL_draw_path(0.75, -0.67, 0.87, -0.67, 'n');
+	openGL_draw_dot_paths(0.75, -0.67, 'n');
+	openGL_draw_path(0.87, -0.67, 0.87, -0.5,'n');
+	openGL_draw_path_arrow(0.87, -0.5, -0.465, -0.5, 'n');
+	// FR to M3
+	openGL_draw_path(-0.05, 0.17, -0.05, 0.4, 'n');
+	openGL_draw_path(-0.05, 0.4, -0.75, 0.4, 'n');
+	openGL_draw_path(-0.75, 0.4, -0.75, 0.535, 'n');
+	openGL_draw_path_arrow(-0.75, 0.535, -0.55-0.125, 0.535, 'n');
+	// FR to ULA
+	openGL_draw_dot_paths(-0.05, 0.2, 'n');
+	openGL_draw_path(-0.05, 0.2, -0.18, 0.2, 'n');
+	openGL_draw_path(-0.18, 0.2, -0.18, 0, 'n');
+	openGL_draw_path_arrow(-0.18, 0, -0.26, 0, 'n');
 
 }
 
@@ -232,19 +273,45 @@ void openGL_draw_memory_paths()
 	// Desenha caminhos que saem da memoria
 	
 	// Conectado na saida da memoria
-	openGL_draw_path(0.4, 0, 0.2, 0, 'n');
+	if(LoadIR || LoadPC || LoadMAR || selM6 == sDATA_OUT || selM2 == sDATA_OUT)
+		openGL_draw_path(0.4, 0, 0.2, 0, 'y');
+	else
+		openGL_draw_path(0.4, 0, 0.2, 0, 'n');
+
 	// Vai para o IR
-	openGL_draw_path_arrow(0.2, 0, 0.2, 0.46, 'n');
+	if(LoadIR)
+		openGL_draw_path_arrow(0.2, 0, 0.2, 0.46, 'y');
+	else
+		openGL_draw_path_arrow(0.2, 0, 0.2, 0.46, 'n');
 	
 	// Desce ate o M6
-	openGL_draw_path(0.2, 0, 0.2, -0.1, 'n');
+	if(LoadPC || LoadMAR || selM6 == sDATA_OUT || selM2 == sDATA_OUT)
+	{
+		openGL_draw_path(0.2, 0, 0.2, -0.1, 'y');
+		openGL_draw_dot_paths(0.2, 0, 'y');
+	}
+	else
+	{
+		openGL_draw_path(0.2, 0, 0.2, -0.1, 'n');
+		openGL_draw_dot_paths(0.2, 0, 'n');
+	}
+
 	
 	// Ate o M6
-	openGL_draw_path(0.2, -0.1, 0, -0.1, 'n');
-	openGL_draw_path_arrow(0, -0.1, 0, -0.03, 'n');
+	if(selM6 == sDATA_OUT)
+	{
+		openGL_draw_path(0.2, -0.1, 0, -0.1, 'y');
+		openGL_draw_path_arrow(0, -0.1, 0, -0.03, 'y');
+	}
+	else
+	{
+		openGL_draw_path(0.2, -0.1, 0, -0.1, 'n');
+		openGL_draw_path_arrow(0, -0.1, 0, -0.03, 'n');
+	}
 
 	// Desce do M6 ate M2
 	openGL_draw_path(0.2, 0, 0.2, -0.53, 'n');
+	openGL_draw_dot_paths(0.2, -0.53, 'n');
 
 	// Ate a entrada do M2
 	openGL_draw_path_arrow(0.2, -0.53, -0.465, -0.53, 'n');
@@ -255,6 +322,7 @@ void openGL_draw_memory_paths()
 	
 	// Ate MAR
 	openGL_draw_path_arrow(0.35, -0.92, 0.35, -0.84, 'n');
+	openGL_draw_dot_paths(0.35, -0.92, 'n');
 		
 	// Ate PC
 	openGL_draw_path(0.35, -0.92, 0.6, -0.92, 'n');
@@ -274,11 +342,58 @@ void openGL_draw_mux_paths()
 	openGL_draw_path_arrow(-0.25, 0.465, -0.25, (0.12/2), 'n');
 	//M4 to Video(X)
 	openGL_draw_path_arrow(-0.25, 0.15, -0.725, 0.15, 'n');
-	openGL_draw_dot_paths(-0.25, 0.15);
+	openGL_draw_dot_paths(-0.25, 0.15, 'n');
+	//M4 to M2
+	openGL_draw_path(-0.25, 0.15, -0.15, 0.15, 'n');
+	openGL_draw_path(-0.15, 0.15, -0.15, -0.47, 'n');
+	openGL_draw_path_arrow(-0.15, -0.47, -0.465, -0.47, 'n');
+	//M4 to M1
+	openGL_draw_dot_paths(-0.15, -0.47, 'n');
+	openGL_draw_path(-0.15, -0.47, 0.23, -0.47, 'n');
+	openGL_draw_path(0.23, -0.47, 0.23, -0.7, 'n');
+	openGL_draw_path(0.23, -0.7, 0.43, -0.7, 'n');
+	openGL_draw_path_arrow(0.43, -0.7, 0.43, -0.635, 'n');
+	//M4 to SP
+	openGL_draw_dot_paths(0.23, -0.7, 'n');
+	openGL_draw_path(0.23, -0.7, 0.23, -0.97, 'n');
+	openGL_draw_path(0.23, -0.97, 0.85, -0.97, 'n');
+	openGL_draw_path_arrow(0.85, -0.97, 0.85, -0.84, 'n');
+
 	//M1 to Memoria
 	openGL_draw_path_arrow(0.6, -0.565, 0.6, -0.4, 'n'); 	
 	//M5 to Memoria
 	openGL_draw_path_arrow(0.6, 0.665, 0.6, 0.4, 'n');
+	// M6 to FR
+	openGL_draw_path(0, 0.03, 0.0, 0.09, 'n');
+
+	// M3 to Video(char)
+	openGL_draw_dot_paths(-0.55, 0.27, 'n');
+	openGL_draw_path_arrow(-0.55, 0.27, -0.725, 0.27, 'n');
+	
+	// M2 to registers
+	openGL_draw_path(-0.535, -0.5, -0.93, -0.5, 'n');
+	openGL_draw_path(-0.93, -0.5, -0.93, 0.90, 'n');
+	openGL_draw_path(-0.93, 0.90, 0.025, 0.9, 'n');
+
+	float x = -0.4;
+	float y = 0.8;
+	float size = 0.1;
+	float dist = 0.12;
+	float qtyRegisters = 8;
+	float totalWidth = (qtyRegisters-1)*dist;
+	// Desenha caminhos para os 8 registros
+	for(int r=0;r<qtyRegisters;r++)
+	{
+		openGL_draw_path_arrow(x-totalWidth/2+dist*r, 0.90, x-totalWidth/2+dist*r, y+size/2, 'n');
+		openGL_draw_dot_paths(x-totalWidth/2+dist*r, 0.90, 'n');
+	}
+	
+	// M3 to M5
+	openGL_draw_dot_paths(-0.55, 0.43, 'n');
+	openGL_draw_path(-0.55, 0.43, -0.97, 0.43, 'n');
+	openGL_draw_path(-0.97, 0.43, -0.97, 0.95, 'n');
+	openGL_draw_path(-0.97, 0.95, 0.55, 0.95, 'n');
+	openGL_draw_path_arrow(0.55, 0.95, 0.55, 0.735, 'n');
 }
 
 void openGL_draw_ula_paths()
@@ -286,10 +401,10 @@ void openGL_draw_ula_paths()
 	// ULA to M2
 	openGL_draw_path(-0.4, -0.06, -0.4, -0.4, 'n');
 	openGL_draw_path_arrow(-0.4, -0.4, -0.465, -0.4, 'n');
+
 	// ULA to M6
-	openGL_draw_path(-0.35, -0.06, -0.35, -0.1, 'n');
-	openGL_draw_path(-0.35, -0.1, -0.05, -0.1, 'n');
-   	openGL_draw_path_arrow(-0.05, -0.1, -0.05, -0.03, 'n'); 	
+	openGL_draw_path(-0.31, -0.05, -0.05, -0.05, 'n');
+   	openGL_draw_path_arrow(-0.05, -0.05, -0.05, -0.03, 'n'); 	
 }
 
 void openGL_draw_rectangle(float x, float y, float width, float height)
@@ -391,7 +506,7 @@ void openGL_draw_mux(float x, float y, float width, float height, char orientati
 void openGL_draw_path(float x0, float y0, float x1, float y1, char selected)
 {
 	if(selected == 'y')
-		glColor3f(0, 0, 1);
+		glColor3f(.5, 1, .5);
 	else
 		glColor3f(0, 0, 0);
 
@@ -406,15 +521,41 @@ void openGL_draw_path(float x0, float y0, float x1, float y1, char selected)
 void openGL_draw_path_arrow(float x0, float y0, float x1, float y1, char selected)
 {
 	if(selected == 'y')
-		glColor3f(0, 0, 1);
+		glColor3f(.5, 1, .5);
 	else
 		glColor3f(0, 0, 0);
+
+	float angle = atan2((y0-y1),(x0-x1));
+	float angleArrow1 = angle+M_PI/6;
+	float angleArrow2 = angle-M_PI/6;
 
 	glBegin(GL_LINES);
 	{
 		glVertex2f(x0, y0);
 		glVertex2f(x1, y1);
 		// TODO: draw arrow
+		glVertex2f(x1, y1);
+		glVertex2f(x1+0.03*cos(angleArrow1), y1+0.03*sin(angleArrow1));
+
+		glVertex2f(x1, y1);
+		glVertex2f(x1+0.03*cos(angleArrow2), y1+0.03*sin(angleArrow2));
 	}
 	glEnd();
 }
+
+void openGL_draw_dot_paths(float x, float y, char selected)
+{
+	if(selected == 'y')
+		glColor3f(.5, 1, .5);
+	else
+		glColor3f(0, 0, 0);
+
+	glBegin(GL_POLYGON);
+	int i;
+	float raio = 0.015;
+	for(i=0; i<360; i+=30){
+		glVertex2f(raio*cos(i/180.f*M_PI)+x, raio*sin(i/180.f*M_PI)+y);
+	}
+	glEnd();
+}
+
