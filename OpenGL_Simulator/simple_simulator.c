@@ -121,8 +121,10 @@ Do todos os comandos...
 #include <unistd.h>
 #include <fcntl.h>
 
+//#include "architecture_opengl.c"
+//#include "simulator_curses.c"
+
 unsigned int MEMORY[TAMANHO_MEMORIA]; // Vetor que representa a Memoria de programa e de dados do Processador
-int reg[8]; // 8 registradores
 
 typedef struct _resultadoUla{
 	unsigned int result;
@@ -176,6 +178,10 @@ int kbhit(void)
 }
 
 int FR[16] = {0};  // Flag Register: <...|Negativo|StackUnderflow|StackOverflow|DivByZero|ArithmeticOverflow|carry|zero|equal|lesser|greater>
+int reg[8]; // 8 registradores
+int selM1=0, selM2=0, selM3=0, selM4=0, selM5=0, selM6=0;
+int LoadPC=0, IncPC=0, LoadIR=0, LoadSP=0, IncSP=0, DecSP=0, LoadMAR=0, LoadFR=0;
+int LoadReg[8] = {0};
 
 int main()
 {
@@ -183,9 +189,6 @@ int main()
 	int key=0;    // Le Teclado
 	int PC=0, IR=0, SP=0, MAR=0, rx=0, ry=0, rz=0, COND=0, RW=0, DATA_OUT=0;
 	int M1=0, M2=0, M3=0, M4=0, M5=0, M6=0;
-	int selM1=0, selM2=0, selM3=0, selM4=0, selM5=0, selM6=0;
-	int LoadPC=0, IncPC=0, LoadIR=0, LoadSP=0, IncSP=0, DecSP=0, LoadMAR=0, LoadFR=0;
-	int LoadReg[8] = {0};
 	int carry=0;// Flag do IR que indica se a ULA vai fazer operação com carry ou não 
 	int opcode=0;
 	int temp=0;
@@ -196,15 +199,17 @@ int main()
 
 	le_arquivo();
 	openGL_create_window();
+	curses_create_window();
 
 inicio:
-	printf("Rodando...\n");
+	//printf("Rodando...\n");
 
 	state = STATE_RESET;
 
 	// Loop principal do processador: Nunca para!!
 loop:
 	openGL_update();
+	curses_update();
 
 	//key = getchar();   
 
@@ -334,7 +339,7 @@ loop:
 					break;
 
 				case OUTCHAR:
-					printf("%c", reg[rx]);
+					//printf("%c", reg[rx]);
 					// -----------------------------
 					state=STATE_FETCH;
 					break;
@@ -689,7 +694,7 @@ loop:
 			break;
 
 		case STATE_HALTED:
-			printf("\n");
+			//printf("\n");
 			goto fim;
 			//key = getchar();
 			//if (key == 'r') goto inicio;
@@ -712,7 +717,7 @@ loop:
 
 	if(M1 > (TAMANHO_MEMORIA)) {
 		M1 = 0;
-		printf("  \n\nUltrapassou limite da memoria, coloque um jmp no fim do código\n");
+		//printf("  \n\nUltrapassou limite da memoria, coloque um jmp no fim do código\n");
 		exit(1);
 	}
 
@@ -751,6 +756,7 @@ loop:
 
 fim:
 	openGL_destroy_window();
+	curses_destroy_window();
 	return 0;
 }
 

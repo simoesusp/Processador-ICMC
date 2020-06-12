@@ -13,7 +13,6 @@ void openGL_create_window();
 void openGL_update();
 void openGL_draw();
 void openGL_destroy_window();
-void openGL_draw();
 
 // Funcoes para desenhar componentes
 void openGL_draw_registers();
@@ -29,7 +28,6 @@ void openGL_draw_memory_paths();
 void openGL_draw_keyboard_path();
 void openGL_draw_mux_registers_paths();
 void openGL_draw_ula_paths();
-
 
 // Funcoes auxiliares
 void openGL_draw_rectangle(float x, float y, float width, float height);
