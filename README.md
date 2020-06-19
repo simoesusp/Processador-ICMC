@@ -40,6 +40,8 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula09 05/06/20 - https://drive.google.com/file/d/1D737QeewEPxa9iTV7XARUwV22v9Pwsif/view?usp=sharing
 
+- Aula10 19/06/20 - https://meet.google.com/syq-zzva-wwb
+
 
 # Projetos dos Alunos 2020
 
