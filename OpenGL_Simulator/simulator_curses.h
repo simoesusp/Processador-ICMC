@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define WINDOW_WIDTH 40
 #define WINDOW_HEIGHT 30
-#define WINDOW_WIDTH 60
 
 // Inicializa o curses e cria as janelas
 void curses_create_window();
@@ -23,6 +23,7 @@ void curses_draw_top_bar();
 
 // Desenhar janela do simulador
 void curses_draw_window();
+void curses_out_char(char c, int pos, int cor);
 
 
 #endif// SIMULATOR_CURSES_H

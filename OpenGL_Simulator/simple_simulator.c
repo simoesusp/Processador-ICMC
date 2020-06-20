@@ -150,32 +150,32 @@ unsigned int _rotr(const unsigned int value, int shift);
 // ULA
 ResultadoUla ULA(unsigned int x, unsigned int y, unsigned int OP, int carry);
 
-int kbhit(void)
-{
-  struct termios oldt, newt;
-  int ch;
-  int oldf;
- 
-  tcgetattr(STDIN_FILENO, &oldt);
-  newt = oldt;
-  newt.c_lflag &= ~(ICANON | ECHO);
-  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
- 
-  ch = getchar();
- 
-  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-  fcntl(STDIN_FILENO, F_SETFL, oldf);
- 
-  if(ch != EOF)
-  {
-    ungetc(ch, stdin);
-    return 1;
-  }
- 
-  return 0;
-}
+//int kbhit(void)
+//{
+//  struct termios oldt, newt;
+//  int ch;
+//  int oldf;
+// 
+//  tcgetattr(STDIN_FILENO, &oldt);
+//  newt = oldt;
+//  newt.c_lflag &= ~(ICANON | ECHO);
+//  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+//  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+//  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+// 
+//  ch = getchar();
+// 
+//  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+//  fcntl(STDIN_FILENO, F_SETFL, oldf);
+// 
+//  if(ch != EOF)
+//  {
+//    ungetc(ch, stdin);
+//    return 1;
+//  }
+// 
+//  return 0;
+//}
 
 int FR[16] = {0};  // Flag Register: <...|Negativo|StackUnderflow|StackOverflow|DivByZero|ArithmeticOverflow|carry|zero|equal|lesser|greater>
 int reg[8]; // 8 registradores
@@ -196,10 +196,12 @@ int main()
 	unsigned char state=0; // reset
 	int OP=0;  // ULA
 	int TECLADO;
+	char c;
+	int cor;
 	ResultadoUla resultadoUla;
 
 	le_arquivo();
-	openGL_create_window();
+	//openGL_create_window();
 	curses_create_window();
 
 inicio:
@@ -209,10 +211,8 @@ inicio:
 
 	// Loop principal do processador: Nunca para!!
 loop:
-	openGL_update();
+	//openGL_update();
 	curses_update();
-
-	//key = getchar();   
 
 	// Executa Load dos Registradores
 	if(LoadIR) IR = DATA_OUT;
@@ -322,14 +322,18 @@ loop:
 			switch(opcode){
 				case INCHAR:
 					// TODO: entrada teclado
-					//TECLADO = getchar();
-					//timeout(99999);
+					timeout(99999);
+					TECLADO = getch();
 					//if(TECLADO == ERR)
 					//	TECLADO = 255;
-					if(kbhit())
-						TECLADO = getchar();
-					else
-						TECLADO = 255;
+					timeout(0);
+
+					//if(kbhit())
+					//	TECLADO = getch();
+					//else
+					//	TECLADO = 255;
+
+					TECLADO = getch();
 
 					TECLADO = pega_pedaco(TECLADO,7,0);
 					selM2 = sTECLADO;
@@ -341,6 +345,15 @@ loop:
 
 				case OUTCHAR:
 					//printf("%c", reg[rx]);
+					c = pega_pedaco(reg[rx], 7, 0);
+					cor = pega_pedaco(reg[rx], 15, 8);
+
+					if(cor == 0)
+						cor = 15;
+					else if(cor == 15)
+						cor = 0;
+
+					curses_out_char(c, reg[ry], cor);
 					// -----------------------------
 					state=STATE_FETCH;
 					break;
@@ -742,7 +755,7 @@ loop:
 	if      (selM2 == sULA) M2 = resultadoUla.result;
 	else if (selM2 == sDATA_OUT) M2 = DATA_OUT;
 	else if (selM2 == sM4)  M2 = M4;
-	//else if (selM2 == sTECLADO) M2 = TECLADO;// TODO: selM2 com teclado
+	else if (selM2 == sTECLADO) M2 = TECLADO;// TODO: selM2 com teclado
 	else if (selM2 == sSP)  M2 = SP; 
 
 	// Selecao do Mux5
@@ -756,7 +769,8 @@ loop:
 	goto loop;
 
 fim:
-	openGL_destroy_window();
+	//openGL_destroy_window();
+	getchar();   
 	curses_destroy_window();
 	return 0;
 }
@@ -767,7 +781,7 @@ void le_arquivo(void){
 	int i, j;
 	int processando = 0; // Flag para varreo o arquivo CPURAM.mif e tirar o cabecalho
 
-	if ( (stream = fopen("CPURAM.mif","r")) == NULL)  // Abre o arquivo para leitura
+	if ( (stream = fopen("Nave11.mif","r")) == NULL)  // Abre o arquivo para leitura
 	{
 		printf("[Simple Simulator] Nao conseguiu abrir o arquivo!\n");
 		exit(1);
