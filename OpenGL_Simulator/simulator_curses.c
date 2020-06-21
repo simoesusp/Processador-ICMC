@@ -54,6 +54,8 @@
 WINDOW* topBar;
 // Tela de saida dos caracteres da simulacao
 WINDOW* outWindow;
+//Tela onde mostra o código
+WINDOW* codeWindow;
 
 extern int reg[8]; // 8 registradores
 
@@ -69,10 +71,12 @@ void curses_create_window()
 
 	// Cria janela topBar
 	topBar = newwin(3, maxX, 0, 0);
-	// Cria janela de output
-	outWindow = newwin(WINDOW_HEIGHT+1, WINDOW_WIDTH, 3, 0);
+	//Cria janela de código
+	codeWindow = newwin(maxY-3, 30, 3, 0);
+	// Cria janela de outchar
+	outWindow = newwin(WINDOW_HEIGHT+1, WINDOW_WIDTH, 3, maxX-WINDOW_WIDTH);
 
-	if(topBar == NULL || outWindow == NULL)
+	if(topBar == NULL || outWindow == NULL || codeWindow == NULL)
 	{
 		printf("[Curses] Nao foi possivel criar as janelas.\n");
 		exit(1);
@@ -177,8 +181,8 @@ void curses_setup()
 
 void curses_update()
 {
-	//curses_draw_top_bar();
-	//nodelay(stdscr, TRUE);
+	curses_draw_top_bar();
+	curses_draw_code();
 }
 
 void curses_draw_top_bar() {
@@ -263,9 +267,9 @@ void curses_out_char(char c, int pos, int cor)
 	int posX = pos%WINDOW_WIDTH;
 	int posY = pos/WINDOW_WIDTH+1;
 
-	wattr_on(outWindow, COLOR_PAIR(0), NULL);
+	wattr_on(outWindow, COLOR_PAIR(cor), NULL);
 	mvwprintw(outWindow, posY, posX, "%c", c);
-	wattr_off(outWindow, COLOR_PAIR(0), NULL);
+	wattr_off(outWindow, COLOR_PAIR(cor), NULL);
 
 	wrefresh(outWindow);
 
@@ -273,4 +277,32 @@ void curses_out_char(char c, int pos, int cor)
 	//mvprintw(posY+30, posX, "%c", c);
 	//wattr_off(outWindow, COLOR_PAIR(0), NULL);
 	//wrefresh(stdscr);
+}
+
+void curses_draw_code(){
+	int maxX, maxY;
+	//wclear(codeWindow);
+	getmaxyx(codeWindow, maxY, maxX);
+	wattr_on(codeWindow, COLOR_PAIR(PAIR_TITLES), NULL);
+	/*for(int i=0; i<maxX; i++)
+	{
+   		wmove(codeWindow, 0, i);
+		wprintw(codeWindow, " ");
+	}
+	wattr_off(codeWindow, COLOR_PAIR(PAIR_TITLES), NULL);
+	*/
+	wattr_on(codeWindow, COLOR_PAIR(PAIR_TITLES), NULL);
+	char title_code[] = "CODE";
+   	wmove(codeWindow, 0, maxX/2-strlen(title_code)/2);
+	wprintw(codeWindow, "%s", title_code);
+	wattr_off(codeWindow, COLOR_PAIR(PAIR_TITLES), NULL);
+	wattr_on(outWindow, COLOR_PAIR(PAIR_BACKGROUND), NULL); 
+	for(int x=0; x<maxX; x++){
+		for(int y=1; y<maxY; y++){
+			mvwprintw(codeWindow, y, x, " ");
+		}
+	}
+	wattr_off(codeWindow, COLOR_PAIR(PAIR_BACKGROUND), NULL);
+	
+	wrefresh(codeWindow);		
 }
