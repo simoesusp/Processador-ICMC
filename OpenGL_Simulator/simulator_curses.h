@@ -24,6 +24,6 @@ void curses_draw_top_bar();
 // Desenhar janela do simulador
 void curses_draw_window();
 void curses_out_char(char c, int pos, int cor);
-
+void curses_draw_code();
 
 #endif// SIMULATOR_CURSES_H
