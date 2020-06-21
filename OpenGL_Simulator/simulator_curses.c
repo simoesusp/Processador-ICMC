@@ -1,4 +1,6 @@
 #include "simulator_curses.h"
+#include "defines.h"
+#include "utils.h"
 
 //Curses colors
 #define WIN_COLOR_BLACK 16
@@ -31,6 +33,7 @@
 #define PAIR_TITLES 17
 #define PAIR_NUMBERS 18
 #define PAIR_REGISTERS 19
+#define PAIR_CODE 20
 
 // Pares simulador
 #define SIM_PAIR_BRANCO 0
@@ -50,14 +53,18 @@
 #define SIM_PAIR_AQUA 14
 #define SIM_PAIR_PRETO 15
 
+#define TAMANHO_MEMORIA 32768
+
+extern unsigned int MEMORY[TAMANHO_MEMORIA];
+extern int PC, SP;
+extern int reg[8]; // 8 registradores
+
 // Barra onde mostra os registradores
 WINDOW* topBar;
 // Tela de saida dos caracteres da simulacao
 WINDOW* outWindow;
 //Tela onde mostra o código
 WINDOW* codeWindow;
-
-extern int reg[8]; // 8 registradores
 
 void curses_create_window()
 {
@@ -103,7 +110,7 @@ void curses_setup()
 	clear();
 	//raw();
 	keypad(stdscr, TRUE);
-	resize_term(42, 125);
+	//resize_term(42, 125);
 	curs_set(FALSE);
 	timeout(0);
 
@@ -155,7 +162,8 @@ void curses_setup()
 	init_pair(PAIR_NUMBERS, WIN_COLOR_WHITE, WIN_COLOR_BLACK);
 	init_pair(PAIR_TITLES, WIN_COLOR_GREEN, WIN_COLOR_GRAY);
 	init_pair(PAIR_REGISTERS, WIN_COLOR_BLUE, WIN_COLOR_BLACK);
-
+	init_pair(PAIR_CODE, WIN_COLOR_WHITE, WIN_COLOR_BLACK);
+	
 	// Cria pares do simulador
 	init_pair(SIM_PAIR_BRANCO,SIM_COLOR_BRANCO, SIM_COLOR_PRETO);
 	init_pair(SIM_PAIR_MARROM,SIM_COLOR_MARROM, SIM_COLOR_PRETO);
@@ -296,13 +304,235 @@ void curses_draw_code(){
    	wmove(codeWindow, 0, maxX/2-strlen(title_code)/2);
 	wprintw(codeWindow, "%s", title_code);
 	wattr_off(codeWindow, COLOR_PAIR(PAIR_TITLES), NULL);
-	wattr_on(outWindow, COLOR_PAIR(PAIR_BACKGROUND), NULL); 
-	for(int x=0; x<maxX; x++){
-		for(int y=1; y<maxY; y++){
-			mvwprintw(codeWindow, y, x, " ");
-		}
+
+	int auxpc = PC;
+	
+	wattr_on(outWindow, COLOR_PAIR(PAIR_CODE), NULL); 
+	for(int y=1; y<maxY; y++){
+		int temp = 1;
+		int curr_inst = pega_pedaco(MEMORY[auxpc], 15, 10);
+		if(curr_inst == STORE || curr_inst == LOAD || curr_inst == LOADIMED || curr_inst == JMP || curr_inst == CALL)
+			temp = 2;
+		show_program(codeWindow, y, auxpc);
+		auxpc += temp;
 	}
-	wattr_off(codeWindow, COLOR_PAIR(PAIR_BACKGROUND), NULL);
+	wattr_off(codeWindow, COLOR_PAIR(PAIR_CODE), NULL);
 	
 	wrefresh(codeWindow);		
+}
+
+void show_program(WINDOW* codeWindow,int y, int pc) {
+    int x = 0;
+	if(pc+1 >= TAMANHO_MEMORIA) return;
+	int rx = pega_pedaco(MEMORY[pc],9,7);
+    int ry = pega_pedaco(MEMORY[pc],6,4);
+    int rz = pega_pedaco(MEMORY[pc],3,1);
+    mvwprintw(codeWindow,y,x, "                                                                     ");
+	int ir = MEMORY[pc];
+    switch(pega_pedaco(ir,15,10)){
+        case INCHAR:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  INCHAR R%d            |   R%d <- TECLADO ", pc, rx, rx);
+            break;
+
+        case OUTCHAR:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  OUTCHAR R%d, R%d       |   VIDEO[R%d] <- CHAR[R%d] ", pc, rx, ry, rx, ry);
+            break;
+
+        case MOV:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  MOV R%d, R%d           |   R%d <- R%d ", pc, rx, ry, rx, ry);
+            break;
+
+        case STORE:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  STORE %05d, R%d      |   MEM[%d] <- R%d ", pc, MEMORY[pc+1], rx, MEMORY[pc+1], rx);
+            break;
+
+        case STOREINDEX:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  STOREI R%d, R%d        |   MEM[R%d] <- R%d ", pc, rx, ry, rx, ry);
+            break;
+
+        case LOAD:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  LOAD R%d, %05d       |   R%d <- MEM[%d] ", pc, rx, MEMORY[pc+1], rx, MEMORY[pc+1]);
+            break;
+
+        case LOADIMED:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  LOADN R%d, #%05d     |   R%d <- #%d ", pc, rx, MEMORY[pc+1], rx, MEMORY[pc+1]);
+            break;
+
+        case LOADINDEX:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  LOADI R%d, R%d         |   R%d <- MEM[R%d] ", pc, rx, ry, rx, ry);
+            break;
+
+        case LAND:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  AND R%d, R%d, R%d       |   R%d <- R%d and R%d ", pc, rx, ry, rz, rx, ry, rz);
+            break;
+
+        case LOR:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  OR R%d, R%d, R%d        |   R%d <- R%d or R%d ", pc, rx, ry, rz, rx, ry, rz);
+            break;
+
+        case LXOR:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  XOR R%d, R%d, R%d       |   R%d <- R%d xor R%d ", pc, rx, ry, rz, rx, ry, rz);
+            break;
+
+        case LNOT:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  NOT R%d, R%d           |   R%d <- R%d ", pc, rx, ry, rx, ry);
+            break;
+
+        case CMP:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  CMP R%d, R%d           |   FR <- <equal|lesser|greater> ", pc, rx, ry);
+            break;
+
+        case JMP:
+            if(pega_pedaco(ir,9,6) == 0) // NO COND
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JMP #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==7)) // GREATER
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JGR #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==9)) // GREATER EQUAL
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JEG #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==8)) // LESSER
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JLE #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==10)) // LESSER EQUAL
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JEL #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==1)) // EQUAL
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JEQ #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==2)) // NOT EQUAL
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNE #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==3)) // ZERO
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JZ #%05d            |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==4)) // NOT ZERO
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNZ #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==5)) // CARRY
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JC #%05d            |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==6)) // NOT CARRY
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNC #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==11)) // OVERFLOW
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JOV #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==12)) // NOT OVERFLOW
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNO #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==14)) // NEGATIVO
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JN #%05d            |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==13)) // DIVBYZERO
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JDZ #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+
+            break;
+
+        case PUSH:
+            if(pega_pedaco(ir,6,6)==0) { // Registrador
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  PUSH R%d              |   MEM[%d] <- R%d] ", pc, rx, SP, rx);
+                }
+            else {                      // FR
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  PUSH FR              |   MEM[%d] <- FR] ", pc, SP);
+                }
+            break;
+
+        case POP:
+            if(pega_pedaco(ir,6,6)==0) { // Registrador
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  POP R%d               |   R%d <- MEM[%d] ", pc, rx, rx, SP);
+                }
+            else {                      // FR
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  POP FR               |   FR <- MEM[%d] ", pc, SP);
+                }
+            break;
+
+        case CALL:
+            if(pega_pedaco(ir,9,6) == 0) // NO COND
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CALL #%05d          |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==7)) // GREATER
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CGR #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==9)) // GREATER EQUAL
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CEG #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==8)) // LESSER
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CLE #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==10)) // LESSER EQUAL
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CEL #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==1)) // EQUAL
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CEQ #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==2)) // NOT EQUAL
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNE #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==3)) // ZERO
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CZ #%05d            |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==4)) // NOT ZERO
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNZ #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==5)) // CARRY
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CC #%05d            |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==6)) // NOT CARRY
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNC #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==11)) // OVERFLOW
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  COV #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==12)) // NOT OVERFLOW
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNO #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==14)) // NEGATIVO
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CN #%05d            |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+            if((pega_pedaco(ir,9,6)==13)) // DIVBYZERO
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CDZ #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+
+            break;
+
+        case RTS:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  RTS                  |   SP++; PC <- MEM[%d]; PC++ ", pc, SP);
+            break;
+
+        case ADD:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  ADD R%d, R%d, R%d       |   R%d <- R%d + R%d ", pc, rx, ry, rz, rx, ry, rz);
+            break;
+
+        case SUB:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  SUB R%d, R%d, R%d       |   R%d <- R%d - R%d ", pc, rx, ry, rz, rx, ry, rz);
+            break;
+
+        case MULT:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  MULT R%d, R%d, R%d      |   R%d <- R%d * R%d ", pc, rx, ry, rz, rx, ry, rz);
+            break;
+
+        case DIV:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  DIV R%d, R%d, R%d       |   R%d <- R%d / R%d ", pc, rx, ry, rz, rx, ry, rz);
+            break;
+
+        case LMOD:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  MOD R%d, R%d, R%d       |   R%d <- R%d % R%d ", pc, rx, ry, rz, rx, ry, rz);
+            break;
+
+        case INC:
+            if(pega_pedaco(ir,6,6)==0) { // Inc Rx
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  INC R%d               |   R%d <- R%d + 1 ", pc, rx, rx, rx);
+                }
+            else  {                      // Dec Rx
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  DEC R%d               |   R%d <- R%d - 1 ", pc, rx, rx, rx);
+                }
+            break;
+
+        case SHIFT:     // Nao tive paciencia de fazer diferente para cada SHIFT/ROT
+            if(pega_pedaco(ir,6,4)==0) // SHIFT LEFT 0
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  SHIFTL0 R%d, #%02d      |   R%d <-'0'  << %d ", pc, rx, pega_pedaco(ir,3,0), rx, pega_pedaco(ir,3,0));
+            if(pega_pedaco(ir,6,4)==1) // SHIFT LEFT 1
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  SHIFTL1 R%d, #%02d      |   R%d <-'1'  << %d ", pc, rx, pega_pedaco(ir,3,0), rx, pega_pedaco(ir,3,0));
+            if(pega_pedaco(ir,6,4)==2) // SHIFT RIGHT 0
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  SHIFTR0 R%d, #%02d      |   '0'-> R%d   >> %d ", pc, rx, pega_pedaco(ir,3,0), rx, pega_pedaco(ir,3,0));
+            if(pega_pedaco(ir,6,4)==3) // SHIFT RIGHT 1
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  SHIFTR1 R%d, #%02d      |   '1'-> R%d   >> %d ", pc, rx, pega_pedaco(ir,3,0), rx, pega_pedaco(ir,3,0));
+            if(pega_pedaco(ir,6,5)==2) // ROTATE LEFT
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  ROTL R%d, #%02d         |   R%d <- R%d   << %d ", pc, rx, pega_pedaco(ir,3,0), rx, pega_pedaco(ir,3,0));
+            if(pega_pedaco(ir,6,5)==3) // ROTATE RIGHT
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  ROTR R%d, #%02d         |   R%d -> R%d   >> %d ", pc, rx, pega_pedaco(ir,3,0), rx, pega_pedaco(ir,3,0));
+
+            break;
+
+        case SETC:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  SETC                 |   C <- %d ", pc, pega_pedaco(ir,9,9));
+            break;
+
+        case HALT:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  HALT                 |   Pausa a execussao", pc);
+            break;
+
+        case NOP:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  NOOP                 |   Do nothing ", pc);
+            break;
+
+        case BREAKP:
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  BREAKP #%05d        |   Break Point ", pc, pega_pedaco(ir,9,0));
+            break;
+    }
+
+
 }

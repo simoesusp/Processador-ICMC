@@ -25,5 +25,6 @@ void curses_draw_top_bar();
 void curses_draw_window();
 void curses_out_char(char c, int pos, int cor);
 void curses_draw_code();
+void show_program(WINDOW* codeWindow, int y, int pc);
 
 #endif// SIMULATOR_CURSES_H
