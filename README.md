@@ -40,9 +40,9 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula09 05/06/20 - https://drive.google.com/file/d/1D737QeewEPxa9iTV7XARUwV22v9Pwsif/view?usp=sharing
 
-- Aula10 19/06/20 - https://meet.google.com/tyz-egzc-mcw
+- Aula10 19/06/20 - https://drive.google.com/file/d/117qgL7HN25YzItavkQm8LA9Z57q-cyQC/view?usp=sharing
 
-- Aula11 26/06/20 - Para participar da videochamada, clique neste link: https://meet.google.com/rcg-bugs-wuk
+- Aula11 26/06/20 - https://drive.google.com/file/d/1hCCEEEl75a0nuwn8l52oTFqBOmnQoUKe/view?usp=sharing
 
 
 # Projetos dos Alunos 2020
