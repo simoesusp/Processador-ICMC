@@ -44,6 +44,8 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula11 26/06/20 - https://drive.google.com/file/d/1hCCEEEl75a0nuwn8l52oTFqBOmnQoUKe/view?usp=sharing
 
+- Aula12 03/07/20 - https://meet.google.com/wuw-twfo-nzy
+
 
 # Projetos dos Alunos 2020
 
