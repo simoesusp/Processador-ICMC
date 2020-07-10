@@ -46,6 +46,7 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula12 03/07/20 - https://drive.google.com/file/d/1RzOF8D1m6F4eZPwDyDH26HVcAFpasZUJ/view?usp=sharing
 
+- Aula13 10/07/20 - Para participar da videochamada, clique neste link: https://meet.google.com/xpz-nowj-ddb
 
 # Projetos dos Alunos 2020
 
