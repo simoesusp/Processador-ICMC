@@ -48,6 +48,8 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula13 10/07/20 - Para participar da videochamada, clique neste link: https://meet.google.com/xpz-nowj-ddb
 
+- Aula14 17/07/20 - https://meet.google.com/zea-qjrw-cfy
+
 # Projetos dos Alunos 2020
 
 - Processador do Breno Cunha Queiroz: https://github.com/Brenocq/MyMachine
