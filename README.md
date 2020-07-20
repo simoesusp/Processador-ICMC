@@ -52,16 +52,17 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 # Projetos dos Alunos 2020
 
+- COMO FAZER: Incluir no seu GIT: o Código do Simulador modificado, o JOGO.ASM e o CPURAM.MIF, e caso tenha alterado, o CHARMAP.MIF. 
+Obrigatório: incluir um vídeo mostrando o jogo funcionando e explicando as modificações que fez no Processador. (Upa no Youtube e poe um link no teu Github).
+
+- Depois coloca um link para o teu projeto nesse documento (precisa estar logado na USP): https://docs.google.com/document/d/1J11lfm-AvLe69ntmBMAl1A9rf-ZU6I3QOx-8lMfTFfA/edit?usp=sharing
+
+- TODOS OS ALUNOS PRECISAM APRESENTAR O TRABALHO EM REUNIÃO PELO GOOGLE MEET!! 
+
+
 - Processador do Breno Cunha Queiroz: https://github.com/Brenocq/MyMachine
 
-- TODOS OS ALUNOS PRECISAM APRESENTAR O TRABALHO PESSOALMENTE!! 
-
 # Projetos dos Alunos 2019
-
-- COMO FAZER: Incluir no seu GIT: CPU.VHD e JOGO.ASM e o CPURAM.MIF, e caso tenha alterado, o CHARMAP.MIF. Se possível, incluir um video mostrando o jogo funcionando e explicando tudo. (Upa no Youtube e poe um link no teu Github). Dai' Forca a pagina da disciplina (esta página!!) no teu git, edita o READ.ME e Comita. Depois faz um Pull Request No git original da disciplina. Veja o video: 
-
-[![FELIZ WAS HERE](http://img.youtube.com/vi/0vT8zuG9CYM/0.jpg)](http://www.youtube.com/watch?v=0vT8zuG9CYM)
-
 
 - Jogo da chuva de letras: Felipe Guilermmo Santuche Moleiro - https://github.com/FelipeMoleiro/ProjetoLabOrgArqComp
 
