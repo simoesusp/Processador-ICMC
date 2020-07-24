@@ -50,6 +50,8 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula14 17/07/20 - https://drive.google.com/file/d/1eWgq85L6G6-anK1W4bojcdzM84GF_xvi/view?usp=sharing
 
+- Aula14 17/07/20 - https://meet.google.com/xzf-ngvg-wha
+
 # Projetos dos Alunos 2020
 
 - COMO FAZER: Incluir no seu GIT: o Código do Simulador modificado, o JOGO.ASM e o CPURAM.MIF, e caso tenha alterado, o CHARMAP.MIF. 
