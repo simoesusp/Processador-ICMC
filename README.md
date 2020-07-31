@@ -59,8 +59,7 @@ Obrigatório: incluir um vídeo mostrando o jogo funcionando e explicando as mod
 
 - Depois coloca um link para o teu projeto nesse documento (precisa estar logado na USP): https://docs.google.com/document/d/1J11lfm-AvLe69ntmBMAl1A9rf-ZU6I3QOx-8lMfTFfA/edit?usp=sharing
 
-- TODOS OS ALUNOS PRECISAM APRESENTAR O TRABALHO EM REUNIÃO PELO GOOGLE MEET!! 
-
+- TODOS OS ALUNOS PRECISAM APRESENTAR O TRABALHO EM REUNIÃO PELO GOOGLE MEET!! - Para a apresentação final, estarei aguardando voces no meet hoje (31/07/20)  apartir das 3h: https://meet.google.com/goy-qvfa-ngk
 
 - Processador do Breno Cunha Queiroz: https://github.com/Brenocq/MyMachine
 
