@@ -50,7 +50,7 @@ Parte2: https://drive.google.com/file/d/15Olmivl_6dFfzbz0j2-lQUj2PCYKGOXX/view?u
 
 - Aula14 17/07/20 - https://drive.google.com/file/d/1eWgq85L6G6-anK1W4bojcdzM84GF_xvi/view?usp=sharing
 
-- Aula14 17/07/20 - https://meet.google.com/xzf-ngvg-wha
+- Aula14 17/07/20 - https://drive.google.com/file/d/1VYH5Ttz9j9WaDt0n5hL2UDnE31Iir3x-/view?usp=sharing
 
 # Projetos dos Alunos 2020
 
