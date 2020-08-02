@@ -63,6 +63,8 @@ Obrigatório: incluir um vídeo mostrando o jogo funcionando e explicando as mod
 
 - Processador do Breno Cunha Queiroz: https://github.com/Brenocq/MyMachine
 
+-  Assembly Tron - Guilherme Amaral Hiromoto, Paulo Matana da Rocha, Caio Marcos Chaves Viana, Dennis Lenke Green - https://github.com/guilhermehiromoto/Assembly-Tron
+
 - Pacmario - Luana Terra do Couto, Larissa freire de Jesus Costa - https://github.com/LuTDC/lab_orgcomp
 
 - Atravesse o Mapa - Luca Porto, Leonardo Meireles - https://github.com/LucaPort0/Assembly-ICMC-Game
@@ -73,11 +75,11 @@ Obrigatório: incluir um vídeo mostrando o jogo funcionando e explicando as mod
 
 - RNAssembly - Anderson Cardoso Gonçalves - https://github.com/ansoncg/RNAssembly_LabOrgComp
 
-- HamsterDuet - Diany Pressato, Matheus da Silva Araujo - (link a ser colocado)
+- HamsterDuet - Diany Pressato, Matheus da Silva Araujo - https://github.com/di-press/HamsterDuet
 
 - Processador MASM - Eduardo Souza Rocha - https://github.com/Edwolt/Processador-MASM
 
-- Processador de Videgame - Nathan Rodrigues de Oliveira - https://github.com/NathanTBP/NTBProcessor
+- Processador de Videogame - Nathan Rodrigues de Oliveira - https://github.com/NathanTBP/NTBProcessor
 
 
 # Projetos dos Alunos 2019
