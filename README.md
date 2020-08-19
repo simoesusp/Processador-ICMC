@@ -81,6 +81,9 @@ Obrigatório: incluir um vídeo mostrando o jogo funcionando e explicando as mod
 
 - Processador de Videogame - Nathan Rodrigues de Oliveira - https://github.com/NathanTBP/NTBProcessor
 
+- Space Race - Tyago Yuji Teoi - https://github.com/Tyago-Teoi/Projeto-de-Pr-ticas-de-Organiza-o-de-Computadores
+
+
 
 # Projetos dos Alunos 2019
 
