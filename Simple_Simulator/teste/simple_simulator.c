@@ -115,6 +115,7 @@ Do todos os comandos...
 #include <stdio.h>      // Printf
 #include <fcntl.h>      // Fileopen - Fileclose - fprintf - fscanf
 #include <math.h>
+#include <time.h>
 
 // kbhit() TODO: deletar
 #include <termios.h>
@@ -196,6 +197,9 @@ int main()
 
 	le_arquivo();
 
+	clock_t clock_init = clock();
+	clock_t elapsed = 0;
+	double time_elapsed = 0;
 inicio:
 	printf("Rodando...\n");
 
@@ -687,10 +691,13 @@ loop:
 			break;
 
 		case STATE_HALTED:
-			printf("\n");
+
+			elapsed = clock() - clock_init;
+			time_elapsed = ((double)elapsed)/CLOCKS_PER_SEC;
+			printf("Time elapsed: %lf\n", time_elapsed);
 			key = getchar();
-			if (key == 'r') goto inicio;
-			if (key == 'q') goto fim;
+			//if (key == 'r') goto inicio;
+			//if (key == 'q') goto fim;
 			break;
 
 		default:
@@ -767,7 +774,7 @@ void le_arquivo(void){
 
 	while (fscanf(stream,"%s", linha)!=EOF)   // Le linha por linha ate' o final do arquivo: eof = end of file !!
 	{
-		char letra[2] = "00";
+		char letra[2] = "0";
 
 		if (!processando) {
 			i = 0;

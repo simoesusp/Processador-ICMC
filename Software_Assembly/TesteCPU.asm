@@ -3,7 +3,7 @@
 
 ; 4 Perguntas ao implemantar as instrucoes:
 ;	1) O Que preciso fazer para esta instrucao?
-;	2) Onde Comeca: Pegar o que tem que fazer e ir voltando ate' chegar em um registrador (ie. PC)
+;	2) Onde Comeca: Pegargcc simple_simulator.c -O3 -march=native -o simulador -Wall -lm -lcurses o que tem que fazer e ir voltando ate' chegar em um registrador (ie. PC)
 ;	3) Qual e' a Sequencia de Operacoes: Descrever todos os comandos que tem que dar nos cilos de Dec e Exec
 ;	4) Ja' terminou??? Cumpriu o que tinha que fazer??? O PC esta' pronto para a proxima instrucao (cuidado com Load, Loadn, Store, Jmp, Call)
 
@@ -125,8 +125,8 @@ SaiJMP:
 	loadn r0, #28
 	loadn r1, #5
 	loadn r2, #3
-	loadn r3, #'P'
-	loadn r4, #'Q'
+	loadn r3, #'O'
+	loadn r4, #'X'
 	cmp r1, r2
 	cgr CallMaior
 	cel CallMenorIgual
@@ -142,7 +142,7 @@ CallSai:
 
 	; Teste do PUSH e POP
 	loadn r0, #30
-	loadn r1, #'R'
+	loadn r1, #'P'
 	push r1
 	pop r2
 	outchar r2, r0		; Printa R na linha 30
@@ -153,5 +153,15 @@ Fim:
 	halt
 
 	
-Dado : var #1
+Dado : var #1  ; O comando VAR aloca bytes de memoria e associa o primeiro byte ao LABEL
 static Dado + #0, #'B'
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
