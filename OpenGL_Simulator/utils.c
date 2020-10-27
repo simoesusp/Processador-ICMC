@@ -1,3 +1,8 @@
+//---------------------------------------------------
+// Utils
+// By: Breno Cunha Queiroz and Maria Eduarda Kawakami
+// Date: 12/06/20
+//---------------------------------------------------
 #include "utils.h"
 
 int pega_pedaco(int ir, int a, int b){

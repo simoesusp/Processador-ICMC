@@ -1,44 +1,32 @@
-// gcc simple_simulator.c -O3 -march=native -o simulador -Wall -lm -lcurses
-// -lm is option to execute math.h library file.
-/*
-Perguntas:
-1) O que tenho que fazer?
-2) Onde começa?
-3) Onde Termina?
-4) Qual é o caminho?
-Do todos os comandos...
-5) Acabou??
-6) E o PC ????????
-*/
-#include <curses.h>     //  Novo Terminal cheio de funcoes!!!
+//-----------------------------------------------------------------------
+// Simple Simulator
+// By: Breno Cunha Queiroz and Maria Eduarda Kawakami and Eduardo Simoes
+// Date: 11/06/20
+//-----------------------------------------------------------------------
+#include <curses.h>
 #include <stdlib.h>     // Rand
 #include <stdio.h>      // Printf
 #include <fcntl.h>      // Fileopen - Fileclose - fprintf - fscanf
 #include <math.h>
-
-// kbhit() TODO: deletar
-#include <termios.h>
-#include <unistd.h>
-#include <fcntl.h>
+#include <time.h>
 
 #include "defines.h"
 #include "utils.h"
 //#include "architecture_opengl.c"
-//#include "simulator_curses.c"
+#include "simulator_curses.h"
 
-unsigned int MEMORY[TAMANHO_MEMORIA]; // Vetor que representa a Memoria de programa e de dados do Processador
-int PC=0, SP=0;
+// Vetor que representa a Memoria de programa e de dados do Processador
+unsigned int MEMORY[TAMANHO_MEMORIA];
 
 typedef struct _resultadoUla{
 	unsigned int result;
 	unsigned int auxFR;
 } ResultadoUla;
 
-
-//  Processa dados do Arquivo CPU.MIF
+// Processa dados do Arquivo MIF
 void le_arquivo(void);
 
-//processa uma linha completa e retorna o número codificado
+// Processa uma linha completa e retorna o número codificado
 int processa_linha(char* linha); 
 
 // Funcao que separa somente o pedaco de interesse do IR;
@@ -53,39 +41,14 @@ unsigned int _rotr(const unsigned int value, int shift);
 // ULA
 ResultadoUla ULA(unsigned int x, unsigned int y, unsigned int OP, int carry);
 
-//int kbhit(void)
-//{
-//  struct termios oldt, newt;
-//  int ch;
-//  int oldf;
-// 
-//  tcgetattr(STDIN_FILENO, &oldt);
-//  newt = oldt;
-//  newt.c_lflag &= ~(ICANON | ECHO);
-//  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-//  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-//  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
-// 
-//  ch = getchar();
-// 
-//  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-//  fcntl(STDIN_FILENO, F_SETFL, oldf);
-// 
-//  if(ch != EOF)
-//  {
-//    ungetc(ch, stdin);
-//    return 1;
-//  }
-// 
-//  return 0;
-//}
-
 int FR[16] = {0};  // Flag Register: <...|Negativo|StackUnderflow|StackOverflow|DivByZero|ArithmeticOverflow|carry|zero|equal|lesser|greater>
 int reg[8]; // 8 registradores
 int selM1=0, selM2=0, selM3=0, selM4=0, selM5=0, selM6=0;
 int LoadPC=0, IncPC=0, LoadIR=0, LoadSP=0, IncSP=0, DecSP=0, LoadMAR=0, LoadFR=0;
 int LoadReg[8] = {0};
 int RW=0;
+int Video=0;
+
 
 int main()
 {
@@ -101,24 +64,40 @@ int main()
 	int TECLADO;
 	char c;
 	int cor;
+	int PC = 0, SP = 0;
+	int passo_a_passo = 1;
 	ResultadoUla resultadoUla;
-	PC = 0;
-	SP = 0;
 	le_arquivo();
-	getchar();
-	//openGL_create_window();
+	openGL_create_window();
 	curses_create_window();
 
+	clock_t clock_init = clock();
+	clock_t last_update = clock();
+	clock_t elapsed = 0;
+	double time_elapsed = 0;
 inicio:
-	//printf("Rodando...\n");
-
 	state = STATE_RESET;
 
 	// Loop principal do processador: Nunca para!!
 loop:
-	//openGL_update();
-	getchar();
-	curses_update();
+	if(passo_a_passo)
+	{
+		elapsed = clock() - last_update;
+		time_elapsed = ((double)elapsed)/CLOCKS_PER_SEC;
+		if(time_elapsed > 0.1)
+		{
+			last_update = clock();
+
+			estado_da_maquina_curses estado_curses = {0};
+			memcpy(estado_curses.memoria, MEMORY, sizeof(MEMORY));
+			memcpy(estado_curses.reg, reg, sizeof(reg));
+			estado_curses.PC = PC;
+			estado_curses.SP = SP;
+			estado_curses.state = state;
+			curses_update(estado_curses);
+			openGL_update();
+		}
+	}
 
 	// Executa Load dos Registradores
 	if(LoadIR) IR = DATA_OUT;
@@ -166,6 +145,7 @@ loop:
 	IncSP   = 0;
 	DecSP   = 0;
 	LoadFR  = 0;
+	Video   = 0;
 
 
 	// Maquina de Controle
@@ -201,6 +181,7 @@ loop:
 			selM4   = 0;  // Pode por direto o nr. do Regisrador
 			selM5   = sM3;
 			selM6   = sULA;
+			Video   = 0;
 
 			// -----------------------------
 			state=STATE_FETCH;
@@ -220,25 +201,16 @@ loop:
 			break;
 
 		case STATE_DECODE:
-
 			// Case das instrucoes
 			opcode = pega_pedaco(IR,15,10);
 
 			switch(opcode){
 				case INCHAR:
-					// TODO: entrada teclado
-					timeout(99999);
+					//timeout(99999);
 					TECLADO = getch();
-					//if(TECLADO == ERR)
-					//	TECLADO = 255;
-					timeout(0);
-
-					//if(kbhit())
-					//	TECLADO = getch();
-					//else
-					//	TECLADO = 255;
-
-					TECLADO = getch();
+					if(TECLADO == ERR)
+						TECLADO = 255;
+					//timeout(0);
 
 					TECLADO = pega_pedaco(TECLADO,7,0);
 					selM2 = sTECLADO;
@@ -250,13 +222,11 @@ loop:
 
 				case OUTCHAR:
 					//printf("%c", reg[rx]);
+					selM3 = 1;
+					selM4 = 0;
+					Video = 1;
 					c = pega_pedaco(reg[rx], 7, 0);
 					cor = pega_pedaco(reg[rx], 15, 8);
-
-					if(cor == 0)
-						cor = 15;
-					else if(cor == 15)
-						cor = 0;
 
 					curses_out_char(c, reg[ry], cor);
 					// -----------------------------
@@ -505,7 +475,7 @@ loop:
 					state=STATE_EXECUTE;
 					break;
 
-				case RTS:
+				case RTS: 
 					// SP++;
 					IncSP = 1;
 					// -----------------------------
@@ -603,8 +573,7 @@ loop:
 			//state=STATE_EXECUTE2;
 			break;
 
-		case STATE_EXECUTE2:
-
+		case STATE_EXECUTE2: 
 			//case RTS:
 			//PC++;
 			IncPC = 1;
@@ -674,9 +643,13 @@ loop:
 	goto loop;
 
 fim:
-	//openGL_destroy_window();
-	getchar();   
+	openGL_destroy_window();
+	//getchar();   
 	curses_destroy_window();
+	elapsed = clock() - clock_init;
+	time_elapsed = ((double)elapsed)/CLOCKS_PER_SEC;
+	printf("Time elapsed: %lf\n", time_elapsed);
+
 	return 0;
 }
 
@@ -686,7 +659,7 @@ void le_arquivo(void){
 	int i, j;
 	int processando = 0; // Flag para varreo o arquivo CPURAM.mif e tirar o cabecalho
 
-	if ( (stream = fopen("cpuram.mif","r")) == NULL)  // Abre o arquivo para leitura
+	if ( (stream = fopen("Nave11-delay.mif","r")) == NULL)  // Abre o arquivo para leitura
 	{
 		printf("[Simple Simulator] Nao conseguiu abrir o arquivo!\n");
 		exit(1);
@@ -697,7 +670,7 @@ void le_arquivo(void){
 
 	while (fscanf(stream,"%s", linha)!=EOF)   // Le linha por linha ate' o final do arquivo: eof = end of file !!
 	{
-		char letra[2] = "00";
+		char letra[2] = "0";
 
 		if (!processando) {
 			i = 0;
@@ -717,12 +690,13 @@ void le_arquivo(void){
 
 		if (processando && (j < TAMANHO_MEMORIA)) {
 			MEMORY[j] = processa_linha(linha);
-			if (MEMORY[j] == -1) {
-				printf("Linha invalida (%d): '%s'", j, linha);
-			}
-			else {
-				//printf("Valor: %d. Linha: %s\n", MEMORY[j], linha);
-			}
+			//if (MEMORY[j] == -1) {
+			//	printf("Linha invalida (%d): '%s'", j, linha);
+			//}
+			//else {
+			//	if(j<500)
+			//		printf("Valor: %d. Linha: %s\n", MEMORY[j], linha);
+			//}
 			j++;
 		}
 

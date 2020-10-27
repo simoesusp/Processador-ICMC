@@ -1,7 +1,5 @@
-# Flag de debug
-FLAGS = -g 
 # Flags do OpenGL
-FLAGS += -lGL -lGLU -lglfw -lGLEW 
+FLAGS = -lGL -lGLU -lglfw -lGLEW 
 # Flags do Curses
 FLAGS += -lcurses
 # Flags de otimização
@@ -13,7 +11,7 @@ HEADERS = simple.h headers.h
 OBJECTS = program.o
 
 all: architecture_opengl.o simulator_curses.o utils.o
-	gcc -g -o simple_simulator simple_simulator.c architecture_opengl.o simulator_curses.o utils.o $(FLAGS) 
+	gcc -o simple_simulator simple_simulator.c architecture_opengl.o simulator_curses.o utils.o $(FLAGS) 
 
 architecture_opengl.o : architecture_opengl.c
 	gcc -c architecture_opengl.c $(FLAGS)

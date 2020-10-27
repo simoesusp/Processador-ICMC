@@ -1,3 +1,8 @@
+//---------------------------------------------------
+// Defines
+// By: Breno Cunha Queiroz and Maria Eduarda Kawakami
+// Date: 11/06/20
+//---------------------------------------------------
 #ifndef _H_DEFINES
 #define _H_DEFINES
 

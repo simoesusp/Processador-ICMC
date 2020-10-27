@@ -1,3 +1,8 @@
+//---------------------------------------------------
+// Architecture OpenGL
+// By: Breno Cunha Queiroz and Maria Eduarda Kawakami
+// Date: 11/06/20
+//---------------------------------------------------
 #ifndef ARCHITECTURE_OPENGL_H
 #define ARCHITECTURE_OPENGL_H
 
@@ -30,6 +35,7 @@ void openGL_draw_mux_paths();
 void openGL_draw_ula_paths();
 
 // Funcoes auxiliares
+void openGL_draw_line(float x0, float y0, float x1, float y1);
 void openGL_draw_rectangle(float x, float y, float width, float height);
 void openGL_draw_mux(float x, float y, float width, float height, char orientation);
 void openGL_draw_path(float x0, float y0, float x1, float y1, char selected);
