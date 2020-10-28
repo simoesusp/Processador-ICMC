@@ -23,7 +23,15 @@ Atualmente a visualização está funcionando como descrito, porém, a velocidad
 
 Agradecimentos ao Professor Eduardo Simões <3 https://github.com/simoesusp
 
-Desenvolvido por:
+### Instalação
+```
+git clone https://github.com/madukm/arquiteturaProcessador-ICMC.git
+sudo apt-get install -y libglfw3-dev
+sudo apt-get install -y libglew-dev
+sudo apt-get install -y libncurses5-dev libncursesw5-dev
+```
+
+### Desenvolvido por
 
 Breno Cunha Queiroz https://github.com/Brenocq
 
