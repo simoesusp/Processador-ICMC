@@ -6,7 +6,7 @@ simulador: simple_simulator.o
 	gcc -o simulador simple_simulator.o $(FLAGS)
 
 simple_simulator.o:
-	gcc simple_simulator.c $(FLAGS)
+	gcc -c simple_simulator.c $(FLAGS)
 
 clean:
 	rm *.o
