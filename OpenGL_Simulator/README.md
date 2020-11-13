@@ -23,13 +23,13 @@ Atualmente a visualização está funcionando como descrito, porém, a velocidad
 
 Agradecimentos ao Professor Eduardo Simões <3 https://github.com/simoesusp
 
-### Instalação
+## Instalação
 
 ### Dependências
 Ubuntu e derivados: `sudo apt update && sudo apt install libglfw3-dev libglew-dev libncurses5-dev libncursesw5-dev`
 Arch e derivados: `sudo pacman -Sy ncurses glew glfw-x11`
 
-#### Clone o repositório
+### Clone o repositório
 Você pode usar HTTPS: `git clone https://github.com/simoesusp/Processador-ICMC.git`
 Ou SSH: `git@github.com:simoesusp/Processador-ICMC.git`
 
@@ -45,7 +45,7 @@ Você pode especificar qual `.mif` utilizar usando argumento, por exemplo:
 
 Caso omitido, assumirá que você tem uma chamada `cpuram.mif` no diretório atual.
 
-### Desenvolvido por
+## Desenvolvido por
 
 Breno Cunha Queiroz https://github.com/Brenocq
 
