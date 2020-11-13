@@ -1,11 +1,16 @@
+FLAGS = -O3 -march=native -Wall -lm -lcurses
+
 all: simulador
-	make simulador
+
+simulador: simple_simulator.o
+	gcc -o simulador simple_simulator.o $(FLAGS)
+
+simple_simulator.o:
+	gcc -c simple_simulator.c $(FLAGS)
+
+clean:
+	rm *.o
+	rm simulador
 
 run: simulador
 	./simulador
-
-clean:
-	rm simulator
-
-simulador:
-	gcc simple_simulator.c -O3 -march=native -o simulador -Wall -lm -lcurses
