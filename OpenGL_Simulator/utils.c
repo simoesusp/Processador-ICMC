@@ -4,6 +4,7 @@
 // Date: 12/06/20
 //---------------------------------------------------
 #include "utils.h"
+#include <math.h>
 
 int pega_pedaco(int ir, int a, int b){
 	int pedaco=0;
