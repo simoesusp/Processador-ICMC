@@ -27,21 +27,23 @@ Agradecimentos ao Professor Eduardo Simões <3 https://github.com/simoesusp
 
 ### Dependências
 Ubuntu e derivados: `sudo apt update && sudo apt install libglfw3-dev libglew-dev libncurses5-dev libncursesw5-dev`
+
 Arch e derivados: `sudo pacman -Sy ncurses glew glfw-x11`
 
 ### Clone o repositório
 Você pode usar HTTPS: `git clone https://github.com/simoesusp/Processador-ICMC.git`
+
 Ou SSH: `git@github.com:simoesusp/Processador-ICMC.git`
 
 ### Compilar
 Vá para o diretório do simulador: `cd Processador-ICMC/OpenGL_Simulator`
+
 E compile: `make`
 
 ### Usagem
 Basta executar o binário (`./simple-simulator`)
 
-Você pode especificar qual `.mif` utilizar usando argumento, por exemplo:
-`./simple-simulator Nave11.mif`
+Você pode especificar qual `.mif` utilizar usando argumento, por exemplo: `./simple-simulator Nave11.mif`
 
 Caso omitido, assumirá que você tem uma chamada `cpuram.mif` no diretório atual.
 
