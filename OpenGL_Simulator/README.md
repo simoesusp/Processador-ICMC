@@ -33,7 +33,7 @@ Arch e derivados: `sudo pacman -Sy ncurses glew glfw-x11`
 ### Clone o repositório
 Você pode usar HTTPS: `git clone https://github.com/simoesusp/Processador-ICMC.git`
 
-Ou SSH: `git@github.com:simoesusp/Processador-ICMC.git`
+Ou SSH: `git clone git@github.com:simoesusp/Processador-ICMC.git`
 
 ### Compilar
 Vá para o diretório do simulador: `cd Processador-ICMC/OpenGL_Simulator`
