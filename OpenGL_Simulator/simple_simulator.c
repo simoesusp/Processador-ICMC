@@ -12,7 +12,7 @@
 
 #include "defines.h"
 #include "utils.h"
-//#include "architecture_opengl.c"
+#include "architecture_opengl.h"
 #include "simulator_curses.h"
 
 // Vetor que representa a Memoria de programa e de dados do Processador
@@ -24,7 +24,7 @@ typedef struct _resultadoUla{
 } ResultadoUla;
 
 // Processa dados do Arquivo MIF
-void le_arquivo(void);
+void le_arquivo(char arquivo[]);
 
 // Processa uma linha completa e retorna o número codificado
 int processa_linha(char* linha); 
@@ -50,7 +50,7 @@ int RW=0;
 int Video=0;
 
 
-int main()
+int main(int argc, char *argv[])
 {
 	int i=0;
 	int key=0;    // Le Teclado
@@ -67,7 +67,10 @@ int main()
 	int PC = 0, SP = 0;
 	int passo_a_passo = 1;
 	ResultadoUla resultadoUla;
-	le_arquivo();
+
+    if (argc == 2) le_arquivo(argv[1]);
+    else le_arquivo("cpuram.mif");
+
 	openGL_create_window();
 	curses_create_window();
 
@@ -654,12 +657,13 @@ fim:
 }
 
 //  Processa dados do Arquivo CPU.MIF
-void le_arquivo(void){
+void le_arquivo(char arquivo[]){
+    printf("%s\n", arquivo);
 	FILE *stream;   // Declara ponteiro para o arquivo
 	int i, j;
 	int processando = 0; // Flag para varreo o arquivo CPURAM.mif e tirar o cabecalho
 
-	if ( (stream = fopen("cpuram.mif","r")) == NULL)  // Abre o arquivo para leitura
+	if ( (stream = fopen(arquivo,"r")) == NULL)  // Abre o arquivo para leitura
 	{
 		printf("[Simple Simulator] Nao conseguiu abrir o arquivo!\n");
 		exit(1);
