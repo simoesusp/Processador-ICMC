@@ -1,3 +1,7 @@
+# Disciplina SSC0119 Prática em Organização de Computadores
+- Por Favor, para as aulas e informações da Disciplina SSC0119 Prática em Organização de Computadores, usar a página da Disciplina em: https://gitlab.com/simoesusp/disciplinas/-/tree/master/SSC0119-Pratica-em-Organizacao-de-Computadores
+
+
 # ICMC-Processor
 Development of a complete environment to teach and learn computer architecture, VHDL processor design and Assembly language
 
