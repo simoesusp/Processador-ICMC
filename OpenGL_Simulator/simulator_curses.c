@@ -1,5 +1,9 @@
+//---------------------------------------------------
+// Simulator Curses
+// By: Breno Cunha Queiroz and Maria Eduarda Kawakami
+// Date: 19/06/20
+//---------------------------------------------------
 #include "simulator_curses.h"
-#include "defines.h"
 #include "utils.h"
 
 //Curses colors
@@ -55,10 +59,6 @@
 
 #define TAMANHO_MEMORIA 32768
 
-extern unsigned int MEMORY[TAMANHO_MEMORIA];
-extern int PC, SP;
-extern int reg[8]; // 8 registradores
-
 // Barra onde mostra os registradores
 WINDOW* topBar;
 // Tela de saida dos caracteres da simulacao
@@ -78,8 +78,8 @@ void curses_create_window()
 
 	// Cria janela topBar
 	topBar = newwin(3, maxX, 0, 0);
-	//Cria janela de código
-	codeWindow = newwin(maxY-3, 30, 3, 0);
+	// Cria janela de código
+	codeWindow = newwin(maxY-3, 70, 3, 0);
 	// Cria janela de outchar
 	outWindow = newwin(WINDOW_HEIGHT+1, WINDOW_WIDTH, 3, maxX-WINDOW_WIDTH);
 
@@ -88,10 +88,12 @@ void curses_create_window()
 		printf("[Curses] Nao foi possivel criar as janelas.\n");
 		exit(1);
 	}
+	refresh();
 
 	// Limpa a tela para comecar a desenhar
-	curses_draw_window();
-	refresh();
+	curses_init_top_bar_window();
+	curses_init_code_window();
+	curses_init_out_window();
 }
 
 void curses_destroy_window()
@@ -110,7 +112,6 @@ void curses_setup()
 	clear();
 	//raw();
 	keypad(stdscr, TRUE);
-	//resize_term(42, 125);
 	curs_set(FALSE);
 	timeout(0);
 
@@ -135,18 +136,18 @@ void curses_setup()
 	init_color(SIM_COLOR_BRANCO, 1000, 1000, 1000);
 	init_color(SIM_COLOR_MARROM, 360, 200, 200);
 	init_color(SIM_COLOR_VERDE, 0, 1000, 0);
-	init_color(SIM_COLOR_OLIVA, 1000, 1000, 1000);
-	init_color(SIM_COLOR_AZUL_MARINHO, 1000, 1000, 1000);
-	init_color(SIM_COLOR_ROXO, 1000, 1000, 1000);
-	init_color(SIM_COLOR_TEAL, 1000, 1000, 1000);
-	init_color(SIM_COLOR_PRATA, 1000, 1000, 1000);
-	init_color(SIM_COLOR_CINZA, 1000, 1000, 1000);
+	init_color(SIM_COLOR_OLIVA, 400, 560, 140);
+	init_color(SIM_COLOR_AZUL_MARINHO, 100, 40, 560);
+	init_color(SIM_COLOR_ROXO, 1000, 0, 1000);
+	init_color(SIM_COLOR_TEAL, 0, 500, 500);
+	init_color(SIM_COLOR_PRATA, 800, 800, 800);
+	init_color(SIM_COLOR_CINZA, 500, 500, 500);
 	init_color(SIM_COLOR_VERMELHO, 1000, 0, 0);
-	init_color(SIM_COLOR_LIMA, 1000, 1000, 1000);
-	init_color(SIM_COLOR_AMARELO, 1000, 1000, 1000);
+	init_color(SIM_COLOR_LIMA, 500, 1000, 0);
+	init_color(SIM_COLOR_AMARELO, 1000, 1000, 0);
 	init_color(SIM_COLOR_AZUL, 0, 0, 1000);
-	init_color(SIM_COLOR_ROSA, 1000, 1000, 1000);
-	init_color(SIM_COLOR_AQUA, 1000, 1000, 1000);
+	init_color(SIM_COLOR_ROSA, 1000, 800, 850);
+	init_color(SIM_COLOR_AQUA, 0, 1000, 1000);
 	init_color(SIM_COLOR_PRETO, 0, 0, 0);
 
 	// Cores dos caracteres do simulador
@@ -187,16 +188,18 @@ void curses_setup()
 
 }
 
-void curses_update()
+void curses_update(estado_da_maquina_curses estado)
 {
-	curses_draw_top_bar();
-	curses_draw_code();
+
+		curses_draw_top_bar_window(estado);
+		curses_draw_code_window(estado);
+		wrefresh(codeWindow);
 }
 
-void curses_draw_top_bar() {
+void curses_init_top_bar_window() 
+{
 	int maxX, maxY;
 	getmaxyx(topBar,maxY,maxX);
-	//wclear(topBar);
 
 	// Background do titulo
 	wattr_on(topBar, COLOR_PAIR(PAIR_TITLES), NULL);
@@ -206,19 +209,13 @@ void curses_draw_top_bar() {
 		wprintw(topBar, " ");
 	}
 	wattr_off(topBar, COLOR_PAIR(PAIR_TITLES), NULL);
-	
+
 	// Titulo topBar "REGISTERS"
 	wattr_on(topBar, COLOR_PAIR(PAIR_TITLES), NULL);
 	char title_reg[] = "REGISTERS";
    	wmove(topBar, 0, maxX/2-strlen(title_reg)/2);
 	wprintw(topBar, "%s", title_reg);
 	wattr_off(topBar, COLOR_PAIR(PAIR_TITLES), NULL);
-	
-	// Top Bar Registers
-	int qtyReg = 8;
-	int sizeTextReg = 10;
-	int posX, posY;
-	int regPerLine = maxX/sizeTextReg;
 	
 	// Background dos registradores
 	wattr_on(topBar, COLOR_PAIR(PAIR_REGISTERS), NULL);
@@ -231,30 +228,56 @@ void curses_draw_top_bar() {
 	}
 	wattr_off(topBar, COLOR_PAIR(PAIR_REGISTERS), NULL);
 
-	// Desenha registradores
-	for(int i=0; i<qtyReg; i++){
-		posX = i%regPerLine*sizeTextReg;
-		posY = i/regPerLine+1;
-		wattr_on(topBar, COLOR_PAIR(PAIR_REGISTERS), NULL);
-		wmove(topBar, posY, posX);
-		wprintw(topBar, "R%d:%d", i, reg[i]);
-		wattr_off(topBar, COLOR_PAIR(PAIR_REGISTERS), NULL);
-	}
 	wrefresh(topBar);
 }
 
-void curses_draw_window()
+void curses_draw_top_bar_window(estado_da_maquina_curses estado) 
+{
+	int maxX, maxY;
+	getmaxyx(topBar,maxY,maxX);
+
+	// Top Bar Registers
+	int qtyReg = 8;
+	int sizeTextReg = 10;
+	int posX, posY;
+	int regPerLine = maxX/sizeTextReg;
+	
+	// Imprime registradores
+	wattr_on(topBar, COLOR_PAIR(PAIR_REGISTERS), NULL);
+	for(int i=0; i<qtyReg; i++){
+		posX = i%regPerLine*sizeTextReg;
+		posY = i/regPerLine+1;
+		// Limpa valor antigo
+		mvwprintw(topBar, posY, posX, "          ", i, estado.reg[i]);
+		// Imprime valor novo
+		mvwprintw(topBar, posY, posX, "R%d:%d", i, estado.reg[i]);
+	}
+	wattr_off(topBar, COLOR_PAIR(PAIR_REGISTERS), NULL);
+	wrefresh(topBar);
+}
+
+void curses_init_out_window()
 {
 	int maxX, maxY;
 	getmaxyx(outWindow,maxY,maxX);
 
+	// Background do titulo
+	wattr_on(outWindow, COLOR_PAIR(PAIR_TITLES), NULL);
+	for(int i=0; i<maxX; i++)
+	{
+   		wmove(outWindow, 0, i);
+		wprintw(outWindow, " ");
+	}
+	wattr_off(outWindow, COLOR_PAIR(PAIR_TITLES), NULL);
+
+	// Imprime titulo
 	wattr_on(outWindow, COLOR_PAIR(PAIR_TITLES), NULL);
 	char title_win[] = "WINDOW";
    	wmove(outWindow, 0, WINDOW_WIDTH/2-strlen(title_win)/2);
 	wprintw(outWindow, "%s", title_win);
 	wattr_off(outWindow, COLOR_PAIR(PAIR_TITLES), NULL);
 	
-	//Drawing window
+	// Drawing window
 	wattr_on(outWindow, COLOR_PAIR(SIM_PAIR_PRETO), NULL);
 	for(int x=0; x<WINDOW_WIDTH; x++){
 		for(int y=1; y<WINDOW_HEIGHT; y++){
@@ -280,55 +303,109 @@ void curses_out_char(char c, int pos, int cor)
 	wattr_off(outWindow, COLOR_PAIR(cor), NULL);
 
 	wrefresh(outWindow);
-
-	//wattr_on(outWindow, COLOR_PAIR(0), NULL);
-	//mvprintw(posY+30, posX, "%c", c);
-	//wattr_off(outWindow, COLOR_PAIR(0), NULL);
-	//wrefresh(stdscr);
 }
 
-void curses_draw_code(){
+
+void curses_init_code_window()
+{
 	int maxX, maxY;
-	//wclear(codeWindow);
+	// Recebe tamanho da tela
 	getmaxyx(codeWindow, maxY, maxX);
+
+	// Background code
+	wattr_on(codeWindow, COLOR_PAIR(PAIR_CODE), NULL);
+	for(int j=1; j<maxY; j++)
+	{
+		for(int i=0; i<maxX; i++)
+		{
+			wmove(codeWindow, j, i);
+			wprintw(codeWindow, " ");
+		}
+	}
+	mvwprintw(codeWindow, 2, 0, "----------------------------------------------------------------------");
+	wattr_off(codeWindow, COLOR_PAIR(PAIR_CODE), NULL);
+
+	// Background do titulo
 	wattr_on(codeWindow, COLOR_PAIR(PAIR_TITLES), NULL);
-	/*for(int i=0; i<maxX; i++)
+	for(int i=0; i<maxX; i++)
 	{
    		wmove(codeWindow, 0, i);
 		wprintw(codeWindow, " ");
 	}
 	wattr_off(codeWindow, COLOR_PAIR(PAIR_TITLES), NULL);
-	*/
+
+	// Imprime titulo da janela
 	wattr_on(codeWindow, COLOR_PAIR(PAIR_TITLES), NULL);
 	char title_code[] = "CODE";
    	wmove(codeWindow, 0, maxX/2-strlen(title_code)/2);
 	wprintw(codeWindow, "%s", title_code);
 	wattr_off(codeWindow, COLOR_PAIR(PAIR_TITLES), NULL);
 
-	int auxpc = PC;
+	wrefresh(codeWindow);
+}
+
+void curses_draw_code_window(estado_da_maquina_curses estado)
+{
+	int maxX, maxY;
+	// Recebe tamanho da tela
+	getmaxyx(codeWindow, maxY, maxX);
 	
-	wattr_on(outWindow, COLOR_PAIR(PAIR_CODE), NULL); 
-	for(int y=1; y<maxY; y++){
+	wattr_on(codeWindow, COLOR_PAIR(PAIR_CODE), NULL); 
+
+	switch(estado.state)
+	{
+		case STATE_RESET:
+			mvwprintw(codeWindow, 1, 0, "state: STATE_RESET          ");
+			break;
+		case STATE_FETCH:
+			mvwprintw(codeWindow, 1, 0, "state: STATE_FETCH          ");
+			break;
+		case STATE_DECODE:
+			mvwprintw(codeWindow, 1, 0, "state: STATE_DECODE          ");
+			break;
+		case STATE_EXECUTE:
+			mvwprintw(codeWindow, 1, 0, "state: STATE_EXECUTE          ");
+			break;
+		case STATE_EXECUTE2:
+			mvwprintw(codeWindow, 1, 0, "state: STATE_EXECUTE2          ");
+			break;
+		case STATE_HALTED:
+			mvwprintw(codeWindow, 1, 0, "state: STATE_HALTED          ");
+			break;
+	}
+
+	for(int y=3; y<maxY; y++){
 		int temp = 1;
-		int curr_inst = pega_pedaco(MEMORY[auxpc], 15, 10);
+		int curr_inst = pega_pedaco(estado.memoria[estado.PC], 15, 10); 
 		if(curr_inst == STORE || curr_inst == LOAD || curr_inst == LOADIMED || curr_inst == JMP || curr_inst == CALL)
 			temp = 2;
-		show_program(codeWindow, y, auxpc);
-		auxpc += temp;
+		show_program(codeWindow, y, estado);
+		estado.PC+=temp;
 	}
 	wattr_off(codeWindow, COLOR_PAIR(PAIR_CODE), NULL);
 	
 	wrefresh(codeWindow);		
 }
 
-void show_program(WINDOW* codeWindow,int y, int pc) {
+void show_program(WINDOW* codeWindow,int y, estado_da_maquina_curses estado) 
+{
+	// Codigo retirado do simulador do Simoes
     int x = 0;
-	if(pc+1 >= TAMANHO_MEMORIA) return;
-	int rx = pega_pedaco(MEMORY[pc],9,7);
-    int ry = pega_pedaco(MEMORY[pc],6,4);
-    int rz = pega_pedaco(MEMORY[pc],3,1);
-    mvwprintw(codeWindow,y,x, "                                                                     ");
-	int ir = MEMORY[pc];
+	// Evita que o pc aponte para um lugar que nao esta na memoria
+	int pc = estado.PC;
+	int SP = estado.SP;
+
+
+	if(pc >= TAMANHO_MEMORIA) return;
+	int rx = pega_pedaco(estado.memoria[pc],9,7);
+    int ry = pega_pedaco(estado.memoria[pc],6,4);
+    int rz = pega_pedaco(estado.memoria[pc],3,1);
+
+	// Limpa a linha
+    mvwprintw(codeWindow,y,x, "                                                                         ");
+
+	// Recebe o IR da memoria
+	int ir = estado.memoria[pc];
     switch(pega_pedaco(ir,15,10)){
         case INCHAR:
             mvwprintw(codeWindow,y,x, "PC: %05d  |  INCHAR R%d            |   R%d <- TECLADO ", pc, rx, rx);
@@ -343,7 +420,7 @@ void show_program(WINDOW* codeWindow,int y, int pc) {
             break;
 
         case STORE:
-            mvwprintw(codeWindow,y,x, "PC: %05d  |  STORE %05d, R%d      |   MEM[%d] <- R%d ", pc, MEMORY[pc+1], rx, MEMORY[pc+1], rx);
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  STORE %05d, R%d      |   MEM[%d] <- R%d ", pc, estado.memoria[pc+1], rx, estado.memoria[pc+1], rx);
             break;
 
         case STOREINDEX:
@@ -351,11 +428,11 @@ void show_program(WINDOW* codeWindow,int y, int pc) {
             break;
 
         case LOAD:
-            mvwprintw(codeWindow,y,x, "PC: %05d  |  LOAD R%d, %05d       |   R%d <- MEM[%d] ", pc, rx, MEMORY[pc+1], rx, MEMORY[pc+1]);
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  LOAD R%d, %05d       |   R%d <- MEM[%d] ", pc, rx, estado.memoria[pc+1], rx, estado.memoria[pc+1]);
             break;
 
         case LOADIMED:
-            mvwprintw(codeWindow,y,x, "PC: %05d  |  LOADN R%d, #%05d     |   R%d <- #%d ", pc, rx, MEMORY[pc+1], rx, MEMORY[pc+1]);
+            mvwprintw(codeWindow,y,x, "PC: %05d  |  LOADN R%d, #%05d     |   R%d <- #%d ", pc, rx, estado.memoria[pc+1], rx, estado.memoria[pc+1]);
             break;
 
         case LOADINDEX:
@@ -384,35 +461,35 @@ void show_program(WINDOW* codeWindow,int y, int pc) {
 
         case JMP:
             if(pega_pedaco(ir,9,6) == 0) // NO COND
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JMP #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JMP #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==7)) // GREATER
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JGR #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JGR #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==9)) // GREATER EQUAL
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JEG #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JEG #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==8)) // LESSER
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JLE #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JLE #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==10)) // LESSER EQUAL
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JEL #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JEL #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==1)) // EQUAL
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JEQ #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JEQ #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==2)) // NOT EQUAL
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNE #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNE #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==3)) // ZERO
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JZ #%05d            |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JZ #%05d            |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==4)) // NOT ZERO
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNZ #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNZ #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==5)) // CARRY
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JC #%05d            |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JC #%05d            |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==6)) // NOT CARRY
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNC #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNC #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==11)) // OVERFLOW
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JOV #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JOV #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==12)) // NOT OVERFLOW
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNO #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JNO #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==14)) // NEGATIVO
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JN #%05d            |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JN #%05d            |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==13)) // DIVBYZERO
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  JDZ #%05d           |   PC <- #%05d ", pc, MEMORY[pc+1], MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  JDZ #%05d           |   PC <- #%05d ", pc, estado.memoria[pc+1], estado.memoria[pc+1]);
 
             break;
 
@@ -436,35 +513,35 @@ void show_program(WINDOW* codeWindow,int y, int pc) {
 
         case CALL:
             if(pega_pedaco(ir,9,6) == 0) // NO COND
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CALL #%05d          |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CALL #%05d          |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==7)) // GREATER
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CGR #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CGR #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==9)) // GREATER EQUAL
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CEG #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CEG #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==8)) // LESSER
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CLE #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CLE #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==10)) // LESSER EQUAL
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CEL #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CEL #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==1)) // EQUAL
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CEQ #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CEQ #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==2)) // NOT EQUAL
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNE #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNE #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==3)) // ZERO
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CZ #%05d            |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CZ #%05d            |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==4)) // NOT ZERO
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNZ #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNZ #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==5)) // CARRY
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CC #%05d            |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CC #%05d            |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==6)) // NOT CARRY
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNC #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNC #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==11)) // OVERFLOW
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  COV #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  COV #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==12)) // NOT OVERFLOW
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNO #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CNO #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==14)) // NEGATIVO
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CN #%05d            |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CN #%05d            |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
             if((pega_pedaco(ir,9,6)==13)) // DIVBYZERO
-                mvwprintw(codeWindow,y,x, "PC: %05d  |  CDZ #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, MEMORY[pc+1], SP, MEMORY[pc+1]);
+                mvwprintw(codeWindow,y,x, "PC: %05d  |  CDZ #%05d           |   M[%d]<-PC; SP--; PC<-#%05d", pc, estado.memoria[pc+1], SP, estado.memoria[pc+1]);
 
             break;
 
@@ -501,7 +578,7 @@ void show_program(WINDOW* codeWindow,int y, int pc) {
                 }
             break;
 
-        case SHIFT:     // Nao tive paciencia de fazer diferente para cada SHIFT/ROT
+        case SHIFT:
             if(pega_pedaco(ir,6,4)==0) // SHIFT LEFT 0
                 mvwprintw(codeWindow,y,x, "PC: %05d  |  SHIFTL0 R%d, #%02d      |   R%d <-'0'  << %d ", pc, rx, pega_pedaco(ir,3,0), rx, pega_pedaco(ir,3,0));
             if(pega_pedaco(ir,6,4)==1) // SHIFT LEFT 1
@@ -533,6 +610,4 @@ void show_program(WINDOW* codeWindow,int y, int pc) {
             mvwprintw(codeWindow,y,x, "PC: %05d  |  BREAKP #%05d        |   Break Point ", pc, pega_pedaco(ir,9,0));
             break;
     }
-
-
 }

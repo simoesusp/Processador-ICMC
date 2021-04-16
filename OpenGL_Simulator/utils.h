@@ -1,3 +1,8 @@
+//---------------------------------------------------
+// Utils
+// By: Breno Cunha Queiroz and Maria Eduarda Kawakami
+// Date: 12/06/20
+//---------------------------------------------------
 #ifndef _H_UTILS
 #define _H_UTILS
 
