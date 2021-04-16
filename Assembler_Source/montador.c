@@ -202,7 +202,7 @@ void DetectarLabels(void)
             case SUBC_CODE :
             case MUL_CODE :
             case DIV_CODE :
-	    case LMOD_CODE :	    
+	        case LMOD_CODE :	    
             case AND_CODE :
             case OR_CODE :
             case XOR_CODE :
@@ -214,7 +214,7 @@ void DetectarLabels(void)
 
             /* Instrucoes de 2 argumentos e 1 linha : instr (), () -> [...] */
             case NOT_CODE :	/* Eu pus aqui pois sera' Rx <- Not Ry */
-	    case MOV_CODE :
+	        case MOV_CODE :
             case OUTCHAR_CODE :
             case CMP_CODE :
                 parser_SkipUntil(',');
@@ -355,7 +355,7 @@ void MontarInstrucoes(void)
                    ==============
                 */
                 
-                case LOAD_CODE :
+                case LOAD_CODE : // Load R1, End
                     str_tmp1 = parser_GetItem_s();
                     val1 = BuscaRegistrador(str_tmp1);
                     free(str_tmp1);
@@ -611,7 +611,7 @@ void MontarInstrucoes(void)
                    ==============
                 */
 
-                case ADD_CODE :
+                case ADD_CODE :  // Add R1, R2, R3
                     str_tmp1 = parser_GetItem_s(); /* ADD sem carry */
                     val1 = BuscaRegistrador(str_tmp1);
                     free(str_tmp1);
@@ -865,7 +865,7 @@ void MontarInstrucoes(void)
                     break;
 
                 /* ==============                   
-	Or Rx, Ry, Rz
+	               Or Rx, Ry, Rz
                    ==============
                 */
 
@@ -1937,21 +1937,28 @@ void MontarInstrucoes(void)
                    ==============
                 */
                 
+
                 case PUSH_CODE :
                     str_tmp1 = parser_GetItem_s();
                     val1 = BuscaRegistrador(str_tmp1);
                     free(str_tmp1);
 		    
-		    if(val1 == FR_CODE)
-			sprintf(str_msg,"%s0001000000",PUSH);
-		    else {
-			str_tmp1 = ConverteRegistrador(val1);
-			sprintf(str_msg,"%s%s0000000",PUSH,str_tmp1);
-			free(str_tmp1);
-			}
-  		    parser_Write_Inst(str_msg,end_cnt);
-		    end_cnt += 1;
-                    break;
+        		    if(val1 == FR_CODE)  // Push FR  ADD R0, r1, r2
+        			
+
+                    sprintf(str_msg,"%s0001000000",PUSH);
+        		    else 
+
+
+
+                for{
+        			str_tmp1 = ConverteRegistrador(i);
+        			sprintf(str_msg,"%s%s0000000",PUSH,str_tmp1);
+        			free(str_tmp1);
+        	        parser_Write_Inst(str_msg,end_cnt);
+                    end_cnt += 1;
+                    }
+                    break;  // 1100110000000000
                     
                 /* ==============
                    Pop Rx
