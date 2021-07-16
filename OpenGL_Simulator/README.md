@@ -1,4 +1,4 @@
-# SimuladorMIPS
+# Simulador do PROCESSADOR ICMC com saída de Vídeo
 REA (Recurso Educacional Aberto) para a disciplina de Organização e Arquitetura de Computadores.
 
 O trabalho foi desenvolvido como um complemento para o projeto Processador-ICMC - https://github.com/simoesusp/Processador-ICMC, criado pelo professor Eduardo Simões, a fim de ensinar e aprender Organização e Arquitetura de Computadores.
