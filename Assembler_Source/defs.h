@@ -1,3 +1,11 @@
+// Para incluir uma nova INSTRUCAO, e' necessario mexer em 3 ugares diferentes:
+// Definir o Codigo da Instrucao: 
+  // #define LOAD_CODE               1
+// Definir os Bits da Instrucao: 
+  // #define LOAD            "110000"
+// Definir a String de como a Instrucao deve aparecer no programa ASM:
+  // #define LOAD_STR                "LOAD"
+
 #ifndef _DEFS_
 #define _DEFS_
 
