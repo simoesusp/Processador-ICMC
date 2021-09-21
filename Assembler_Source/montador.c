@@ -1987,11 +1987,7 @@ void MontarInstrucoes(void)
         			
 
                     sprintf(str_msg,"%s0001000000",PUSH);
-        		    else 
-
-
-
-                for{
+        		    else {
         			str_tmp1 = ConverteRegistrador(i);
         			sprintf(str_msg,"%s%s0000000",PUSH,str_tmp1);
         			free(str_tmp1);
