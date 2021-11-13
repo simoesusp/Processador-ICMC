@@ -3,7 +3,7 @@
 
 ; 4 Perguntas ao implemantar as instrucoes:
 ;	1) O Que preciso fazer para esta instrucao?
-;	2) Onde Comeca: Pegargcc simple_simulator.c -O3 -march=native -o simulador -Wall -lm -lcurses o que tem que fazer e ir voltando ate' chegar em um registrador (ie. PC)
+;	2) Onde Comeca: Pegargcc o que tem que fazer e ir voltando ate' chegar em um registrador (ie. PC)
 ;	3) Qual e' a Sequencia de Operacoes: Descrever todos os comandos que tem que dar nos cilos de Dec e Exec
 ;	4) Ja' terminou??? Cumpriu o que tinha que fazer??? O PC esta' pronto para a proxima instrucao (cuidado com Load, Loadn, Store, Jmp, Call)
 
@@ -109,7 +109,7 @@
 	loadn r0, #26
 	loadn r1, #5
 	loadn r2, #3
-	loadn r3, #'O'
+	loadn r3, #'X'
 	loadn r4, #'N'
 	cmp r1, r2
 	jgr Maior
@@ -132,10 +132,10 @@ SaiJMP:
 	cel CallMenorIgual
 	jmp CallSai
 CallMaior:
-	outchar r3, r0		; Printa P na linha 28
+	outchar r3, r0		; Printa O na linha 28
 	rts
 CallMenorIgual:
-	outchar r4, r0		; Printa Q na linha 28
+	outchar r4, r0		; Printa X na linha 28
 	rts
 
 CallSai:	
@@ -145,7 +145,7 @@ CallSai:
 	loadn r1, #'P'
 	push r1
 	pop r2
-	outchar r2, r0		; Printa R na linha 30
+	outchar r2, r0		; Printa P na linha 30
 	
 	
 	
