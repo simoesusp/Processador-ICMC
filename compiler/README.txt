@@ -2,7 +2,13 @@ Autor: Marcel Koti Lamada
 email: marcelokkamada@gmail.com
 
 1. Compilando o compilador:
-    Para compilar, execute "make"
+
+    Para compilar, é necessário primeiro instalar algumas dependências:
+        "sudo apt install bison flex g++"
+
+    Depois de instalar as dependências, execute "make"
+    
+    O comando "make" irá compilar o código do compilador e salvar no arquivo "parser"
     
 2. O que o compilador nao suporta:
     alocacao dinamica

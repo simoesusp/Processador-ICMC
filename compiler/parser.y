@@ -61,7 +61,7 @@ int endereco_base;
 int offset_linha;
 int offset_coluna;
 
-vector<int> initializer_list;
+vector<int> initializer_list_;
 
 // caso especial do printf
 int begin_printf = 0;
@@ -418,12 +418,12 @@ postfix_expression
             cout << "store " << mapa[stack+1] << ", r0" << endl;
         }
 	}
-    | ABRE_PARENTESES type_name FECHA_PARENTESES ABRE_CHAVES initializer_list FECHA_CHAVES	{ 
-		msg_sintatico("ABRE_PARENTESES type_name FECHA_PARENTESES ABRE_CHAVES initializer_list FECHA_CHAVES");
+    | ABRE_PARENTESES type_name FECHA_PARENTESES ABRE_CHAVES initializer_list_ FECHA_CHAVES	{ 
+		msg_sintatico("ABRE_PARENTESES type_name FECHA_PARENTESES ABRE_CHAVES initializer_list_ FECHA_CHAVES");
 	}
     /*
-    | ABRE_PARENTESES type_name FECHA_PARENTESES ABRE_CHAVES initializer_list VIRGULA FECHA_CHAVES	{ 
-		msg_sintatico("ABRE_PARENTESES type_name FECHA_PARENTESES ABRE_CHAVES initializer_list VIRGULA FECHA_CHAVES");
+    | ABRE_PARENTESES type_name FECHA_PARENTESES ABRE_CHAVES initializer_list_ VIRGULA FECHA_CHAVES	{ 
+		msg_sintatico("ABRE_PARENTESES type_name FECHA_PARENTESES ABRE_CHAVES initializer_list_ VIRGULA FECHA_CHAVES");
 	}
     */
 	;
@@ -886,29 +886,29 @@ init_declarator
 		msg_sintatico("declarator IGUAL initializer");
 
         if(!preProcessamento && t->getEscopo() > 0 || preProcessamento && t->getEscopo() ==0) {
-            assert(initializer_list.size() >= 0);
-            if(initializer_list.size() == 1) { // para variaveis simples e strings
+            assert(initializer_list_.size() >= 0);
+            if(initializer_list_.size() == 1) { // para variaveis simples e strings
                 if(initialization_size > 1)
-                    cout<< "loadn r0, #" << initializer_list[0] << endl;
+                    cout<< "loadn r0, #" << initializer_list_[0] << endl;
                 else if(initialization_size == 1)
-                    cout<< "load r0, " << initializer_list[0] << endl;
+                    cout<< "load r0, " << initializer_list_[0] << endl;
 
-                cout<< "store " << initializer_list[0]+1 << ", r0" << endl; 
+                cout<< "store " << initializer_list_[0]+1 << ", r0" << endl; 
                 stack++;
             }
             
-            else if(initializer_list.size() > 1) { // para vetores e matrizes
+            else if(initializer_list_.size() > 1) { // para vetores e matrizes
                 msg_instrucao("acerta o ponteiro da matriz/vetor");
                 cout << "; correcao da stack" << endl;
                 if(stack != correcao_stack_matriz)
                     stack = correcao_stack_matriz;
                 correcao_stack_matriz = -1;
                 cout << "; stack = "<< stack << endl;
-                //cout<< "loadn r0, #" << initializer_list[0] << endl
-                //    << "store " << initializer_list[0]+1 << ", r0" << endl; 
+                //cout<< "loadn r0, #" << initializer_list_[0] << endl
+                //    << "store " << initializer_list_[0]+1 << ", r0" << endl; 
             }
         }
-        initializer_list.clear();
+        initializer_list_.clear();
 	}
 	;
 
@@ -1263,27 +1263,27 @@ initializer
 	: assignment_expression { 
 		msg_sintatico("assignment_expression");
         if(initialization_size == 1)
-            initializer_list.push_back(stack+1);
+            initializer_list_.push_back(stack+1);
         else if(initialization_size > 1)
-            initializer_list.push_back(stack+initialization_size);
+            initializer_list_.push_back(stack+initialization_size);
 	}
-    | ABRE_CHAVES initializer_list FECHA_CHAVES	{ 
-		msg_sintatico("ABRE_CHAVES initializer_list FECHA_CHAVES");
+    | ABRE_CHAVES initializer_list_ FECHA_CHAVES	{ 
+		msg_sintatico("ABRE_CHAVES initializer_list_ FECHA_CHAVES");
 	}
 	;
 
-initializer_list
+initializer_list_
 	: initializer { 
 		msg_sintatico("initializer");
 	}
     | designation initializer	{ 
 		msg_sintatico("designation initializer");
 	}
-    | initializer_list VIRGULA initializer	{ 
-		msg_sintatico("initializer_list VIRGULA initializer");
+    | initializer_list_ VIRGULA initializer	{ 
+		msg_sintatico("initializer_list_ VIRGULA initializer");
 	}
-    | initializer_list VIRGULA designation initializer	{ 
-		msg_sintatico("initializer_list VIRGULA designation initializer");
+    | initializer_list_ VIRGULA designation initializer	{ 
+		msg_sintatico("initializer_list_ VIRGULA designation initializer");
 	}
 	;
 
