@@ -31,3 +31,11 @@ email: marcelokkamada@gmail.com
 5. Features para serem adicionadas:
     permitir codigo assembly dentro do .c
     switch
+    
+6. Exemplos de uso:
+
+    Pacman:
+        ./parser pacman/jogo.c > pacman/pacman.asm
+        
+    Breakout:
+        ./parser breakout/jogo.c > breakout/breakout.asm
