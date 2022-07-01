@@ -1988,7 +1988,7 @@ void MontarInstrucoes(void)
 
                     sprintf(str_msg,"%s0001000000",PUSH);
         		    else {
-        			str_tmp1 = ConverteRegistrador(i);
+        			str_tmp1 = ConverteRegistrador(val1);
         			sprintf(str_msg,"%s%s0000000",PUSH,str_tmp1);
         			free(str_tmp1);
         	        parser_Write_Inst(str_msg,end_cnt);
