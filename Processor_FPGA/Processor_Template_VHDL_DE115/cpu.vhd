@@ -1,5 +1,4 @@
--- Processador Versao 3: 23/05/2013
--- Jeg e Ceg  concertado!!
+-- Processador Versao 3: 08/07/2022
 -- Video com 16 cores e tela de 40 colunas por 30 linhas
 
 libraRY ieee;
@@ -34,7 +33,7 @@ end cpu;
 
 ARCHITECTURE main of cpu is
 
-	TYPE STATES				is (fetch, decode, exec, halted);						-- Estados da Maquina de Controle do Processador
+	TYPE STATES				is (fetch, decode, exec, exec2, halted);						-- Estados da Maquina de Controle do Processador
 	TYPE Registers			is array(0 to 7) of STD_LOGIC_VECTOR(15 downto 0); -- Banco de Registradores
 	TYPE LoadRegisters	is array(0 to 7) of std_LOGIC;							-- Sinais de LOAD dos Registradores do Banco
 
@@ -129,6 +128,7 @@ process(clk, reset)
 	-- Mux dos barramentos de dados internos	
 	VARIABLE	M2				:STD_LOGIC_VECTOR(15 downto 0);	-- Mux dos barramentos de dados internos para os Registradores
 	VARIABLE M3, M4		:STD_LOGIC_VECTOR(15 downto 0);	-- Mux dos Registradores para as entradas da ULA
+	VARIABLE	M6				:STD_LOGIC_VECTOR(15 downto 0);	-- Mux do Flag Register
 	
 	-- Novos Sinais da Versao 2: Controle dos registradores internos (Load-Inc-Dec)
 	variable LoadReg		: LoadRegisters; 
@@ -139,7 +139,8 @@ process(clk, reset)
 	VARIABLE LoadSP		: STD_LOGIC;
 	variable IncSP 		: std_LOGIC;
 	variable DecSP			: std_LOGIC;
-	
+	variable LoadFR		: std_LOGIC;
+		
 	-- Selecao dos Mux 2 e 6
 	variable selM2 		: STD_LOGIC_VECTOR(2 downto 0); 
 	variable selM6 		: STD_LOGIC_VECTOR(2 downto 0); 
@@ -174,6 +175,8 @@ begin
 		IncPC		:= '0';
 		IncSP		:= '0';
 		DecSP		:= '0';
+		LoadSP	:= '0';
+		LoadFR	:= '0';
 		selM2		:= sMem;
 		selM6		:= sULA;
 		
@@ -196,7 +199,7 @@ begin
 		REG(7)  := x"0000";
 		
 		PC := x"0000";  -- inicializa na linha Zero da memoria -> Programa tem que comecar na linha Zero !!
-		SP := x"7f00";  -- Inicializa a Pilha no final da mem�ria: 7ffc
+		SP := x"7ffc";  -- Inicializa a Pilha no final da mem�ria: 7ffc
 		IR := x"0000";
 		MAR := x"0000";
 			
@@ -216,15 +219,19 @@ begin
 	
 		if(LoadMAR = '1') then MAR := Mem; 				end if;
 	
-		if(LoadSP = '1') 	then SP := M3; 				end if;
+		if(LoadSP = '1') 	then SP := M4; 				end if;
 	
 		if(IncSP = '1')	then SP := SP + x"0001"; 	end if;
 	
 		if(DecSP = '1')	then SP := SP - x"0001"; 	end if;
 	
 		-- Selecao do Mux6
-		if (selM6 = sULA) THEN FR <= auxFR;				-- Sempre recebe flags da ULA
-		ELSIF (selM6 = sMem) THEN FR <= Mem; END IF;	-- A menos que seja POP FR, quando recebe da Memoria
+		if (selM6 = sULA) THEN M6 := auxFR;				-- Sempre recebe flags da ULA
+		ELSIF (selM6 = sMem) THEN M6 := Mem; END IF;	-- A menos que seja POP FR, quando recebe da Memoria
+		
+		-- So' carrega o FR quando for Pop FR, Cmp, aritmethic, ou logic.
+		if(LoadFR = '1') 	then FR <= M6; 				end if;
+
 		
 		-- Atualiza o nome dos registradores!!!
 		RX := conv_integer(IR(9 downto 7));
@@ -251,6 +258,7 @@ begin
 		IncSP   := '0';
 		DecSP   := '0';
 		LoadSP  := '0';
+		LoadFR  := '0';
 		selM6	  := sULA;	-- Sempre atualiza o FR da ULA, a nao ser que a instrucao seja POP FR
 
 		LoadReg(0) := '0';
@@ -330,6 +338,56 @@ begin
 			END IF;					
 		
 --========================================================================
+-- LOAD Imediato 			RX <- Nr
+--========================================================================			
+			IF(IR(15 DOWNTO 10) = LOADIMED) THEN
+				M1 <= PC;				-- M1 <- PC
+				Rw <= '0';				-- Rw <= '0'
+				selM2 := sMeM; 		-- M2 <- MEM	
+				LoadReg(RX) := '1';	-- LRx <- 1	
+				IncPC := '1';  		-- IncPC <- 1	
+				state := fetch;
+			END IF;		
+
+
+--========================================================================
+-- LOAD Direto  			RX <- M[End]
+--========================================================================		
+			IF(IR(15 DOWNTO 10) = LOAD) THEN -- Busca o endereco
+
+				state := exec;  -- Vai para o estado de Executa para buscar o dado do endereco
+			END IF;			
+			
+				
+
+--========================================================================
+-- STORE   DIReto			M[END] <- RX
+--========================================================================			
+			IF(IR(15 DOWNTO 10) = STORE) THEN  -- Busca o endereco
+		
+				state := exec;  -- Vai para o estado de Executa para gravar Registrador no endereco
+			END IF;					
+
+--========================================================================
+-- LOAD Indexado por registrador 			RX <- M(RY)
+--========================================================================		
+			IF(IR(15 DOWNTO 10) = LOADINDEX) THEN
+				
+				state := fetch;
+			END IF;					
+		
+--========================================================================
+-- STORE indexado por registrador 			M[RX] <- RY
+--========================================================================		
+			IF(IR(15 DOWNTO 10) = STOREINDEX) THEN 
+				
+				state := fetch;
+			END IF;					
+		
+
+			
+
+--========================================================================
 -- MOV  			RX/SP <- RY/SP
 
 -- MOV RX RY    RX <- RY	  		Format: < inst(6) | RX(3) | RY(3) | xx | x0 >
@@ -342,50 +400,23 @@ begin
 			  
 				state := fetch;
 			END IF;
+
 --========================================================================
--- STORE   DIReto			M[END] <- RX
---========================================================================			
-			IF(IR(15 DOWNTO 10) = STORE) THEN  -- Busca o endereco
-				
-				state := exec;  -- Vai para o estado de Executa para gravar Registrador no endereco
-			END IF;					
-		
+-- ARITH OPERATION ('INC' NOT INCLUDED) 			RX <- RY (?) RZ
 --========================================================================
--- STORE indexado por registrador 			M[RX] <- RY
---========================================================================		
-			IF(IR(15 DOWNTO 10) = STOREINDEX) THEN 
+			IF(IR(15 DOWNTO 14) = ARITH AND IR(13 DOWNTO 10) /= INC) THEN
 				
 				state := fetch;
-			END IF;					
-		
---========================================================================
--- LOAD Direto  			RX <- M[End]
---========================================================================		
-			IF(IR(15 DOWNTO 10) = LOAD) THEN -- Busca o endereco
-				
-				state := exec;  -- Vai para o estado de Executa para buscar o dado do endereco
-			END IF;			
+			END IF;
 			
 --========================================================================
--- LOAD Imediato 			RX <- Nr
+-- INC/DEC			RX <- RX (+ or -) 1
 --========================================================================			
-			IF(IR(15 DOWNTO 10) = LOADIMED) THEN
-				M1 <= PC;				-- M1 <- PC
-				Rw <= '0';				-- Rw <= '0'
-				selM2 := sMeM; 		-- M2 <- MEM	
-				LoadReg(RX) := '1';	-- LRx <- 1	
-				IncPC := '1';  		-- IncPC <- 1	
-				state := fetch;
-			END IF;					
-			
---========================================================================
--- LOAD Indexado por registrador 			RX <- M(RY)
---========================================================================		
-			IF(IR(15 DOWNTO 10) = LOADINDEX) THEN
+			IF(IR(15 DOWNTO 14) = ARITH AND (IR(13 DOWNTO 10) = INC))	THEN
 				
 				state := fetch;
-			END IF;					
-		
+			END IF;
+			
 --========================================================================
 -- LOGIC OPERATION ('SHIFT', and 'CMP'  NOT INCLUDED)  			RX <- RY (?) RZ
 --========================================================================		
@@ -394,14 +425,7 @@ begin
 				state := fetch;
 			END IF;			
 		
---========================================================================
--- CMP		RX, RY
---========================================================================		
-			IF(IR(15 DOWNTO 14) = LOGIC AND IR(13 DOWNTO 10) = CMP) THEN 
-				
-				state := fetch;
-			END IF;
-		
+
 --========================================================================
 -- SHIFT		RX, RY     RX  <- SHIFT[ RY]        ROTATE INCluded !
 --========================================================================		
@@ -422,33 +446,48 @@ begin
 				
 				state := fetch;
 			end if;			
+	
 
+--========================================================================
+-- CMP		RX, RY
+--========================================================================		
+			IF(IR(15 DOWNTO 14) = LOGIC AND IR(13 DOWNTO 10) = CMP) THEN 
+				
+				state := fetch;
+			END IF;
+		
 --========================================================================
 -- JMP END    PC <- 16bit END : b9-b6 = COND
 -- Flag Register: <...Negative|StackUnderflow|StackOverflow|DIVByZero|ARITHmeticOverflow|carRY|zero|equal|lesser|greater>
 -- JMP Condition: (UNconditional, EQual, Not Equal, Zero, Not Zero, CarRY, Not CarRY, GReater, LEsser, Equal or Greater, Equal or Lesser, OVerflow, Not OVerflow, Negative, DIVbyZero, NOT USED)	
 --========================================================================		
 			IF(IR(15 DOWNTO 10) = JMP) THEN 
+				IF((IR(9 DOWNTO 6) = "0000") OR
+				((IR(9 DOWNTO 6) = "0111") AND FR(0) = '1') OR
+				((IR(9 DOWNTO 6) = "1001") AND (FR(2) = '1' OR FR(0) = '1')) OR
+				((IR(9 DOWNTO 6) = "1000") AND FR(1) = '1') OR
+				((IR(9 DOWNTO 6) = "1010") AND (FR(2) = '1' OR FR(1) = '1')) OR
+				((IR(9 DOWNTO 6) = "0001") AND FR(2) = '1') OR
+				((IR(9 DOWNTO 6) = "0010") AND FR(2) = '0') OR
+				((IR(9 DOWNTO 6) = "0011") AND FR(3) = '1') OR
+				((IR(9 DOWNTO 6) = "0100") AND FR(3) = '0') OR
+				((IR(9 DOWNTO 6) = "0101") AND FR(4) = '1') OR
+				((IR(9 DOWNTO 6) = "0110") AND FR(4) = '0') OR
+				((IR(9 DOWNTO 6) = "1011") AND FR(5) = '1') OR
+				((IR(9 DOWNTO 6) = "1100") AND FR(5) = '0') OR
+				((IR(9 DOWNTO 6) = "1101") AND FR(6) = '1') OR
+				((IR(9 DOWNTO 6) = "1110") AND FR(9) = '1')) THEN
+					M1 <= PC;				-- M1 <- PC
+					Rw <= '0';				-- Rw <= '0'
+					LoadPC := '1';			-- LoadPC <- 1
+					
+				ELSE
+					IncPC := '1';
+				END IF;
 				
 				state := fetch;
 			END IF;
-
---========================================================================
--- PUSH RX
---========================================================================		
-			IF(IR(15 DOWNTO 10) = PUSH) THEN
-				
-				state := fetch;
-			END IF;
-		
---========================================================================
--- POP RX
---========================================================================
-			IF(IR(15 DOWNTO 10) = POP) THEN
-				
-				state := exec;
-			END IF;						
-				
+			
 --========================================================================
 -- CALL END    PC <- 16bit END : b9-b6 = COND PUSH(PC)
 -- Flag Register: <...Negative|StackUnderflow|StackOverflow|DIVByZero|ARITHmeticOverflow|carRY|zero|equal|lesser|greater>
@@ -467,21 +506,21 @@ begin
 			END IF;
 
 --========================================================================
--- ARITH OPERATION ('INC' NOT INCLUDED) 			RX <- RY (?) RZ
---========================================================================
-			IF(IR(15 DOWNTO 14) = ARITH AND IR(13 DOWNTO 10) /= INC) THEN
+-- PUSH RX
+--========================================================================		
+			IF(IR(15 DOWNTO 10) = PUSH) THEN
 				
 				state := fetch;
 			END IF;
-			
+		
 --========================================================================
--- INC/DEC			RX <- RX (+ or -) 1
---========================================================================			
-			IF(IR(15 DOWNTO 14) = ARITH AND (IR(13 DOWNTO 10) = INC))	THEN
+-- POP RX
+--========================================================================
+			IF(IR(15 DOWNTO 10) = POP) THEN
 				
-				state := fetch;
-			END IF;
-			
+				state := exec;
+			END IF;						
+				
 --========================================================================
 -- NOP
 --========================================================================
@@ -534,7 +573,14 @@ begin
 					
 			when exec =>
 				PONTO <= "100";
+--========================================================================
+-- EXEC LOAD DIReto  			RX <- M[END]
+--========================================================================
+			IF(IR(15 DOWNTO 10) = LOAD) THEN
 				
+				state := fetch;
+			END IF;
+							
 --========================================================================
 -- EXEC STORE DIReto 			M[END] <- RX
 --========================================================================
@@ -543,14 +589,7 @@ begin
 				state := fetch;
 			END IF;
 						
---========================================================================
--- EXEC LOAD DIReto  			RX <- M[END]
---========================================================================
-			IF(IR(15 DOWNTO 10) = LOAD) THEN
-				
-				state := fetch;
-			END IF;
-			
+
 --========================================================================
 -- EXEC CALL    Pilha <- PC e PC <- 16bit END :
 --========================================================================
@@ -564,7 +603,7 @@ begin
 --========================================================================
 			IF(IR(15 DOWNTO 10) = RTS) THEN
 				
-				state := fetch;
+				state := exec2;
 			END IF;
 			
 --========================================================================
@@ -574,11 +613,25 @@ begin
 				
 				state := fetch;
 			END IF;		
-				
+		
 -- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 				
+--************************************************************************
+-- EXECUTE2 STATE
+--************************************************************************								
+					
+			when exec2 =>
+				PONTO <= "100";				
+--========================================================================
+-- EXEC2 RTS 			PC <- Mem[SP]
+--========================================================================
+			IF(IR(15 DOWNTO 10) = RTS) THEN
 				
-				
+				state := fetch;
+			END IF;				
+
+-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 				
 --************************************************************************
 -- HALT STATE
