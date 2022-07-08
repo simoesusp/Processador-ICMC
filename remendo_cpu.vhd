@@ -13,6 +13,7 @@ process(clk, reset)
 	-- Mux dos barramentos de dados internos	
 	VARIABLE	M2				:STD_LOGIC_VECTOR(15 downto 0);	-- Mux dos barramentos de dados internos para os Registradores
 	VARIABLE M3, M4		:STD_LOGIC_VECTOR(15 downto 0);	-- Mux dos Registradores para as entradas da ULA
+	VARIABLE	M6				:STD_LOGIC_VECTOR(15 downto 0);	-- Mux do Flag Register
 	
 	-- Novos Sinais da Versao 2: Controle dos registradores internos (Load-Inc-Dec)
 	variable LoadReg		: LoadRegisters; 
@@ -23,7 +24,8 @@ process(clk, reset)
 	VARIABLE LoadSP		: STD_LOGIC;
 	variable IncSP 		: std_LOGIC;
 	variable DecSP			: std_LOGIC;
-	
+	variable LoadFR		: std_LOGIC;
+		
 	-- Selecao dos Mux 2 e 6
 	variable selM2 		: STD_LOGIC_VECTOR(2 downto 0); 
 	variable selM6 		: STD_LOGIC_VECTOR(2 downto 0); 
@@ -58,6 +60,8 @@ begin
 		IncPC		:= '0';
 		IncSP		:= '0';
 		DecSP		:= '0';
+		LoadSP	:= '0';
+		LoadFR	:= '0';
 		selM2		:= sMem;
 		selM6		:= sULA;
 		
@@ -80,7 +84,7 @@ begin
 		REG(7)  := x"0000";
 		
 		PC := x"0000";  -- inicializa na linha Zero da memoria -> Programa tem que comecar na linha Zero !!
-		SP := x"7f00";  -- Inicializa a Pilha no final da mem�ria: 7ffc
+		SP := x"7ffc";  -- Inicializa a Pilha no final da mem�ria: 7ffc
 		IR := x"0000";
 		MAR := x"0000";
 			
@@ -100,15 +104,19 @@ begin
 	
 		if(LoadMAR = '1') then MAR := Mem; 				end if;
 	
-		if(LoadSP = '1') 	then SP := M3; 				end if;
+		if(LoadSP = '1') 	then SP := M4; 				end if;
 	
 		if(IncSP = '1')	then SP := SP + x"0001"; 	end if;
 	
 		if(DecSP = '1')	then SP := SP - x"0001"; 	end if;
 	
 		-- Selecao do Mux6
-		if (selM6 = sULA) THEN FR <= auxFR;				-- Sempre recebe flags da ULA
-		ELSIF (selM6 = sMem) THEN FR <= Mem; END IF;	-- A menos que seja POP FR, quando recebe da Memoria
+		if (selM6 = sULA) THEN M6 := auxFR;				-- Sempre recebe flags da ULA
+		ELSIF (selM6 = sMem) THEN M6 := Mem; END IF;	-- A menos que seja POP FR, quando recebe da Memoria
+		
+		-- So' carrega o FR quando for Pop FR, Cmp, aritmethic, ou logic.
+		if(LoadFR = '1') 	then FR <= M6; 				end if;
+
 		
 		-- Atualiza o nome dos registradores!!!
 		RX := conv_integer(IR(9 downto 7));
@@ -135,6 +143,7 @@ begin
 		IncSP   := '0';
 		DecSP   := '0';
 		LoadSP  := '0';
+		LoadFR  := '0';
 		selM6	  := sULA;	-- Sempre atualiza o FR da ULA, a nao ser que a instrucao seja POP FR
 
 		LoadReg(0) := '0';
