@@ -1982,19 +1982,17 @@ void MontarInstrucoes(void)
                     str_tmp1 = parser_GetItem_s();
                     val1 = BuscaRegistrador(str_tmp1);
                     free(str_tmp1);
-		    
-        		    if(val1 == FR_CODE)  // Push FR  ADD R0, r1, r2
-        			
-
+            
+                    if(val1 == FR_CODE)
                     sprintf(str_msg,"%s0001000000",PUSH);
-        		    else {
-        			str_tmp1 = ConverteRegistrador(val1);
-        			sprintf(str_msg,"%s%s0000000",PUSH,str_tmp1);
-        			free(str_tmp1);
-        	        parser_Write_Inst(str_msg,end_cnt);
-                    end_cnt += 1;
+                    else {
+                    str_tmp1 = ConverteRegistrador(val1);
+                    sprintf(str_msg,"%s%s0000000",PUSH,str_tmp1);
+                    free(str_tmp1);
                     }
-                    break;  // 1100110000000000
+                    parser_Write_Inst(str_msg,end_cnt);
+                    end_cnt += 1;
+                    break;
                     
                 /* ==============
                    Pop Rx
@@ -2006,15 +2004,15 @@ void MontarInstrucoes(void)
                     val1 = BuscaRegistrador(str_tmp1);
                     free(str_tmp1);
 		    
-		    if(val1 == FR_CODE)
-			sprintf(str_msg,"%s0001000000",POP);
-		    else {
-			str_tmp1 = ConverteRegistrador(val1);
-			sprintf(str_msg,"%s%s0000000",POP,str_tmp1);
-			free(str_tmp1);
-			}
-		    parser_Write_Inst(str_msg,end_cnt);
-		    end_cnt += 1;
+        		    if(val1 == FR_CODE)
+        			sprintf(str_msg,"%s0001000000",POP);
+        		    else {
+        			str_tmp1 = ConverteRegistrador(val1);
+        			sprintf(str_msg,"%s%s0000000",POP,str_tmp1);
+        			free(str_tmp1);
+        			}
+        		    parser_Write_Inst(str_msg,end_cnt);
+        		    end_cnt += 1;
                     break;
                 
                 /* ==============
