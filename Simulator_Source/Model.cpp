@@ -881,7 +881,7 @@ void Model::processador()
 			break;
 
 		case HALT:
-			controller->notifyProcessamento();
+			controller->pauseProcessamento();
 			break;
 
 		default: break;

@@ -12,7 +12,8 @@ Controller::Controller(ModelInterface *model)
 	hex = false;				// comeca decimal
 	automatico = false;	// comeca manual
 	resetVideo = true;	// comeca resetando o video, quando dah reset
-
+	halt = false;		 
+	
 	view = new View(model, this);
 	reset();
 }
@@ -81,7 +82,7 @@ bool Controller::userInput(const char *tecla)
 
 	if( strlen(tecla) > 1)
 	{	if( !strcmp(tecla,"End") )
-		{	if(automatico == false)
+		{	if(automatico == false && halt == false)
 				model->processa();
 			return TRUE;
 		}
@@ -96,11 +97,13 @@ bool Controller::userInput(const char *tecla)
 			return TRUE;
 		}
 		else if( !strcmp(tecla, "Home") )
-		{	switchExecucao(); 
+		{	if(halt == false)
+				switchExecucao();
 			return TRUE;
 		}
 		else if( !strcmp(tecla, "Insert") )
-		{	reset(); 
+		{	reset();
+			halt = false;
 			return TRUE;
 		}
 		else if( !strcmp(tecla, "Left") )
@@ -147,6 +150,7 @@ void Controller::switchExecucao()
 		model->processa();
 		return;
 	}
+
 	view->DestravaRegs();
 	model->setProcessamento(false);
 }
@@ -155,6 +159,13 @@ void Controller::notifyProcessamento()
 { automatico = false;
 	view->DestravaRegs();
 	model->setProcessamento(false);
+}
+
+void Controller::pauseProcessamento()
+{	automatico = false;
+	view->DestravaRegs();
+	model->setProcessamento(false);
+	halt = true;	
 }
 
 void Controller::setResetVideo(bool valor)
