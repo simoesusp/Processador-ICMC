@@ -31,6 +31,7 @@ class ControllerInterface
 		virtual bool getHex() = 0;
 
 		virtual void notifyProcessamento() = 0;
+		virtual void pauseProcessamento() = 0;
 };
 
 #endif

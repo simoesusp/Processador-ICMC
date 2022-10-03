@@ -11,6 +11,7 @@ class Controller : public ControllerInterface
 		ModelInterface *model;
 		bool hex;
 		bool automatico;
+		bool halt;
 		bool resetVideo;
 
 		int key;
@@ -45,6 +46,7 @@ class Controller : public ControllerInterface
 
 
 		void notifyProcessamento();
+		void pauseProcessamento();
 };
 
 #endif
