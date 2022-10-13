@@ -1,4 +1,4 @@
-// gcc simple_simulator.c -O3 -march=native -o simulador -Wall -lm
+// gcc simple_simulator_Template.c -O3 -march=native -o simulador -Wall -lm
 // -lm is option to execute math.h library file.
 /*
 Perguntas:
@@ -53,9 +53,9 @@ Do todos os comandos...
 // Data Manipulation:
 #define LOAD 48       // "110000"; -- LOAD Rx END  -- Rx <- M[END]  Format: < inst(6) | Rx(3) | xxxxxxx >  + 16bit END
 #define STORE 49      // "110001"; -- STORE END Rx -- M[END] <- Rx  Format: < inst(6) | Rx(3) | xxxxxxx >  + 16bit END
-#define LOADIMED 56   // "111000"; -- LOAD Rx Nr  (b0=0)   -- Rx <- Nr    ou   Load SP Nr (b0=1)  -- SP <- Nr    Format: < inst(6) | Rx(3) | xxxxxxb0 >  + 16bit Numero
-#define LOADINDEX 60  // "111100"; -- LOAD Rx Ry   -- Rx <- M[Ry]	Format: < inst(6) | Rx(3) | Ry(3) | xxxx >
-#define STOREINDEX 61 // "111101"; -- STORE Rx Ry  -- M[Rx] <- Ry	Format: < inst(6) | Rx(3) | Ry(3) | xxxx >
+#define LOADN 56   // "111000"; -- LOAD Rx Nr  (b0=0)   -- Rx <- Nr    ou   Load SP Nr (b0=1)  -- SP <- Nr    Format: < inst(6) | Rx(3) | xxxxxxb0 >  + 16bit Numero
+#define LOADI 60  // "111100"; -- LOAD Rx Ry   -- Rx <- M[Ry]	Format: < inst(6) | Rx(3) | Ry(3) | xxxx >
+#define STOREI 61 // "111101"; -- STORE Rx Ry  -- M[Rx] <- Ry	Format: < inst(6) | Rx(3) | Ry(3) | xxxx >
 #define MOV	51        // "110011"; -- MOV Rx Ry    -- Rx <- Ry	  	Format: < inst(6) | Rx(3) | Ry(3) | xxxx >
 
 
@@ -340,7 +340,7 @@ loop:
 					state=STATE_FETCH;
 					break;
 
-				case LOADIMED:
+				case LOADN:
 					// reg[rx] = mem[PC];
 					// PC++;
 					selM1 = sPC;
@@ -355,19 +355,9 @@ loop:
 				case LOAD:
 					// MAR = MEMORY[PC];
 					// PC++;
-					selM1 = sPC;
-					RW = 0;
-					LoadMAR = 1; 
-					IncPC = 1;
+
 					// -----------------------------
 					state=STATE_EXECUTE;
-					break;
-
-				case LOADINDEX:
-					// reg[rx] = MEMORY[reg[ry]];
-					
-					// -----------------------------
-					state=STATE_FETCH;
 					break;
 
 				case STORE:
@@ -378,7 +368,14 @@ loop:
 					state=STATE_EXECUTE;
 					break;
 
-				case STOREINDEX:
+				case LOADI:
+					// reg[rx] = MEMORY[reg[ry]];
+					
+					// -----------------------------
+					state=STATE_FETCH;
+					break;
+
+				case STOREI:
 					//mem[reg[rx]] = reg[ry];
 					
 					// -----------------------------
@@ -534,28 +531,20 @@ loop:
 			switch(opcode){
 				case LOAD:
 					//reg[rx] = MEMORY[MAR];
-					selM1 = sMAR;
-					RW = 0;
-					selM2 = sDATA_OUT;
-					LoadReg[rx] = 1;
+
 					// -----------------------------
 					state=STATE_FETCH;
 					break;
 
 				case STORE:
 					//MEMORY[MAR] = reg[rx];
-					selM1 = sMAR;
-					RW = 1;
-					selM3 = rx;
-					selM5 = sM3;
+
 					// -----------------------------
 					state=STATE_FETCH;
 					break; 
 
 				case CALL:
-					selM1 = sPC;
-					RW = 0;
-					LoadPC = 1;
+
 					// -----------------------------
 					state=STATE_FETCH;
 					break; 
