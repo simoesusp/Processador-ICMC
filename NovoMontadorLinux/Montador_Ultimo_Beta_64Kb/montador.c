@@ -208,6 +208,7 @@ void DetectarLabels(void)
             case AND_CODE :
             case OR_CODE :
             case XOR_CODE :
+            case SOUND:
                 parser_SkipUntil(',');
                 parser_SkipUntil(',');
                 parser_SkipUntilEnd();
@@ -241,7 +242,7 @@ void DetectarLabels(void)
 	        case JDZ_CODE :
 	        case JN_CODE :
             case CALL_CODE :
-            case CEQ_CODE :
+            // case CEQ_CODE :
             case CNE_CODE :
             case CZ_CODE :
             case CNZ_CODE :

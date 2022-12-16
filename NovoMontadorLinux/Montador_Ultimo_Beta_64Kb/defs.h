@@ -58,7 +58,8 @@
 #define JO_CODE                 49
 #define JNO_CODE                50
 #define CALL_CODE               51
-#define CEQ_CODE                52
+// #define CEQ_CODE                52
+#define SOUND_CODE              52
 #define CNE_CODE                53
 #define CZ_CODE                 54
 #define CNZ_CODE                55
@@ -120,6 +121,7 @@
 /* I/O Instructions: */
 #define OUTCHAR         "110010"
 #define INCHAR          "110101"
+#define SOUND           "110100"
 
 /* Aritmethic Instructions(All should begin with "10"):	*/
 #define ADD             "100000"
@@ -190,6 +192,7 @@
 #define MOV_STR                 "MOV"
 #define INCHAR_STR              "INCHAR"
 #define OUTCHAR_STR             "OUTCHAR"
+#define SOUND_STR               "SOUND"
 
 #define INPUT_STR               "INPUT"
 #define OUTPUT_STR              "OUTPUT"
