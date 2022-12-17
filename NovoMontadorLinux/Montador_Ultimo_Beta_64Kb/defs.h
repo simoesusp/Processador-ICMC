@@ -1,11 +1,3 @@
-// Para incluir uma nova INSTRUCAO, e' necessario mexer em 3 ugares diferentes:
-// Definir o Codigo da Instrucao: 
-  // #define LOAD_CODE               1
-// Definir os Bits da Instrucao: 
-  // #define LOAD            "110000"
-// Definir a String de como a Instrucao deve aparecer no programa ASM:
-  // #define LOAD_STR                "LOAD"
-
 #ifndef _DEFS_
 #define _DEFS_
 
@@ -115,6 +107,7 @@
 =======
 >>>>>>> parent of c3f5d9e (Consertando montador som)
 
+
 /* Definicoes dos op codes (binarios em strings) */
 
 /* Data Manipulation Instructions: */
@@ -169,7 +162,7 @@
 #define NOP             "000000"
 #define HALT            "001111"
 #define CLEARC          "001000"
-#define BREAKP		"001110"
+#define BREAKP		    "001110"
 
 /* Definicoes das condicoes (binarios em strings) */
 #define NO_COND         "0000"
@@ -204,10 +197,10 @@
 #define MOV_STR                 "MOV"
 #define INCHAR_STR              "INCHAR"
 #define OUTCHAR_STR             "OUTCHAR"
+#define SOUND_STR               "SOUND"
 
 #define INPUT_STR               "INPUT"
 #define OUTPUT_STR              "OUTPUT"
-#define SOUND_STR               "SOUND"
 
 /* ADD */
 #define ADD_STR                 "ADD"
@@ -230,7 +223,7 @@
 #define OR_STR                  "OR"
 #define XOR_STR                 "XOR"
 #define NOT_STR                 "NOT"
-    
+
 /* SHIFT */
 #define SHIFTL0_STR             "SHIFTL0"
 #define SHIFTL1_STR             "SHIFTL1"
@@ -390,39 +383,39 @@
 
 /* Definicoes da memoria */
 /* Final do espaco de programa */
-#define END_PROGRAM_END                 16384
+#define END_PROGRAM_END                 50384
 /* Inicio do espaco de dados estativos (alloc) */
-#define END_STATIC_DATA_START           16385
+#define END_STATIC_DATA_START           50385
 /* Final do espaco de dados estaticos */
-#define END_STATIC_DATA_END             24576
+#define END_STATIC_DATA_END             55576
 /* Inicio do espaco de dados dinamicos */
-#define END_DYN_DATA_START              24577
+#define END_DYN_DATA_START              55577
 /* Final do espaco de dados dinamicos */
-#define END_DYN_DATA_END                30681
+#define END_DYN_DATA_END                58681
 /* Final do especo para programas e dados */
-#define END_PROGRAM_DATA_END            30681
+#define END_PROGRAM_DATA_END            58681
 /* Se escrever neste endereco entao causa interrupcao de sistema */
-#define END_SYSTEM_CALL                 30682
+#define END_SYSTEM_CALL                 58682
 /* Pilha (folga de 8 palavras) */
-#define END_STACK_END                   30690
-#define END_STACK_START                 32738
+#define END_STACK_END                   58690
+#define END_STACK_START                 64738
 /* Mapeamento em memoria dos registradores de serial e timer */
-#define END_SERIAL_RX                   32746
-#define END_SERIAL_TX                   32747
-#define END_TIMER_REG                   32748
+#define END_SERIAL_RX                   64746
+#define END_SERIAL_TX                   64747
+#define END_TIMER_REG                   64748
 /* Enderecos de posicoes para passagem de argumentos (ate 10 argumentos) */
-#define END_ARG(X)                      ((X) + (32749))
+#define END_ARG(X)                      ((X) + (64749))
 /* Endereco de posicao para retorno de funcoes */
-#define END_RET                         32759
+#define END_RET                         64759
 /* Enderecos das interrupcoes */
-#define END_INTP_TIMER                  32760
-#define END_INTP_KEYB                   32761
-#define END_INTP_SYST                   32762
-#define END_INTP_STACK_OVER             32763
-#define END_INTP_STACK_UNDER            32764
-#define END_INTP_DIV_BY_ZERO            32765
-#define END_INTP_SERIAL                 32766
-#define END_INTP_RESET                  32767
+#define END_INTP_TIMER                  64760
+#define END_INTP_KEYB                   64761
+#define END_INTP_SYST                   64762
+#define END_INTP_STACK_OVER             64763
+#define END_INTP_STACK_UNDER            64764
+#define END_INTP_DIV_BY_ZERO            64765
+#define END_INTP_SERIAL                 64766
+#define END_INTP_RESET                  64767
 
 /* Strings para labels fixos */
 /* Inicio da memoria dinamica */
@@ -461,6 +454,6 @@
 #define L_INTP_RESET_STR                "Interrupt_Reset"
 
 /* Tamanho da memoria */
-#define MEM_SIZE 32768
+#define MEM_SIZE 65535   //32768
 
 #endif

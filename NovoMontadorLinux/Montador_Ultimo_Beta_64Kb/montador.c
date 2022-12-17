@@ -1,46 +1,7 @@
-// Para incluir uma nova INSTRUCAO, e' necessario mexer em 3 ugares diferentes:
-// 1) Definir os separadores da Instrucao e quantas linhas do EXE (mif) ela necessita:
-    /*  case LOAD_CODE :
-        case STORE_CODE :
-        case LOADIMED_CODE :
-        case STOREIMED_CODE :
-            parser_SkipUntil(','); 
-            parser_SkipUntilEnd(); 
-            end_cnt+=2; 
-            break;
-    */
-
-// 2) Explicar como o Montador vai montar os BITs da Instrucao e escrever no arquivo:
-    /*  case LOAD_CODE : // Load R1, End
-        str_tmp1 = parser_GetItem_s();
-        val1 = BuscaRegistrador(str_tmp1);
-        free(str_tmp1);
-        parser_Match(',');
-        val2 = RecebeEndereco();
-        str_tmp1 = ConverteRegistrador(val1);
-        str_tmp2 = NumPBinString(val2);
-        sprintf(str_msg,"%s%s0000000",LOAD,str_tmp1);
-        parser_Write_Inst(str_msg,end_cnt);
-        end_cnt += 1;
-        sprintf(str_msg,"%s",str_tmp2);
-        parser_Write_Inst(str_msg,end_cnt);
-        end_cnt +=1;
-        free(str_tmp1);
-        free(str_tmp2);
-        break;
-    */
-
-// 3) Buscar o nome da instrucao na base de instrucoes e retornar 'op_code interno' da instrucao:
-    /*  if (strcmp(str_tmp,LOAD_STR) == 0)
-        {
-            return LOAD_CODE;
-        }
-    */
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "defs.h"
 #include "montador.h"
 #include "parser.h"
@@ -51,6 +12,7 @@ extern char Look;
 
 /* *** Globais *** */
 unsigned short alloc_cnt = END_STATIC_DATA_START;
+//int col_count;
 
 /* *** Prototipos Locais *** */
 void AdicionarLabelsFixos(void);
@@ -67,14 +29,14 @@ char * NumPBinString4(short);
 
 void Montar(void)
 {
-
+    parser_Init();
     parser_Message("Encontrando labels...");
     AdicionarLabelsFixos();
     DetectarLabels();
     parser_Message("Montando codigo...");
     parser_Write("-- Codigo gerado pelo montador");
     parser_Write("WIDTH=16;");
-    parser_Write("DEPTH=32768;"); /* Tamanho da memoria aqui. */
+    parser_Write("DEPTH=65536;"); /* Tamanho da memoria aqui. */
     parser_Write("ADDRESS_RADIX=UNS;");
     parser_Write("DATA_RADIX=BIN;");
     parser_Write("CONTENT BEGIN");
@@ -84,6 +46,7 @@ void Montar(void)
     parser_Message("Descarregando buffer de saida...");
     parser_flush_program();
     parser_Write("END;");
+    parser_GetAttention("SUCESSO");
     parser_Message("Concluido.");
 
 }
@@ -123,7 +86,6 @@ void AdicionarLabelsFixos(void)
 void DetectarLabels(void)
 {
 
-    parser_Init();
     char * str_tmp;
     char * str_tmp1;
     char str_msg[STRTAM];
@@ -277,10 +239,10 @@ void DetectarLabels(void)
             case JEL_CODE :
             case JO_CODE :
             case JNO_CODE :
-	    case JDZ_CODE :
-	    case JN_CODE :
+	        case JDZ_CODE :
+	        case JN_CODE :
             case CALL_CODE :
-            case CEQ_CODE :
+            // case CEQ_CODE :
             case CNE_CODE :
             case CZ_CODE :
             case CNZ_CODE :
@@ -292,8 +254,8 @@ void DetectarLabels(void)
             case CEL_CODE :
             case CO_CODE :
             case CNO_CODE :
-	    case CDZ_CODE :
-	    case CN_CODE :
+	        case CDZ_CODE :
+	        case CN_CODE :
                 parser_SkipUntilEnd();
                 end_cnt+=2;
                 break;
@@ -357,7 +319,6 @@ void DetectarLabels(void)
         }
         free(str_tmp);
     }
-    parser_Rewind();
 }
 
 void MontarInstrucoes(void)
@@ -396,7 +357,7 @@ void MontarInstrucoes(void)
                    ==============
                 */
                 
-                case LOAD_CODE : // Load R1, End
+                case LOAD_CODE :
                     str_tmp1 = parser_GetItem_s();
                     val1 = BuscaRegistrador(str_tmp1);
                     free(str_tmp1);
@@ -652,7 +613,7 @@ void MontarInstrucoes(void)
                    ==============
                 */
 
-                case ADD_CODE :  // Add R1, R2, R3
+                case ADD_CODE :
                     str_tmp1 = parser_GetItem_s(); /* ADD sem carry */
                     val1 = BuscaRegistrador(str_tmp1);
                     free(str_tmp1);
@@ -906,7 +867,7 @@ void MontarInstrucoes(void)
                     break;
 
                 /* ==============                   
-	               Or Rx, Ry, Rz
+	Or Rx, Ry, Rz
                    ==============
                 */
 
@@ -1978,21 +1939,20 @@ void MontarInstrucoes(void)
                    ==============
                 */
                 
-
                 case PUSH_CODE :
                     str_tmp1 = parser_GetItem_s();
                     val1 = BuscaRegistrador(str_tmp1);
                     free(str_tmp1);
-            
-                    if(val1 == FR_CODE)
-                    sprintf(str_msg,"%s0001000000",PUSH);
-                    else {
-                    str_tmp1 = ConverteRegistrador(val1);
-                    sprintf(str_msg,"%s%s0000000",PUSH,str_tmp1);
-                    free(str_tmp1);
-                    }
-                    parser_Write_Inst(str_msg,end_cnt);
-                    end_cnt += 1;
+		    
+		    if(val1 == FR_CODE)
+			sprintf(str_msg,"%s0001000000",PUSH);
+		    else {
+			str_tmp1 = ConverteRegistrador(val1);
+			sprintf(str_msg,"%s%s0000000",PUSH,str_tmp1);
+			free(str_tmp1);
+			}
+  		    parser_Write_Inst(str_msg,end_cnt);
+		    end_cnt += 1;
                     break;
                     
                 /* ==============
@@ -2005,15 +1965,15 @@ void MontarInstrucoes(void)
                     val1 = BuscaRegistrador(str_tmp1);
                     free(str_tmp1);
 		    
-        		    if(val1 == FR_CODE)
-        			sprintf(str_msg,"%s0001000000",POP);
-        		    else {
-        			str_tmp1 = ConverteRegistrador(val1);
-        			sprintf(str_msg,"%s%s0000000",POP,str_tmp1);
-        			free(str_tmp1);
-        			}
-        		    parser_Write_Inst(str_msg,end_cnt);
-        		    end_cnt += 1;
+		    if(val1 == FR_CODE)
+			sprintf(str_msg,"%s0001000000",POP);
+		    else {
+			str_tmp1 = ConverteRegistrador(val1);
+			sprintf(str_msg,"%s%s0000000",POP,str_tmp1);
+			free(str_tmp1);
+			}
+		    parser_Write_Inst(str_msg,end_cnt);
+		    end_cnt += 1;
                     break;
                 
                 /* ==============
@@ -2743,7 +2703,7 @@ unsigned short RecebeNumero(void)
     if (Look == '#')
     {
         parser_Match('#');
-        if (parser_IsDigit(Look))  /* Numero : #1234 (unsigned) */
+        if (isdigit(Look))  /* Numero : #1234 (unsigned) */
         {
             str_tmp = parser_GetNum_s();
             ret = atoi(str_tmp);
@@ -2764,18 +2724,6 @@ unsigned short RecebeNumero(void)
                 {
                 case 'n' :
                     ret = (unsigned short)'\n';
-                    break;
-                case 'L' :
-                    ret = (unsigned short) 14;
-                    break;
-                case 'R' :
-                    ret = (unsigned short) 15;
-                    break;
-                case 'U' :
-                    ret = (unsigned short) 16;
-                    break;
-                case 'D' :
-                    ret = (unsigned short) 17;
                     break;
                 case '0' :
                     ret = (unsigned short)'\0';
@@ -2881,7 +2829,7 @@ unsigned short RecebeEndereco(void)
     unsigned short ret;
     char * str_tmp;
 
-    if (parser_IsDigit(Look))  /* ATENCAO! Labels e EQU nao podem comecar com numeros!!! */
+    if (isdigit(Look))  /* ATENCAO! Labels e EQU nao podem comecar com numeros!!! */
     {
         str_tmp = parser_GetNum_s();
         ret = atoi(str_tmp);
