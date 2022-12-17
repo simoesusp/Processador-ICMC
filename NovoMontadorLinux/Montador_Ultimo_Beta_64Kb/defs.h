@@ -66,7 +66,8 @@
 #define JO_CODE                 49
 #define JNO_CODE                50
 #define CALL_CODE               51
-#define CEQ_CODE                52
+// #define CEQ_CODE                52
+#define SOUND_CODE              52
 #define CNE_CODE                53
 #define CZ_CODE                 54
 #define CNZ_CODE                55
@@ -109,7 +110,10 @@
 #define NOP_CODE                0
 #define INPUT_CODE              96
 #define OUTPUT_CODE             97
+<<<<<<< HEAD
 #define SOUND_CODE              98
+=======
+>>>>>>> parent of c3f5d9e (Consertando montador som)
 
 /* Definicoes dos op codes (binarios em strings) */
 

@@ -81,7 +81,7 @@ bool Controller::userInput(const char *tecla)
 {	key = 255;
 
 	if( strlen(tecla) > 1)
-	{	if( !strcmp(tecla,"KP_1") )
+	{	if( !strcmp(tecla,"End") )
 		{	if(automatico == false && halt == false)
 				model->processa();
 			return TRUE;
@@ -96,7 +96,7 @@ bool Controller::userInput(const char *tecla)
 		{	view->destroy(NULL, NULL); 
 			return TRUE;
 		}
-		else if( !strcmp(tecla, "KP_7") )
+		else if( !strcmp(tecla, "Home") )
 		{	if(halt == false)
 				switchExecucao();
 			return TRUE;
