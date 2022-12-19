@@ -1,0 +1,3 @@
+[submodule "Text_Editors_Sintaxe/icmc-assembly"]
+	path = Text_Editors_Sintaxe/icmc-assembly
+	url = https://github.com/gabriel-libardi/icmc-assembly
