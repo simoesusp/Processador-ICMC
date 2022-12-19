@@ -1,0 +1,19 @@
+A) Configurando o Sublime Text 3:
+
+	1) Descubra onde é o diretório de configuração do seu sublime. Normalmente ele se encontra no .config da sua Home.
+		~/.config/sublime-text-3/
+	2) Dentro deste diretório existe uma subdiretório chamado Packages. Copie os 2 arquivos contidos aqui para lá.
+		cp icmc.tmLanguage icmc_processor.sublime-build ~/.config/sublime-text-3/Packages/
+	(Substitua o diretório especificamente para o da sua máquina).
+	
+	3) Copie o arquivo " buildandrun " para a pasta /user/bin 
+
+	4) Copie os arquivos sim e montador  para a pasta /user/bin 
+
+2) Montando seu programa:
+	1) Com o Sublime Text aberto no seu arquivo .asm, dê um Ctrl + B
+
+3) Simulando seu programa:
+	1) Dê um F7 ou Ctrl + Shift + B
+	
+. . . e seja feliz :)

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+/usr/bin/montador "$1" "$2" && /usr/bin/sim "$2" "$3"
+
+
