@@ -1,3 +1,5 @@
+;Autores: Augusto Lescura Pinto - Felipe Tanus Rodrigues - Pablo Felipe Montemor
+;https://github.com/Gutelinha/funcao-score
 ;centena
 loadn r1, #582  		; Posição para imprimir os pontos
 load r0, Point 	                ; r0 = Point
