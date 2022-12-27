@@ -1,3 +1,6 @@
+; autor: Isaac Soares
+; https://github.com/ISS2718
+
 jmp main
 
 main:
@@ -7,6 +10,7 @@ main:
     loadn r0, #578 ; posicao de impressao
     loadn r1, #65535 ; numero a ser impresso (no caso max de 16 bits)
     call Imprime_Numero
+    
   pop r1
   pop r0
   halt
@@ -16,6 +20,7 @@ main:
 Imprime_Numero:
   ; recebe a posicao do primeiro digito no r0
   ; recebe o numero a ser impresso no r1
+  psuh fr
   push r4 ; posicao tela
   push r5
   push r6
@@ -51,6 +56,7 @@ Imprime_Numero:
     pop r6
     pop r5
     pop r4
+    pop fr
     rts
 
   
