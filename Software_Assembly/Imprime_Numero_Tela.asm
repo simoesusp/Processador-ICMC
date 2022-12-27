@@ -20,7 +20,7 @@ main:
 Imprime_Numero:
   ; recebe a posicao do primeiro digito no r0
   ; recebe o numero a ser impresso no r1
-  psuh fr
+  push fr
   push r4 ; posicao tela
   push r5
   push r6
