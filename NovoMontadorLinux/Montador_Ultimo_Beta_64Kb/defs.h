@@ -57,9 +57,10 @@
 #define JEL_CODE                48
 #define JO_CODE                 49
 #define JNO_CODE                50
+#define JSR_CODE                99
 #define CALL_CODE               51
-// #define CEQ_CODE                52
-#define SOUND_CODE              52
+#define CEQ_CODE                52
+#define SOUND_CODE              98
 #define CNE_CODE                53
 #define CZ_CODE                 54
 #define CNZ_CODE                55
@@ -102,10 +103,9 @@
 #define NOP_CODE                0
 #define INPUT_CODE              96
 #define OUTPUT_CODE             97
-<<<<<<< HEAD
-#define SOUND_CODE              98
-=======
->>>>>>> parent of c3f5d9e (Consertando montador som)
+
+#define SERIAL_TX_CODE          101
+#define SERIAL_RX_CODE          100
 
 
 /* Definicoes dos op codes (binarios em strings) */
@@ -153,6 +153,8 @@
 #define RTI             "000100" /* RTI e um RTS por enquanto. */
 #define PUSH            "000101"
 #define POP             "000110"
+#define SERIALTX       "111111"
+#define SERIALRX       "111110"
 /* Adddendum */
 #define SET             "000111"
 #define CALLR           "001001"
@@ -180,6 +182,7 @@
 #define COND_NO         "1100"
 #define COND_DZ         "1101"
 #define COND_N          "1110"
+#define COND_SR         "1111"
 
 
 /* Definicoes das strings das funcoes */
@@ -198,6 +201,8 @@
 #define INCHAR_STR              "INCHAR"
 #define OUTCHAR_STR             "OUTCHAR"
 #define SOUND_STR               "SOUND"
+#define SERIALTX_STR            "SERIALTX"
+#define SERIALRX_STR            "SERIALRX"
 
 #define INPUT_STR               "INPUT"
 #define OUTPUT_STR              "OUTPUT"
@@ -265,6 +270,7 @@
 #define JNO_STR                 "JNO"
 #define JDZ_STR                 "JDZ"
 #define JN_STR                  "JN"
+#define JSR_STR                "JSR"
 
 
 /* CALL */

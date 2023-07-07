@@ -208,7 +208,7 @@ void DetectarLabels(void)
             case AND_CODE :
             case OR_CODE :
             case XOR_CODE :
-            case SOUND:
+            case SOUND_CODE:
                 parser_SkipUntil(',');
                 parser_SkipUntil(',');
                 parser_SkipUntilEnd();
@@ -1449,6 +1449,23 @@ void MontarInstrucoes(void)
                     free(str_tmp1);
                     break;
 
+                /* ==============
+                   JSR End
+                   ==============
+                */
+                
+                case JSR_CODE :
+                    val1 = RecebeEndereco();
+                    str_tmp1 = NumPBinString(val1);
+                    sprintf(str_msg,"%s%s000000",JMP,COND_SR);
+                    parser_Write_Inst(str_msg,end_cnt);
+                    end_cnt += 1;
+                    sprintf(str_msg,"%s",str_tmp1);
+                    parser_Write_Inst(str_msg,end_cnt);
+                    end_cnt +=1;
+                    free(str_tmp1);
+                    break;
+
                 /* ==============		
                    Call End
                    ==============
@@ -1943,6 +1960,41 @@ void MontarInstrucoes(void)
                     str_tmp1 = parser_GetItem_s();
                     val1 = BuscaRegistrador(str_tmp1);
                     free(str_tmp1);
+
+                /* ==============
+                   Serial Tx
+                   ==============
+                */
+
+                case SERIAL_TX_CODE :
+                    val1 = RecebeEndereco();
+                    str_tmp1 = NumPBinString(val1);
+                    sprintf(str_msg,"%s0000000000",SERIALTX);
+                    parser_Write_Inst(str_msg,end_cnt);
+                    end_cnt += 1;
+                    sprintf(str_msg,"%s",str_tmp1);
+                    parser_Write_Inst(str_msg,end_cnt);
+                    end_cnt +=1;
+                    free(str_tmp1);
+                    break;
+                
+                /*  ==============
+                    Serial Rx
+                    ==============
+                */
+
+                case SERIAL_RX_CODE :
+                    val1 = RecebeEndereco();
+                    str_tmp1 = NumPBinString(val1);
+                    sprintf(str_msg,"%s0000000000",SERIALRX);
+                    parser_Write_Inst(str_msg,end_cnt);
+                    end_cnt += 1;
+                    sprintf(str_msg,"%s",str_tmp1);
+                    parser_Write_Inst(str_msg,end_cnt);
+                    end_cnt +=1;
+                    free(str_tmp1);
+                    break;
+                
 		    
 		    if(val1 == FR_CODE)
 			sprintf(str_msg,"%s0001000000",PUSH);
