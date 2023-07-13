@@ -57,10 +57,8 @@
 #define JEL_CODE                48
 #define JO_CODE                 49
 #define JNO_CODE                50
-#define JSR_CODE                99
 #define CALL_CODE               51
 #define CEQ_CODE                52
-#define SOUND_CODE              98
 #define CNE_CODE                53
 #define CZ_CODE                 54
 #define CNZ_CODE                55
@@ -72,19 +70,6 @@
 #define CEL_CODE                61
 #define CO_CODE                 62
 #define CNO_CODE                63
-#define SET_CODE                64
-#define SEQ_CODE                65
-#define SNE_CODE                66
-#define SZ_CODE                 67
-#define SNZ_CODE                68
-#define SC_CODE                 69
-#define SNC_CODE                70
-#define SGT_CODE                71
-#define SLT_CODE                72
-#define SEG_CODE                73
-#define SEL_CODE                74
-#define SO_CODE                 75
-#define SNO_CODE                76
 #define RTS_CODE                77
 #define RTI_CODE                78
 #define PUSH_CODE               79
@@ -103,10 +88,9 @@
 #define NOP_CODE                0
 #define INPUT_CODE              96
 #define OUTPUT_CODE             97
-
-#define SERIAL_TX_CODE          101
-#define SERIAL_RX_CODE          100
-
+#define JSR_CODE                98
+#define SERIALTX_CODE           99
+#define SERIALRX_CODE           64
 
 /* Definicoes dos op codes (binarios em strings) */
 
@@ -126,7 +110,6 @@
 /* I/O Instructions: */
 #define OUTCHAR         "110010"
 #define INCHAR          "110101"
-#define SOUND           "110100"
 
 /* Aritmethic Instructions(All should begin with "10"):	*/
 #define ADD             "100000"
@@ -153,10 +136,7 @@
 #define RTI             "000100" /* RTI e um RTS por enquanto. */
 #define PUSH            "000101"
 #define POP             "000110"
-#define SERIALTX       "111111"
-#define SERIALRX       "111110"
 /* Adddendum */
-#define SET             "000111"
 #define CALLR           "001001"
 #define JMPR            "001010"
 
@@ -164,7 +144,10 @@
 #define NOP             "000000"
 #define HALT            "001111"
 #define CLEARC          "001000"
-#define BREAKP		    "001110"
+#define BREAKP		"001110"
+
+#define SERIALTX       "111111"
+#define SERIALRX       "111110"
 
 /* Definicoes das condicoes (binarios em strings) */
 #define NO_COND         "0000"
@@ -200,9 +183,6 @@
 #define MOV_STR                 "MOV"
 #define INCHAR_STR              "INCHAR"
 #define OUTCHAR_STR             "OUTCHAR"
-#define SOUND_STR               "SOUND"
-#define SERIALTX_STR            "SERIALTX"
-#define SERIALRX_STR            "SERIALRX"
 
 #define INPUT_STR               "INPUT"
 #define OUTPUT_STR              "OUTPUT"
@@ -222,13 +202,15 @@
 #define INC_STR                 "INC"
 #define DEC_STR                 "DEC"
 #define LMOD_STR                "MOD"
+#define SERIALTX_STR            "SERIALTX"
+#define SERIALRX_STR            "SERIALRX"
 
 
 #define AND_STR                 "AND"
 #define OR_STR                  "OR"
 #define XOR_STR                 "XOR"
 #define NOT_STR                 "NOT"
-
+    
 /* SHIFT */
 #define SHIFTL0_STR             "SHIFTL0"
 #define SHIFTL1_STR             "SHIFTL1"
@@ -272,7 +254,6 @@
 #define JN_STR                  "JN"
 #define JSR_STR                "JSR"
 
-
 /* CALL */
 #define CALL_STR                "CALL"
 #define CEQ_STR                 "CEQ"
@@ -290,20 +271,6 @@
 #define CDZ_STR                 "CDZ"
 #define CN_STR                  "CN"
 
-/* SET */
-#define SET_STR                 "SET"
-#define SEQ_STR                 "SEQ"
-#define SNE_STR                 "SNE"
-#define SZ_STR                  "SZ"
-#define SNZ_STR                 "SNZ"
-#define SC_STR                  "SC"
-#define SNC_STR                 "SNC"
-#define SGT_STR                 "SGT"
-#define SLT_STR                 "SLT"
-#define SEG_STR                 "SEG"
-#define SEL_STR                 "SEL"
-#define SO_STR                  "SOV"
-#define SNO_STR                 "SNO"
 
 /* Callr e Jmpr */
 #define CALLR_STR               "CALLR"
@@ -463,3 +430,4 @@
 #define MEM_SIZE 65535   //32768
 
 #endif
+
