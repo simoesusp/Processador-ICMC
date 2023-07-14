@@ -1,0 +1,14 @@
+﻿Para acrescentar uma instrução no montador, é necessário alterar dois arquivos: o defs.h e o montador.c
+Primeiramente, vamos realizar as alterações necessárias no defs.h:
+* Definir um código da instrução, ele pode ser qualquer valor menor que 100 (o 100 também não pode ser utilizado) e que ainda não esteja sendo utilizado em nenhuma outra instrução
+#define INSTRUÇÃO_CODE X
+* Definir qual o binário da função (que possui tamanho 6 nessa arquitetura), se atentando a escolher um valor que ainda não esteja sendo utilizado
+#define INSTRUÇÃO “bbbbbb”
+* Definir uma variável que contenha a string do nome da nova instrução
+                #define INSTRUÇÃO_STR “INSTRUÇÃO”
+* Caso seja uma subfunção de algum tipo (como, por exemplo, o jump), é necessário definir o binário dessa condição, que possui tamanho 4
+        #define COND_INSTRUÇÃO “bbbb”
+Agora, com relação às alterações no montador.c:
+* Acrescentar o case da instrução no primeiro switch do op_code no local adequado (existe comentado no código o local ao qual a instrução deve ficar de acordo com o que aquela instrução recebe (se recebe label, registrador etc), ou seja, seus argumentos
+* Também acrescentar no else if de todas as instruções se str_tmp for igual a string (definida no defs.h) da sua instrução o código (também definido no defs.h) será retornado
+* Por fim, acrescentar no segundo switch do op_code, o que a sua instrução deverá fazer para gerar a instrução em binário corretamente
