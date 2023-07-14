@@ -88,6 +88,7 @@
 #define NOP_CODE                0
 #define INPUT_CODE              96
 #define OUTPUT_CODE             97
+#define SOUND_CODE              98
 #define JSR_CODE                66
 #define SERIALTX_CODE           65
 #define SERIALRX_CODE           64
@@ -110,6 +111,7 @@
 /* I/O Instructions: */
 #define OUTCHAR         "110010"
 #define INCHAR          "110101"
+#define SOUND           "110100"
 
 /* Aritmethic Instructions(All should begin with "10"):	*/
 #define ADD             "100000"
@@ -186,6 +188,7 @@
 
 #define INPUT_STR               "INPUT"
 #define OUTPUT_STR              "OUTPUT"
+#define SOUND_STR               "SOUND"
 
 /* ADD */
 #define ADD_STR                 "ADD"
