@@ -88,8 +88,8 @@
 #define NOP_CODE                0
 #define INPUT_CODE              96
 #define OUTPUT_CODE             97
-#define JSR_CODE                98
-#define SERIALTX_CODE           99
+#define JSR_CODE                66
+#define SERIALTX_CODE           65
 #define SERIALRX_CODE           64
 
 /* Definicoes dos op codes (binarios em strings) */
