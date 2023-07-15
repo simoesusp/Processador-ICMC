@@ -1,0 +1,14 @@
+{
+	"selector": "source.ICMC" ,
+	"working_dir": "${project_path:${folder}}",
+	"variants": [
+		{ 
+		  "cmd": ["/usr/bin/montador", "$file_base_name.asm", "$file_base_name.mif"],
+		  "name": "Build",
+		},
+		{
+		  "cmd": ["/usr/bin/buildandrun", "$file_base_name.asm", "$file_base_name.mif", "charmap.mif"],
+		  "name": "Run",
+		}
+	]
+}
