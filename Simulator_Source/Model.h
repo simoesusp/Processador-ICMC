@@ -3,6 +3,7 @@
 
 #include "Mneumonicos.h"
 #include "ModelInterface.h"
+#include "Sound.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -151,9 +152,9 @@ class Model : public ModelInterface
 
 		void delay();
 
-		unsigned int _rotl(const unsigned int value, int shift);
+		unsigned int model_rotl(const unsigned int value, int shift);
 
-		unsigned int _rotr(const unsigned int value, int shift);
+		unsigned int model_rotr(const unsigned int value, int shift);
 
 		void processador();
 

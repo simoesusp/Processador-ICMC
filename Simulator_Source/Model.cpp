@@ -411,7 +411,7 @@ int Model::getMem(int pos)
 
 
 // Processamento
-unsigned int Model::_rotl(const unsigned int value, int shift)
+unsigned int Model::model_rotl(const unsigned int value, int shift)
 { if(shift >= 16)									 				 // evita rotacoes completas
 		shift = shift - (shift/16)*16; 				 // shift = shift mod 16
 
@@ -421,7 +421,7 @@ unsigned int Model::_rotl(const unsigned int value, int shift)
 	return aux &= 65535;										 // retorna somente os 16 primeiros bits do numero
 }
 
-unsigned int Model::_rotr(const unsigned int value, int shift)
+unsigned int Model::model_rotr(const unsigned int value, int shift)
 { if(shift >= 16)									 					// evita rotacoes completas
 		shift = shift - (shift/16)*16; 					// shift = shift mod 16
 
@@ -701,6 +701,10 @@ void Model::processador()
         	}
         break;
 
+      case SOUND: 
+        play_note(reg[rx], reg[ry], reg[rz]);
+        break;
+    
       case SUB:
         reg[rx] = reg[ry] - reg[rz]; // Subtracao sem Carry
 
@@ -787,8 +791,8 @@ void Model::processador()
         	case 3: reg[rx] = ~((~(reg[rx]) >> pega_pedaco(ir,3,0)));	break;
 					default:
         		if(pega_pedaco(ir,6,5)==2) // ROTATE LEFT
-        		{  reg[rx] = _rotl(reg[rx],pega_pedaco(ir,3,0)); break; }
-        	  reg[rx] = _rotr(reg[rx],pega_pedaco(ir,3,0)); break;
+        		{  reg[rx] = model_rotl(reg[rx],pega_pedaco(ir,3,0)); break; }
+        	  reg[rx] = model_rotr(reg[rx],pega_pedaco(ir,3,0)); break;
 				}
         break;
 

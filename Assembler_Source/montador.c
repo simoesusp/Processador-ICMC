@@ -246,6 +246,7 @@ void DetectarLabels(void)
             case AND_CODE :
             case OR_CODE :
             case XOR_CODE :
+            case SOUND_CODE:
                 parser_SkipUntil(',');
                 parser_SkipUntil(',');
                 parser_SkipUntilEnd();
@@ -642,6 +643,34 @@ void MontarInstrucoes(void)
                     str_tmp1 = ConverteRegistrador(val1);
                     sprintf(str_msg,"%s%s0000000",INCHAR,str_tmp1);
                     free(str_tmp1);
+                    parser_Write_Inst(str_msg,end_cnt);
+                    end_cnt += 1;
+                    break;
+
+                /* ==============
+	                SOUND Rx, Ry, Rz
+                   ==============
+                */
+
+                case SOUND_CODE :
+                    str_tmp1 = parser_GetItem_s();
+                    val1 = BuscaRegistrador(str_tmp1);
+                    free(str_tmp1);
+                    parser_Match(',');
+                    str_tmp2 = parser_GetItem_s();
+                    val2 = BuscaRegistrador(str_tmp2);
+                    free(str_tmp2);
+                    parser_Match(',');
+                    str_tmp3 = parser_GetItem_s();
+                    val3 = BuscaRegistrador(str_tmp3);
+                    free(str_tmp3);
+                    str_tmp1 = ConverteRegistrador(val1);
+                    str_tmp2 = ConverteRegistrador(val2);
+                    str_tmp3 = ConverteRegistrador(val3);
+                    sprintf(str_msg,"%s%s%s%s0",SOUND,str_tmp1,str_tmp2,str_tmp3);
+                    free(str_tmp1);
+                    free(str_tmp2);
+                    free(str_tmp3);
                     parser_Write_Inst(str_msg,end_cnt);
                     end_cnt += 1;
                     break;
@@ -2268,6 +2297,10 @@ int BuscaInstrucao(char * nome)
     else if (strcmp(str_tmp,OUTCHAR_STR) == 0)
     {
         return OUTCHAR_CODE;
+    }
+    else if (strcmp(str_tmp,SOUND_STR) == 0)
+    {
+        return SOUND_CODE;
     }
     else if (strcmp(str_tmp,ADD_STR) == 0)
     {
