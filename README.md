@@ -65,3 +65,8 @@ Há uma versão online do simulador para facilitar o desenvolvimento de aplicaç
 
 - Pode ser acessado através do link: [https://thiagoambiel.github.io/SimuladorICMC/](https://thiagoambiel.github.io/SimuladorICMC/)
 
+# Compilador usando o framework do LLVM
+
+No momento, um grande objetivo do projeto é desenvolver um compilador para a arquitetura. Para a sua criação, é importante ter um framework extensível, pois não deve ser necessária a definição da linguagem de alto nível que deverá ser compilada, somente a descrição da arquitetura e como ela funciona. Para isso, é utilizado o framework do LLVM, o qual baseia o compilador clang, rustc, julia, entre outros.
+
+O desenvolvimento do compilador está sendo feito [neste](https://github.com/lucasgpulcinelli/LLVM-ICMC-backend) repositório. Há uma apresentação em português, que tem uma boa documentação de como o compilador funciona num alto nível [aqui](https://docs.google.com/presentation/d/1gBzEu6jkQpzviPLqYvcLvQtvajxIN58WHAHa-J1ruJg/edit?usp=sharing). Note que o compilador não está pronto, e novas contribuições são bem vindas, veja as [issues](https://github.com/lucasgpulcinelli/LLVM-ICMC-backend/issues)!
