@@ -65,6 +65,13 @@ Há uma versão online do simulador para facilitar o desenvolvimento de aplicaç
 
 - Pode ser acessado através do link: [https://thiagoambiel.github.io/SimuladorICMC/](https://thiagoambiel.github.io/SimuladorICMC/)
 
+# Novo Simulador local usando go
+
+Além do simulador online e o escrito em C++, foi criado um novo simulador cujo objetivo é dar suporte aos sistemas operacionais mais usados com binários pré compilados, além de ter uma interface mais moderna e de simples uso. O [goICMCsim](https://github.com/lucasgpulcinelli/goICMCsim) tem diversas funcionalidades úteis e é facilmente extensível. Para usá-lo, basta baixar o binário deste link:
+- [https://github.com/lucasgpulcinelli/goICMCsim/releases](https://github.com/lucasgpulcinelli/goICMCsim/releases)
+
+Se você gostar do simulador, considere contribuir no repositório!
+
 # Compilador usando o framework do LLVM
 
 No momento, um grande objetivo do projeto é desenvolver um compilador para a arquitetura. Para a sua criação, é importante ter um framework extensível, pois não deve ser necessária a definição da linguagem de alto nível que deverá ser compilada, somente a descrição da arquitetura e como ela funciona. Para isso, é utilizado o framework do LLVM, o qual baseia o compilador clang, rustc, julia, entre outros.
