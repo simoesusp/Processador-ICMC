@@ -30,3 +30,10 @@
 
 # Debug files
 *.dSYM/
+
+# Coisas IntelliJ
+.idea/
+
+# Coisas MacOS
+./DS_Store
+.DS_Store

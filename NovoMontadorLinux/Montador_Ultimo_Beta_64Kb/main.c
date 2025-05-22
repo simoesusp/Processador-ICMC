@@ -7,7 +7,7 @@
 #include "montador.h"
 
 /* Versao do montador */
-#define VERSAO "1.1"
+#define VERSAO "1.2"
 
 /* Arquivos de entrada e saida */
 FILE *in;

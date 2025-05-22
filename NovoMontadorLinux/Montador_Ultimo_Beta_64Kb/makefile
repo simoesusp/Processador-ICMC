@@ -4,7 +4,7 @@ FILES =  montador.c parser.c structs.c
 OBJS = $(FILES:.c=.o)
 NAME_FLAG = -o
 LINK_FLAG = -g
-COMP_FLAG = -march=native -03 -g
+COMP_FLAGS = -march=native -O3 -g
 NAME = montador
 
 all: main.o $(OBJS)

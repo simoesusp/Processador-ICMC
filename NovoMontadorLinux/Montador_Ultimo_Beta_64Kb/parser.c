@@ -76,7 +76,47 @@ void CarregaPrograma(char *nome)
     in = fopen(nome,"r");
     if (in == NULL) parser_Abort("Nao foi possivel carregar o arquivo de programa.");
 
-    line_count=parser_CountLines();
+    // Vai para o fim do arquivo
+    if (fseek(in, 0, SEEK_END) != 0) {
+        parser_Abort("Erro ao buscar o fim do arquivo.\n");
+    }
+
+    long size = ftell(in);
+    if (size == 0) {
+        parser_Abort("Arquivo vazio.\n");
+    }
+
+    // Volta para o último byte
+    if (fseek(in, -1, SEEK_END) != 0) {
+        parser_Abort("Erro ao buscar o último byte do arquivo.\n");
+    }
+
+    int last_char = fgetc(in); // Lê o último caractere
+
+    if (last_char != '\n') {
+        fclose(in);
+
+        // Abre para leitura e escrita
+        in = fopen(nome, "a"); // modo append: evita sobrescrever
+        if (in == NULL) {
+            parser_Abort("Não foi possível abrir o arquivo em modo append.\n");
+        }
+
+        if (fputc('\n', in) == EOF) {
+            parser_Abort("Erro ao escrever nova linha no fim do arquivo.\n");
+        }
+
+        fclose(in);
+    }
+
+    // Reabre para leitura normal
+    in = fopen(nome, "r");
+    if (in == NULL) {
+        parser_Abort("Não foi possível reabrir o arquivo em modo leitura.\n");
+    }
+
+    line_count = parser_CountLines();
+
     progr_buffer = (char**) malloc(line_count*sizeof(char*));
     fseek(in,0L,SEEK_SET);
     parser_LoadProgram();
