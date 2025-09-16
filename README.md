@@ -21,7 +21,13 @@ This project consists of five parts:
 
 5-	Documentation (Processor architecture and Assembly language description)
 
+# ICMC IDE: Uma plataforma para desenvolvimento de jogos em linguagem montadora
 
+Nesta ferramenta é possível utilizar o teclado e uma tela texto de 30 linhas por 40 colunas para produzir jogos clássicos como Pac Man, Snake, Tetris, etc. Ela permite engajar os alunos em um ambiente estimulante no qual podem aprender a desenvolver software e hardware de forma integrada em arquiteturas de processador customizáveis, voltado para o ensino de programação em baixo nível em disciplinas de Organização e Arquitetura de Computadores para cursos como Engenharia de Computação e Bacharelado em Ciência da Computação, Sistemas de Informação e Ciências de Dados
+
+O ambiente foi construído de forma didática, oferecendo uma interface web que integra todas as ferramentas. A motivação para a criação do projeto foi a falta de ferramentas modernas e didáticas para essa área de ensino e as dificuldades notadas pelos alunos de trabalhar em um ambiente pouco intuitivo e com ferramentas oferecidas separadamente. 
+
+Link para baixar a Ferramenta ICMC IDE - https://apocalipse.lain.ch/stuff/mu/icmc-gui.exe
 
 # Configuração da Placa DE0:
 
@@ -59,13 +65,13 @@ This project consists of five parts:
 
 7- Troque o  input do Monitor para entrada VGA (tu vai sofrer nos menuzinhos da Philipis!!!)
 
-# Simulador Online
+# Simulador Online Antigo
 
 Há uma versão online do simulador para facilitar o desenvolvimento de aplicações compatíveis com o processador. Esta é a versão mais estável dentre as disponíveis no repositório e dispensa qualquer etapa adicional de instalação na máquina local. 
 
 - Pode ser acessado através do link: [https://thiagoambiel.github.io/SimuladorICMC/](https://thiagoambiel.github.io/SimuladorICMC/)
 
-# Novo Simulador local usando go
+# Simulador local usando go
 
 Além do simulador online e o escrito em C++, foi criado um novo simulador cujo objetivo é dar suporte aos sistemas operacionais mais usados com binários pré compilados, além de ter uma interface mais moderna e de simples uso. O [goICMCsim](https://github.com/lucasgpulcinelli/goICMCsim) tem diversas funcionalidades úteis e é facilmente extensível. Para usá-lo, basta baixar o binário deste link:
 - [https://github.com/lucasgpulcinelli/goICMCsim/releases](https://github.com/lucasgpulcinelli/goICMCsim/releases)
