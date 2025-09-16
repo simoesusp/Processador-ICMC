@@ -27,10 +27,12 @@ Nesta ferramenta é possível utilizar o teclado e uma tela texto de 30 linhas p
 
 O ambiente foi construído de forma didática, oferecendo uma interface web que integra todas as ferramentas. A motivação para a criação do projeto foi a falta de ferramentas modernas e didáticas para essa área de ensino e as dificuldades notadas pelos alunos de trabalhar em um ambiente pouco intuitivo e com ferramentas oferecidas separadamente. 
 
-Link para baixar a Ferramenta ICMC IDE:
+Link da Ferramenta ICMC IDE:
 - Windows: https://apocalipse.lain.ch/icmc-ide.exe
 - Linux: https://apocalipse.lain.ch/icmc-ide
 - Versão para navegador antiga: https://proc.giroto.dev
+- Formulário de avaliação: https://forms.gle/dhBAPxpej5H3nM6T7
+- Repositórios do GitHub: https://github.com/icmc-ide
 
 # Configuração da Placa DE0:
 
