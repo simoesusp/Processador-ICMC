@@ -668,7 +668,7 @@ Delay:
 	
 	Loadn R1, #50  ; a
    Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
-	Loadn R0, #3000	; b
+	Loadn R0, #30	; b
    Delay_volta: 
 	Dec R0					; (4*a + 6)b = 1000000  == 1 seg  em um clock de 1MHz
 	JNZ Delay_volta	
@@ -1052,5 +1052,6 @@ tela4Linha26 : string "                 ...                    "
 tela4Linha27 : string "                ...                     "
 tela4Linha28 : string "               ....                     "
 tela4Linha29 : string "              .....                     "
+
 
 
