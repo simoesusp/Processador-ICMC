@@ -233,7 +233,7 @@ MoveNave_RecalculaPos:		; Recalcula posicao da Nave em funcao das Teclas pressio
 	cmp R1, R2
 	jeq MoveNave_RecalculaPos_S
 	
-	loadn R2, #' '
+	loadn R2, #64
 	cmp R1, R2
 	jeq MoveNave_RecalculaPos_Tiro
 	
@@ -1052,4 +1052,5 @@ tela4Linha26 : string "                 ...                    "
 tela4Linha27 : string "                ...                     "
 tela4Linha28 : string "               ....                     "
 tela4Linha29 : string "              .....                     "
+
 
