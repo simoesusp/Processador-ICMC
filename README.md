@@ -30,6 +30,7 @@ O ambiente foi construído de forma didática, oferecendo uma interface web que 
 Link para baixar a Ferramenta ICMC IDE:
 - Windows: https://apocalipse.lain.ch/icmc-ide.exe
 - Linux: https://apocalipse.lain.ch/icmc-ide
+- Versão para navegador antiga: https://proc.giroto.dev
 
 # Configuração da Placa DE0:
 
