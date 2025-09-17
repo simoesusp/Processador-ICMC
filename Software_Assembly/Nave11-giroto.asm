@@ -101,19 +101,19 @@ Rand : var #30			; Tabela de nr. Randomicos entre 0 - 7
 main:
 	call ApagaTela
 	loadn R1, #tela1Linha0	; Endereco onde comeca a primeira linha do cenario!!
-	loadn R2, #1536  			; cor branca!
+	loadn R2, #64512  			; cor = Invertido do R(3b)G(3b)B(2b)+ Char(8b) 11111100 00000000 => #64512 => azul!
 	call ImprimeTela2   		;  Rotina de Impresao de Cenario na Tela Inteira
     
 	loadn R1, #tela2Linha0	; Endereco onde comeca a primeira linha do cenario!!
-	loadn R2, #512  			; cor branca!
+	loadn R2, #58112  			; cor = Invertido do R(3b)G(3b)B(2b)+ Char(8b) 11100011 00000000 => #58112 => verde!
 	call ImprimeTela2   		;  Rotina de Impresao de Cenario na Tela Inteira
     
 	loadn R1, #tela3Linha0	; Endereco onde comeca a primeira linha do cenario!!
-	loadn R2, #2816   			; cor branca!
+	loadn R2, #768   			; cor = Invertido do R(3b)G(3b)B(2b)+ Char(8b) 00000011 00000000 => 7#68 => amarelo!
 	call ImprimeTela2   		;  Rotina de Impresao de Cenario na Tela Inteira
 
 	loadn R1, #tela4Linha0	; Endereco onde comeca a primeira linha do cenario!!
-	loadn R2, #256   			; cor branca!
+	loadn R2, #7936  			; cor = Invertido do R(3b)G(3b)B(2b)+ Char(8b) 00011111 00000000 => #7936 => vermelho!
 	call ImprimeTela2   		;  Rotina de Impresao de Cenario na Tela Inteira
 
 	Loadn R0, #0			
@@ -233,7 +233,7 @@ MoveNave_RecalculaPos:		; Recalcula posicao da Nave em funcao das Teclas pressio
 	cmp R1, R2
 	jeq MoveNave_RecalculaPos_S
 	
-	loadn R2, #64
+	loadn R2, #' '
 	cmp R1, R2
 	jeq MoveNave_RecalculaPos_Tiro
 	
@@ -1052,6 +1052,5 @@ tela4Linha26 : string "                 ...                    "
 tela4Linha27 : string "                ...                     "
 tela4Linha28 : string "               ....                     "
 tela4Linha29 : string "              .....                     "
-
 
 
