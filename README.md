@@ -40,6 +40,10 @@ Link da Ferramenta ICMC IDE:
 ### Slides do Curso:
 - https://docs.google.com/presentation/d/1fWYBil2TRPAIOFIlAv4AzblOP4ZVY6I8BbMmLMuvkBA/edit
 
+### Link para o video do curso:
+- Terca (16/09/25) - https://drive.google.com/file/d/10yg_uFLMFi__i1VSdofvS-5n1sakbeHf/view?usp=sharing
+- Quarta (17/09/25) - 
+
 
 # Configuração da Placa DE0:
 
