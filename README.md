@@ -34,6 +34,15 @@ Link da Ferramenta ICMC IDE:
 - Formulário de avaliação: https://forms.gle/dhBAPxpej5H3nM6T7
 - Repositórios do GitHub: https://github.com/icmc-ide
 
+### Arquitetura do nosso Processador ICMC:  
+- https://github.com/simoesusp/Processador-ICMC/blob/master/Manual/ProcessadorICMC2.pdf
+
+### Gerador de Caracteres e Telas do Gustavo: 
+- https://github.com/GustavoSelhorstMarconi/Create-Screens-in-Assembly-with-python
+
+- Battle of Tiers: https://github.com/4Vertrigo/BattleOfTiers
+
+
 # Configuração da Placa DE0:
 
 1- Configure o Clock para 1MHz: SW[2] = 1; SW[1]=1; SW[0]=0
