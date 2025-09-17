@@ -37,9 +37,6 @@ Link da Ferramenta ICMC IDE:
 ### Arquitetura do nosso Processador ICMC:  
 - https://github.com/simoesusp/Processador-ICMC/blob/master/Manual/ProcessadorICMC2.pdf
 
-### Gerador de Caracteres e Telas do Gustavo: 
-- https://github.com/GustavoSelhorstMarconi/Create-Screens-in-Assembly-with-python
-
 ### Slides do Curso:
 - https://docs.google.com/presentation/d/1fWYBil2TRPAIOFIlAv4AzblOP4ZVY6I8BbMmLMuvkBA/edit
 
