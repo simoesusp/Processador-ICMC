@@ -40,7 +40,8 @@ Link da Ferramenta ICMC IDE:
 ### Gerador de Caracteres e Telas do Gustavo: 
 - https://github.com/GustavoSelhorstMarconi/Create-Screens-in-Assembly-with-python
 
-- Battle of Tiers: https://github.com/4Vertrigo/BattleOfTiers
+### Slides do Curso:
+- https://docs.google.com/presentation/d/1fWYBil2TRPAIOFIlAv4AzblOP4ZVY6I8BbMmLMuvkBA/edit
 
 
 # Configuração da Placa DE0:
