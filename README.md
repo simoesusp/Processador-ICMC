@@ -42,7 +42,27 @@ Link da Ferramenta ICMC IDE:
 
 ### Link para o video do curso:
 - Terca (16/09/25) - https://drive.google.com/file/d/10yg_uFLMFi__i1VSdofvS-5n1sakbeHf/view?usp=sharing
-- Quarta (17/09/25) - 
+- Quarta (17/09/25) -
+
+### Novo padrão de Cores:
+
+- Um charactere é defindo por 16 bits:
+  - Bits 7-0 => Codigo ASCII do Charactere
+  - Bits 9-8 => Blue (4 niveis)
+  - Bits 12-10 => Green (8 niveis)
+  - Bits 15-13 => Red (8 niveis)
+
+### Exemplo de como formar uma cor:
+- O cóigo da Letra 'A' na tabela ASCII é 65.
+- Se somarmos 65 + cor ==> Teremos um A colorido para imprimir com OUTCHAR
+
+### Por Exemplo: 
+- cor = Invertido do R(3b)G(3b)B(2b) + Char(8b) 11111100 00000000 => #64512 => azul!
+  - 65 + 768 = 833 ==> Letra A na cor azul.
+
+- cor = Invertido do R(3b)G(3b)B(2b) + Char(8b) 11100011 00000000 => #58112 => verde!
+- cor = Invertido do R(3b)G(3b)B(2b) + Char(8b) 00000011 00000000 => 7#68 => amarelo!
+- cor = Invertido do R(3b)G(3b)B(2b) + Char(8b) 00011111 00000000 => #7936 => vermelho!
 
 
 # Configuração da Placa DE0:
