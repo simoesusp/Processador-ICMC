@@ -1,0 +1,55 @@
+CONTROL FLOW LIBRARY
+====================
+
+A library that extends control flow capabilities by adding useful utilities
+on top of standard instructions.
+
+
+CallI - Indirect Call
+---------------------
+
+Performs an indirect function call by jumping to an address stored in a
+register, while still preserving the ability to return to the original caller.
+
+Usage:
+
+    loadn r7, #FunctionAddress
+    call CallI
+
+
+How it works
+------------
+
+Normal call behavior:
+
+    A standard call instruction pushes the return address (current PC) onto
+    the stack and jumps to the destination. After the called function does its
+    work and pops its saved registers, RTS pulls the return address off the
+    stack and puts it back into the PC, resuming execution after the original
+    call.
+
+    Stack layout during a normal call:
+
+        [ Pushed Registers ]  <- Top of Stack
+        [ Return Address   ]
+        [ Rest of Stack... ]
+
+
+CallI behavior:
+
+    CallI hijacks the RTS mechanism to redirect execution to an address
+    stored in R7.
+
+        CallI:
+            push r7   ; Push R7 (the target address) onto the top of the stack
+            rts       ; RTS pops R7 into PC, jumping to the target function
+
+    Stack layout after "call CallI" but before rts:
+
+        [ R7 (target addr) ]  <- Top of Stack, RTS pops this -> jumps to target
+        [ Return Address   ]  <- Next RTS (inside target function) returns here
+        [ Rest of Stack... ]
+
+    When the target function eventually executes its own RTS, the return
+    address is now on top of the stack, so execution correctly returns to
+    the original caller of CallI.

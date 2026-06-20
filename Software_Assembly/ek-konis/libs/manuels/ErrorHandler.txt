@@ -1,0 +1,252 @@
+ERROR SYSTEM LIBRARY  (error.asm)
+===================================
+A minimalist error handling system. Provides a Yellow Screen of Death
+(YSOD) for fatal errors, basic safety check utilities, memory
+comparison, and a stack tracer to help identify where errors occur.
+
+Requires: String.asm
+
+Version: 0.3.0
+Planned:  0.4.0 - Improved stack trace
+
+
+================================================================
+SETUP  (required before use)
+================================================================
+
+The library expects an ErrorMessageTable and the error message
+strings to be defined somewhere in your code. The table is an
+array of pointers, one per error ID, where each pointer points
+to an FStr-compatible string.
+
+    ; Define your error messages
+    ErrMsg_OutOfBounds : string "OUT OF BOUNDS ERROR"
+    ErrMsg_BadInput    : string "BAD INPUT ERROR"
+
+    ; Define the table, one pointer per ID
+    ErrorMessageTable: var #2
+        static ErrorMessageTable + #0, #ErrMsg_OutOfBounds
+        static ErrorMessageTable + #1, #ErrMsg_BadInput
+
+Error IDs are just the index into this table. Pass the ID to
+CallFatalError or any of the Check functions.
+
+The table and messages can be placed anywhere in your code,
+but they must exist. If the table is missing the error printer
+will jump to garbage memory.
+
+
+STACK TRACE SETUP
+-----------------
+For the stack tracer to work correctly, the value 65534 must
+be pushed onto the stack before any other code runs. This acts
+as an end-of-stack sentinel so TraceStack knows when to stop
+walking. Without it, TraceStack will read past the bottom of
+the stack into garbage memory.
+
+Place this at the very start of your file or main function:
+
+    main:
+        loadn r0, #65534
+        push r0
+        ; rest of your code here
+
+If you see the stack trace behaving unexpectedly on a fatal
+error, a missing sentinel is the first thing to check.
+
+WARNINGS
+--------
+The stack trace is not fully reliable. Data in memory that
+happens to contain the sentinel values can confuse the tracer
+and produce incorrect or incomplete results. Treat it as a
+debugging aid rather than a guaranteed accurate call chain.
+Reliability will be improved in future versions.
+
+
+================================================================
+PUBLIC FUNCTIONS
+================================================================
+
+CallFatalError  -  Triggers a Yellow Screen of Death
+----------------------------------------------------------------
+    Signature:  CallFatalError <r0> -> < >  (does not return)
+
+    Parameters:
+        r0  -  Error ID
+
+    Description:
+        Fills the screen with yellow, prints the error message
+        for the given ID, attempts a stack trace, prints the
+        trace, then halts. Does not return.
+
+    Notes:
+        - For the stack trace to work correctly, functions that
+          you want to appear in the trace must be called via
+          ErrorAwareCall instead of a regular call. See
+          ErrorAwareCall below.
+
+
+CheckOverFlowSafe  -  Checks if a write would overflow a buffer
+----------------------------------------------------------------
+    Signature:  CheckOverFlowSafe <r1, r2, r3, r4> -> <r2>
+
+    Parameters:
+        r1  -  Size of the object to write
+        r2  -  Pointer to the start of the buffer
+        r3  -  Size of the buffer in words
+        r4  -  Current write pointer (position inside the buffer)
+
+    Returns:
+        r2  -  1 if overflow would occur, 0 if safe
+
+    Description:
+        Checks whether writing an object of the given size at
+        the current write pointer would exceed the buffer bounds.
+        Returns a result instead of halting, so the caller can
+        decide what to do. Use CheckOverFlow when you want an
+        immediate fatal error instead.
+
+
+CheckOverFlow  -  Checks for overflow and errors if detected
+----------------------------------------------------------------
+    Signature:  CheckOverFlow <r0, r1, r2, r3, r4> -> < >
+
+    Parameters:
+        r0  -  Error ID to report if overflow is detected
+        r1  -  Size of the object to write
+        r2  -  Pointer to the start of the buffer
+        r3  -  Size of the buffer in words
+        r4  -  Current write pointer (position inside the buffer)
+
+    Description:
+        Same check as CheckOverFlowSafe, but calls CallFatalError
+        with the given Error ID if an overflow would occur.
+        Use this when an overflow is always a fatal condition.
+
+
+MemCompare  -  Compares two memory regions word by word
+----------------------------------------------------------------
+    Signature:  MemCompare <r0, r1, r2> -> <r0>
+
+    Parameters:
+        r0  -  Pointer to the first memory region
+        r1  -  Pointer to the second memory region
+        r2  -  Number of words to compare
+
+    Returns:
+        r0  -  1 if both regions are equal, 0 if they differ
+
+    Notes:
+        - Stops at the first differing word.
+        - r0 and r1 are preserved after the call.
+
+
+CheckIfZero  -  Errors if a value is not zero
+----------------------------------------------------------------
+    Signature:  CheckIfZero <r0, r1> -> < >
+
+    Parameters:
+        r0  -  Error ID to report if the check fails
+        r1  -  Value to check
+
+    Description:
+        Calls CallFatalError if r1 is not zero. Does nothing
+        otherwise. Useful for asserting that a function returned
+        no error.
+
+
+CheckIfOne  -  Errors if a value is not one
+----------------------------------------------------------------
+    Signature:  CheckIfOne <r0, r1> -> < >
+
+    Parameters:
+        r0  -  Error ID to report if the check fails
+        r1  -  Value to check
+
+    Description:
+        Calls CallFatalError if r1 is not one. Does nothing
+        otherwise. Useful for asserting that a function returned
+        success.
+
+
+ErrorAwareCall  -  Calls a function and marks it for stack tracing
+----------------------------------------------------------------
+    Signature:  ErrorAwareCall <r0, r7> -> < >
+
+    Parameters:
+        r0  -  Error ID (passed through to the called function
+                if it needs to report an error)
+        r7  -  Pointer to the function to call
+
+    Description:
+        Calls the function in r7 via CallI, but first pushes a
+        sentinel value (65535) onto the stack. The stack tracer
+        looks for these sentinels to reconstruct the call chain
+        when a fatal error occurs.
+
+        Use this instead of a regular call for any function you
+        want to appear in the stack trace on error.
+
+    How it works:
+        Before calling, 65535 is pushed as a marker. When
+        TraceStack walks the stack after a fatal error, it
+        identifies these markers and records the return address
+        that follows each one into the trace buffer. This lets
+        the YSOD display the chain of calls that led to the error.
+
+    IMPORTANT:
+        - ErrorAwareCall clobbers r1. Save r1 before calling if
+          you need it after.
+        - The stack tracer stops when it finds the value 65534.
+          This is the expected end-of-stack sentinel. Without it
+          TraceStack will walk off the bottom of the stack.
+
+
+================================================================
+PRIVATE FUNCTIONS  (for reference, not meant to be called directly)
+================================================================
+
+PrintYellowScreen  -  Fills the screen with yellow squares
+----------------------------------------------------------------
+    Signature:  PrintYellowScreen < > -> < >
+    Description:
+        Writes a yellow square character (893) to all 1200
+        screen positions. Called by CallFatalError.
+
+
+PrintErrorMessage  -  Prints the error message for a given ID
+----------------------------------------------------------------
+    Signature:  PrintErrorMessage <r0> -> <r0>
+    Description:
+        Looks up the error message string in ErrorMessageTable
+        using the error ID, then calls PrintFStr to print it
+        starting at screen position 0 with no color.
+
+
+TraceStack  -  Walks the stack looking for call markers
+----------------------------------------------------------------
+    Signature:  called internally by CallFatalError
+    Description:
+        Pops values from the stack looking for the sentinel 65535.
+        When found, records the following return address into the
+        trace buffer via TraceBufferAdd. Stops when it finds 65534
+        (end-of-stack sentinel). Only meaningful if calls were made
+        via ErrorAwareCall.
+
+
+TraceBufferAdd  -  Adds an address to the trace buffer
+----------------------------------------------------------------
+    Signature:  TraceBufferAdd <r2> -> <r0>
+    Description:
+        Appends r2 to the trace buffer. Returns 1 in r0 if the
+        buffer is full, 0 otherwise. The buffer holds up to 10
+        entries. Once full, further entries are silently dropped.
+
+
+TraceBufferPrint  -  Prints the contents of the trace buffer
+----------------------------------------------------------------
+    Signature:  TraceBufferPrint <r0> -> < >
+    Description:
+        Prints each address in the trace buffer as a hex number
+        using PrintHexNumberOnScreen, spaced 35 characters apart
+        on screen. Called by CallFatalError after TraceStack.

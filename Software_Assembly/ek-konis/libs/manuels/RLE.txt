@@ -1,0 +1,180 @@
+RLE LIBRARY  (rle.asm)
+=======================
+Implementation of Run-Length Encoding (RLE), a simple compression
+method that is very effective on data with long runs of repeated
+values. Works by storing [count, value] pairs instead of repeating
+the value in memory.
+
+Requires: String.asm
+
+Example: the string "AAABBC" (6 words) encodes to [3,'A',2,'B',1,'C']
+(6 words here, but on more repetitive data the savings are significant.
+"00000000100000111111111" (23 words) encodes to just 8 words.)
+
+
+RLE ENCODED FORMAT
+------------------
+Encoded data is a sequence of [count, value] pairs, terminated
+by a count of 0:
+
+    [ count ][ value ][ count ][ value ] ... [ 0 ]
+
+Example for "AAABBC":
+
+    [ 3 ][ 'A' ][ 2 ][ 'B' ][ 1 ][ 'C' ][ 0 ]
+
+The terminator is a count word of 0, not a null value word.
+This means the encoded data always ends with a single 0 word.
+
+
+================================================================
+PUBLIC FUNCTIONS
+================================================================
+
+RLEDecoder  -  Decodes RLE data into a flat memory region
+----------------------------------------------------------------
+    Signature:  RLEDecoder <r0, r1> -> < >
+
+    Parameters:
+        r0  -  Pointer to the target (destination) memory region
+        r1  -  Pointer to the RLE encoded source data
+
+    Returns:
+        nothing (r0 and r1 are preserved)
+
+    Description:
+        Reads [count, value] pairs from the source and writes
+        each value count times into the target, advancing the
+        target pointer as it goes. Stops when it reads a count
+        of 0 (the terminator).
+
+    Notes:
+        - The target region must be large enough to hold the
+          fully decoded data. No bounds checking is performed.
+        - r0 and r1 are not modified after the call.
+
+
+RLEEncoder  -  Encodes flat data into RLE format
+----------------------------------------------------------------
+    Signature:  RLEEncoder <r0, r1, r2> -> <r2>
+
+    Parameters:
+        r0  -  Pointer to the target (destination) memory region
+        r1  -  Pointer to the source data
+        r2  -  Size of the source data in words
+
+    Returns:
+        r2  -  Size of the encoded output in words
+
+    Description:
+        Reads the source data and writes [count, value] pairs
+        into the target. Consecutive identical values are grouped
+        into a single pair. Appends a terminating count of 0 at
+        the end.
+
+    Notes:
+        - The output size is not predictable in advance. On
+          worst-case data (no repeated values) the output will
+          be roughly twice the input size. Allocate generously.
+        - r0 and r1 are preserved after the call.
+        - r2 is overwritten with the output size.
+
+
+RLETraverser  -  Reads a single value at an index in RLE data
+----------------------------------------------------------------
+    Signature:  RLETraverser <r0, r1, r2> -> <r3>
+
+    Parameters:
+        r0  -  Target index (into the uncompressed data)
+        r1  -  Pointer to the RLE encoded data
+        r2  -  Pointer to the traverser buffer (see below)
+
+    Returns:
+        r3  -  The value at the target index in the uncompressed data
+
+    Description:
+        Reads a single value from the RLE data at the given
+        uncompressed index, without decoding the entire string.
+        Uses a small buffer to cache its position between calls,
+        making sequential or near-sequential reads significantly
+        faster than re-scanning from the start each time.
+
+        This is the right choice when you need random or
+        sequential access into large RLE data without the memory
+        cost of fully decoding it.
+
+    How it works:
+        The buffer stores where the traverser last was in both
+        the uncompressed index space and the RLE string. On each
+        call it checks whether the target index falls inside the
+        cached fragment. If yes it returns immediately (cache hit).
+        If not it walks forward or backward through [count, value]
+        pairs until it finds the right fragment, then updates the
+        buffer.
+
+        This means repeated or nearby reads are cheap. A read far
+        from the last position is slower, proportional to the
+        distance in fragments.
+
+    Buffer layout (2 words, must be allocated by the caller):
+        Buffer[0]  -  Uncompressed index where the cached fragment starts
+        Buffer[1]  -  Offset from r1 to the count word of that fragment
+
+    Buffer initialization:
+        The buffer must be initialized before the first call.
+        Set both words to 0 to start traversal from the beginning:
+
+            MyBuffer: var #2
+                static MyBuffer + #0, #0
+                static MyBuffer + #1, #0
+
+    Notes:
+        - The same buffer must be passed on every call for the
+          same RLE string. Using a fresh buffer on each call
+          defeats the caching and forces a scan from the start.
+        - Do not share a buffer between two different RLE strings.
+        - The buffer is kept external to the function rather than
+          stored internally so that you can have multiple independent
+          traversal positions on the same RLE string at the same
+          time. For example, if you need to read two separate regions
+          of the same compressed data simultaneously, you can
+          allocate two buffers and pass each one independently.
+          If the buffer were internal, the function could only track
+          one position at a time, and each call would overwrite the
+          last cached position.
+        - If you alternate between reading two different RLE strings
+          using the same buffer, the cached position will be wrong
+          for whichever string was not read last. This will not
+          cause a crash, but the traverser will have to walk from
+          the wrong position to find the correct fragment, losing
+          the performance benefit. Use one buffer per RLE string
+          you intend to traverse.
+
+
+================================================================
+NOT YET IMPLEMENTED
+================================================================
+
+RLEPartialDecoder  -  Decodes a subrange of RLE data
+----------------------------------------------------------------
+    Planned signature:  <r0, r1, start index, length> -> < >
+
+    Description:
+        Will decode only a specific range of the uncompressed
+        data rather than the full string. Useful when only a
+        region of interest is needed. The exact interface
+        (whether to accept an uncompressed index or an RLE
+        offset) is still to be decided.
+
+
+RLERectangleDecoder  -  Decodes RLE data with a stride
+----------------------------------------------------------------
+    Planned signature:  <r0, r1, width> -> < >
+
+    Description:
+        Designed for RLE data that represents a 2D region
+        smaller than a flat buffer (e.g. a rectangle on screen).
+        Decodes with a stride equal to the given width, saving
+        2 words per row in the encoded data compared to a full
+        flat decode. Slightly slower per index than a normal
+        decode.

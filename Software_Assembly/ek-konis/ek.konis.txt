@@ -1,0 +1,214 @@
+EK-KONIS
+=========
+"From fine dust we assemble"
+
+A collection of libraries targeting the ICMC Processor.
+See: https://github.com/simoesusp/Processador-ICMC
+
+These libraries are student-made and provided as-is. They are
+intended to make common tasks easier without hiding what is
+happening under the hood. Read the individual manuals before
+using a library in your own code.
+
+For more Up to date libs (since pull requests might take long to be aproved):
+See: https://github.com/NomeGenerico/ek-konis
+
+================================================================
+QUICK START
+================================================================
+
+1. Place your .asm file in the root folder.
+2. Declare your includes at the top of your file:
+
+       ;#Include Control.asm
+       ;#Include String.asm
+
+3. Run the linker:
+
+       python linker.py input.asm output.asm
+
+4. Assemble output.asm as usual.
+
+Include order does not matter. The linker resolves dependencies
+automatically. See manuels/linker.txt for full details.
+
+RUNNING LIBRARY TESTS
+----------------------
+Each library file contains tests below the ;END OF LIB marker.
+Since the linker strips everything outside START/END markers when
+resolving dependencies, these tests only run when the library is
+passed directly as the input file.
+
+To run the tests for a library:
+
+    python linker.py libs/String.asm out.asm
+
+Then assemble and run out.asm as usual. The tests are stripped
+automatically when the library is included by another file, so
+they will never appear in your own builds.
+
+================================================================
+TOOLS
+================================================================
+
+    linker.py   -  Resolves ;#Include directives and stitches
+                   libraries into a single output file.
+                   Requires Python 3.
+                   See manuels/linker.txt for full details.
+
+    stringf.py  -  (Work in progress) A QOL formatter for FStr
+                   string declarations. Intended to simplify
+                   writing FStr data without editing the assembler.
+                   Not fully functional yet.
+
+
+================================================================
+LIBRARIES
+================================================================
+
+Libraries are numbered in recommended include order. A library
+always depends on the ones before it, never the ones after.
+
+----------------------------------------------------------------
+0 — CONTROL  (Control.asm)
+----------------------------------------------------------------
+Extends the instruction set with indirect calls. Small but
+foundational — several other libraries depend on it.
+
+    Provides:
+        CallI  -  Call a function whose address is in a register
+
+    Manual: manuels/control.txt
+
+
+----------------------------------------------------------------
+1 — STRING  (String.asm)
+----------------------------------------------------------------
+String printing utilities with support for formatted strings
+(FStr). FStr allows embedding numbers and nested strings
+directly into string data, similar to printf in C.
+
+    Provides:
+        PrintStr               -  Print a plain string
+        PrintFStr              -  Print a formatted string
+        PrintHexNumberOnScreen -  Print a number in hex
+        PrintDecNumOnScreen    -  Print a number in decimal
+
+    Format specifiers (inside FStr strings):
+        256  -  Embed a hex number
+        257  -  Embed a decimal number
+        258  -  Embed a nested string
+
+    Easily extendable with new specifiers. See the manual.
+
+    Requires: Control.asm
+    Manual:   manuels/string.txt
+
+
+----------------------------------------------------------------
+2 — ERROR HANDLER  (ErrorHandler.asm)
+----------------------------------------------------------------
+Minimalist error handling. Triggers a Yellow Screen of Death
+(YSOD) on fatal errors, prints a custom error message, and
+attempts a stack trace to show what was called before the crash.
+
+    Provides:
+        CallFatalError      -  Halt with a YSOD and message
+        CheckIfZero         -  Assert a value is zero
+        CheckIfOne          -  Assert a value is one
+        CheckOverFlow       -  Assert a write is within bounds
+        CheckOverFlowSafe   -  Same, but returns instead of halting
+        MemCompare          -  Compare two memory regions
+        ErrorAwareCall      -  Call a function, traceable on error
+
+    Define your own error messages and assign them IDs.
+    Functions called via ErrorAwareCall will appear in the
+    stack trace. See the manual for setup instructions.
+
+    Requires: String.asm
+    Manual:   manuels/ErrorHandler.txt
+
+
+----------------------------------------------------------------
+3 — RLE COMPRESSION  (RLE.asm)
+----------------------------------------------------------------
+Run-Length Encoding compression. Effective on data with long
+runs of repeated values. Depending on the data structure,
+compression of up to 88% is achievable.
+
+    Provides:
+        RLEEncoder      -  Compress data into RLE format
+        RLEDecoder      -  Decompress RLE data into flat memory
+        RLETraverser    -  Read a single value by index without
+                           fully decompressing, with caching for
+                           fast sequential access
+
+    Not yet implemented:
+        RLEPartialDecoder    -  Decode a subrange of RLE data
+        RLERectangleDecoder  -  Decode RLE data with a 2D stride
+
+    Requires: String.asm
+    Manual:   manuels/RLE.txt
+
+
+================================================================
+IN ACTIVE DEVELOPMENT
+================================================================
+
+These libraries are not yet ready for use. Descriptions are
+provided for reference.
+
+----------------------------------------------------------------
+4 — MEMORY HANDLER  (MemoryHandler.asm)
+----------------------------------------------------------------
+Dynamic memory allocation. Essentially malloc and free for the
+ICMC processor. Allows declaring objects in memory at runtime
+with minimal overhead. Few guardrails, but useful.
+
+
+----------------------------------------------------------------
+5 — DIRTY RECTANGLE RENDERING  (DirtyRectangle.asm)
+----------------------------------------------------------------
+Optimized screen rendering that only redraws what has changed
+since the last frame. Features include:
+
+    - Multiple layers with z-ordering
+    - Default colors per layer
+    - Custom colors per screen index
+
+
+----------------------------------------------------------------
+6 — UI SYSTEM  (UiSystem.asm)
+----------------------------------------------------------------
+Interactable menus with selection, confirmation, and highlight
+support. To use:
+
+    1. Provide an RLE-compressed string of the appearance
+    2. Define selectable regions
+    3. Write a handler function for each region
+    4. It just works
+
+Default limit of 20 stacked elements, configurable.
+
+
+----------------------------------------------------------------
+7 — OBJECT SYSTEM  (ObjectSystem.asm)
+----------------------------------------------------------------
+A basic object model for the ICMC processor:
+
+    - Create objects (constructors are still yours to write)
+    - Dispatch behavior functions by object type
+    - Store and access custom data per object via an Object ID
+
+
+================================================================
+MANUALS
+================================================================
+
+Individual documentation files are in the libs/manuels/ folder:
+
+    control.txt        -  Control library
+    string.txt         -  String library
+    ErrorHandler.txt   -  Error handler library
+    RLE.txt            -  RLE compression library
+    linker.txt         -  Linker usage and conventions
