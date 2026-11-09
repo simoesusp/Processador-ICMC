@@ -1,0 +1,221 @@
+STRING LIBRARY  (string.asm)
+=============================
+Basic string printing utilities. Includes plain string printing,
+formatted string printing with support for embedded numbers and
+nested strings.
+
+Requires: Control.asm
+
+Known Limitations:
+    - Full FStr support (custom special chars) would require
+      edits to the Assembler.
+
+
+================================================================
+FSTR FORMAT
+================================================================
+
+An FStr is a null-terminated string where values greater than 255
+act as format specifiers. Each specifier is followed by one or
+more extra words in the string data describing what to print.
+
+Specifier table:
+
+    256  (Hex)  followed by: [ptr to number]
+    257  (Dec)  followed by: [ptr to number]
+    258  (Str)  followed by: [ptr to string][color]
+
+Example memory layout for an FStr with an embedded hex number:
+
+    [ ... normal chars ... ]
+    [ 256              ]  <- specifier: print as hex
+    [ ptr to value     ]  <- address of the number to print
+    [ ... more chars   ]
+    [ 0                ]  <- null terminator
+
+Example data definition:
+
+    MyNum  : var #1
+        static MyNum, #8246
+
+    MyStr  : string "Value: 00 done"
+        static MyStr + #7, #256    ; hex specifier
+        static MyStr + #8, #MyNum  ; address of the variable
+
+
+================================================================
+EXTENDING FSTR WITH NEW SPECIFIERS
+================================================================
+
+New specifier handlers can be added without modifying any
+existing code by appending to the handler table.
+
+    StringSpecialCharNum      - Total number of registered handlers.
+                                Currently 3.
+
+    StringSpecialCharHandlers - Array of function pointers, one per
+                                specifier, starting from 256.
+
+Steps to add a new specifier:
+
+    1. Increment StringSpecialCharNum:
+
+           static StringSpecialCharNum + #0, #4   ; was 3
+
+    2. Expand and append to StringSpecialCharHandlers:
+
+           StringSpecialCharHandlers: var #4       ; was 3
+               static StringSpecialCharHandlers + #0, #ResolveString_Hex
+               static StringSpecialCharHandlers + #1, #ResolveString_Dec
+               static StringSpecialCharHandlers + #2, #ResolveString_Str
+               static StringSpecialCharHandlers + #3, #ResolveString_MyNew
+
+    3. Write the handler following the same pattern as the existing
+       ones: increment r1 past the specifier, read any extra words
+       you need from the string, call your print function, then
+       decrement r0 to cancel the extra inc r0 that PrintFStr
+       will apply after the handler returns.
+
+The new specifier value will automatically be 256 + its index
+in the table (so the example above would be triggered by 259).
+
+
+================================================================
+PUBLIC FUNCTIONS
+================================================================
+
+PrintStr  -  Prints a plain string to the screen
+----------------------------------------------------------------
+    Signature:  PrintStr <r0, r1, r2> -> <r0>
+
+    Parameters:
+        r0  -  Screen position to start printing at
+        r1  -  Address of the string (null-terminated)
+        r2  -  Color value to apply to each character
+
+    Returns:
+        r0  -  Screen position after the last printed character
+
+    Description:
+        Walks the string character by character, applying the
+        color value and printing each one until a null terminator
+        is found. Does not support format specifiers. Use
+        PrintFStr if you need those.
+
+
+PrintFStr  -  Prints a formatted string to the screen
+----------------------------------------------------------------
+    Signature:  PrintFStr <r0, r1, r2> -> <r0>
+
+    Parameters:
+        r0  -  Screen position to start printing at
+        r1  -  Address of the string (null-terminated)
+        r2  -  Color value to apply to regular characters
+
+    Returns:
+        r0  -  Screen position after the last printed character
+
+    Description:
+        Works like PrintStr but also handles format specifiers
+        (values above 255) embedded in the string data. When a
+        specifier is found, the appropriate handler is called to
+        print the value in its place. Slightly slower than
+        PrintStr due to the extra check on each character.
+
+    Notes:
+        - The color value in r2 only applies to regular characters.
+          Nested strings (specifier 258) carry their own color
+          defined in the string data.
+        - Nested strings via specifier 258 are supported, but
+          embedding a string inside itself will cause an infinite
+          loop.
+
+
+PrintHexNumberOnScreen  -  Prints a 16-bit number in hex format
+----------------------------------------------------------------
+    Signature:  PrintHexNumberOnScreen <r0, r1> -> <r0>
+
+    Parameters:
+        r0  -  Screen position to start printing at
+        r1  -  The number to print
+
+    Returns:
+        r0  -  Screen position after the last printed character
+
+    Description:
+        Prints the number as a 4-digit hex value prefixed with
+        'x'. Always prints all 4 digits including leading zeros.
+        r0 is always advanced by exactly 5 after the call.
+
+    Example output for the value 8246:
+        x2036
+
+
+PrintDecNumOnScreen  -  Prints a number in decimal format
+----------------------------------------------------------------
+    Signature:  PrintDecNumOnScreen <r0, r1> -> <r0>
+
+    Parameters:
+        r0  -  Screen position to start printing at
+        r1  -  The number to print
+
+    Returns:
+        r0  -  Screen position after the last printed character
+
+    Description:
+        Prints the number in decimal. Extracts digits by
+        repeatedly dividing by 10, stores them in a small
+        internal buffer, then walks the buffer to print them
+        in the correct order. Does not print leading zeros.
+
+    Notes:
+        - Correctly handles zero.
+        - Maximum supported value is 65535 (unsigned 16-bit).
+
+
+================================================================
+PRIVATE FUNCTIONS  (for reference, not meant to be called directly)
+================================================================
+
+DigitHexFinder  -  Converts a number (0-15) to its hex character
+----------------------------------------------------------------
+    Signature:  DigitHexFinder <r3> -> <r3>
+    Description:
+        Takes a value from 0 to 15 and returns the corresponding
+        ASCII character ('0'-'9' or 'A'-'F'). Used internally
+        by PrintHexNumberOnScreen.
+
+
+ResolveStringSpecialChar  -  Dispatches a specifier to its handler
+----------------------------------------------------------------
+    Signature:  called internally by PrintFStr
+    Description:
+        Called by PrintFStr when a value above 255 is found.
+        Looks up the correct handler in StringSpecialCharHandlers
+        and calls it via CallI. If the specifier value is out of
+        range, it does nothing and returns.
+
+
+ResolveString_Hex  -  Handler for specifier 256
+----------------------------------------------------------------
+    Signature:  called internally by ResolveStringSpecialChar
+    Description:
+        Reads the variable address from the next word in the
+        string, loads the value at that address, and calls
+        PrintHexNumberOnScreen.
+
+
+ResolveString_Dec  -  Handler for specifier 257
+----------------------------------------------------------------
+    Signature:  called internally by ResolveStringSpecialChar
+    Description:
+        Same as ResolveString_Hex but calls PrintDecNumOnScreen.
+
+
+ResolveString_Str  -  Handler for specifier 258
+----------------------------------------------------------------
+    Signature:  called internally by ResolveStringSpecialChar
+    Description:
+        Reads the string address and color from the next two
+        words in the string data, then calls PrintFStr
+        recursively.
