@@ -247,6 +247,7 @@ void DetectarLabels(void)
             case OR_CODE :
             case XOR_CODE :
             case SOUND_CODE:
+            case SNDN_CODE:
                 parser_SkipUntil(',');
                 parser_SkipUntil(',');
                 parser_SkipUntilEnd();
@@ -653,6 +654,7 @@ void MontarInstrucoes(void)
                 */
 
                 case SOUND_CODE :
+                case SNDN_CODE :
                     str_tmp1 = parser_GetItem_s();
                     val1 = BuscaRegistrador(str_tmp1);
                     free(str_tmp1);
@@ -667,7 +669,7 @@ void MontarInstrucoes(void)
                     str_tmp1 = ConverteRegistrador(val1);
                     str_tmp2 = ConverteRegistrador(val2);
                     str_tmp3 = ConverteRegistrador(val3);
-                    sprintf(str_msg,"%s%s%s%s0",SOUND,str_tmp1,str_tmp2,str_tmp3);
+                    sprintf(str_msg,"%s%s%s%s0",op_code == SNDN_CODE ? SNDN : SOUND,str_tmp1,str_tmp2,str_tmp3);
                     free(str_tmp1);
                     free(str_tmp2);
                     free(str_tmp3);
@@ -2301,6 +2303,10 @@ int BuscaInstrucao(char * nome)
     else if (strcmp(str_tmp,SOUND_STR) == 0)
     {
         return SOUND_CODE;
+    }
+    else if (strcmp(str_tmp,SNDN_STR) == 0)
+    {
+        return SNDN_CODE;
     }
     else if (strcmp(str_tmp,ADD_STR) == 0)
     {

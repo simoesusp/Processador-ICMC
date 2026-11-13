@@ -110,6 +110,7 @@
 #define INPUT_CODE              96
 #define OUTPUT_CODE             97
 #define SOUND_CODE              98
+#define SNDN_CODE               99
 
 /* Definicoes dos op codes (binarios em strings) */
 
@@ -130,6 +131,7 @@
 #define OUTCHAR         "110010"
 #define INCHAR          "110101"
 #define SOUND           "110100"
+#define SNDN            "110110"
 
 /* Aritmethic Instructions(All should begin with "10"):	*/
 #define ADD             "100000"
@@ -204,6 +206,7 @@
 #define INPUT_STR               "INPUT"
 #define OUTPUT_STR              "OUTPUT"
 #define SOUND_STR               "SOUND"
+#define SNDN_STR                "SNDN"
 
 /* ADD */
 #define ADD_STR                 "ADD"

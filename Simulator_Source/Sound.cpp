@@ -11,10 +11,9 @@ Beeper::Beeper()
     desiredSpec.callback = audio_callback;
     desiredSpec.userdata = this;
 
-    SDL_AudioSpec obtainedSpec;
-
     // you might want to look for errors here
-    SDL_OpenAudio(&desiredSpec, &obtainedSpec);
+    // NULL lets SDL convert to the device format (e.g. float stereo on Windows); otherwise no sound is played
+    SDL_OpenAudio(&desiredSpec, NULL);
 
     // start play audio
     SDL_PauseAudio(0);
@@ -105,6 +104,18 @@ void Beeper::beep(string wave, double freq, int duration){
     SDL_UnlockAudio();
 }
 
+void Beeper::replace(string wave, double freq, int duration){
+    BeepObject bo;
+    bo.freq = freq;
+    bo.wave_type = wave;
+    bo.samplesLeft = duration * FREQUENCY / 1000;
+
+    SDL_LockAudio();
+    beeps = queue<BeepObject>();
+    beeps.push(bo);
+    SDL_UnlockAudio();
+}
+
 void Beeper::wait(int time){
     int size;
     do {
@@ -125,11 +136,7 @@ void audio_callback(void *_beeper, Uint8 *_stream, int _length)
     beeper->generateSamples(stream, length);
 }
 
-// rx: frequency, ry: duration (ms), rz:wave_type
-void play_note (int rx, int ry, int rz) {
-    SDL_Init(SDL_INIT_AUDIO);
-    Beeper beeper;
-
+static std::string wave_type (int rz) {
     std::string type;
 
     switch (rz) {
@@ -149,6 +156,24 @@ void play_note (int rx, int ry, int rz) {
         type = "sine";
         break;
     }
-    beeper.beep(type, rx, ry);
+    return type;
+}
+
+static Beeper& global_beeper () {
+    static Beeper beeper;
+    return beeper;
+}
+
+// rx: frequency, ry: duration (ms), rz:wave_type
+void play_note (int rx, int ry, int rz) {
+    SDL_Init(SDL_INIT_AUDIO);
+    Beeper& beeper = global_beeper();
+
+    beeper.beep(wave_type(rz), rx, ry);
     beeper.wait(30);
+}
+
+void play_note_async (int rx, int ry, int rz) {
+    SDL_Init(SDL_INIT_AUDIO);
+    global_beeper().replace(wave_type(rz), rx, ry);
 }

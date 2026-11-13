@@ -27,6 +27,7 @@ public:
     Beeper();
     ~Beeper();
     void beep(string wave, double freq, int duration);
+    void replace(string wave, double freq, int duration);
     void generateSamples(Sint16 *stream, int length);
     void wait(int time);
     double chooseWave(string wave, double freq, double amplitude, double v);
@@ -38,6 +39,7 @@ double squareWave(double freq, double amplitude, double v);
 double triangleWave(double freq, double amplitude, double v);
 double sawtoothWave(double freq, double amplitude, double v);
 void play_note (int rx, int ry, int rz);
+void play_note_async (int rx, int ry, int rz);
 
 #define NOTE_C1 65.40638
 #define NOTE_C1s 69.29566
