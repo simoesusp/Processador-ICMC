@@ -333,6 +333,7 @@ void View::show_program(int linha, int pc, int sp)
     case SETC: sprintf(texto, "PC: %05d\t|	SETC				|	C <- %d", pc, model->pega_pedaco(ir,9,9)); break;
 
 	case SOUND: sprintf(texto, "PC: %05d\t|	SOUND R%d, R%d, R%d	|	Toca sons", pc, _rx, _ry, _rz); break;
+	case SNDN:  sprintf(texto, "PC: %05d\t|	SNDN R%d, R%d, R%d	|	Toca sons sem esperar", pc, _rx, _ry, _rz); break;
 
     case HALT: sprintf(texto, "PC: %05d\t|	HALT				|	Pausa a execucao", pc); break;
 

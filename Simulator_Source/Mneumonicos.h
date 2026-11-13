@@ -12,6 +12,7 @@
 #define MOV	51
 #define OUTCHAR	50
 #define SOUND 52
+#define SNDN 54
 #define INCHAR 53
 #define ADD 32
 #define SUB 33
