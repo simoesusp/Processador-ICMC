@@ -128,7 +128,7 @@ void audio_callback(void *_beeper, Uint8 *_stream, int _length)
 // rx: frequency, ry: duration (ms), rz:wave_type
 void play_note (int rx, int ry, int rz) {
     SDL_Init(SDL_INIT_AUDIO);
-    Beeper beeper;
+    static Beeper beeper;
 
     std::string type;
 
@@ -150,5 +150,4 @@ void play_note (int rx, int ry, int rz) {
         break;
     }
     beeper.beep(type, rx, ry);
-    beeper.wait(30);
 }
